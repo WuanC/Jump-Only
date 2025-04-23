@@ -37,7 +37,10 @@ public class PlatformMoveContainer : MonoBehaviour
                 .SetLoops(-1, loopMode);
     }
 
-
+    private void OnDestroy()
+    {
+        DOTween.Kill(gameObject);
+    }
 
 
 }

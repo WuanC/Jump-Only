@@ -43,5 +43,6 @@ public class Player : MonoBehaviour
     public void RespawnPlayer()
     {
         transform.position = startPosition;
+        gameObject.SetActive(true);
     }
 }

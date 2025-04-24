@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -7,6 +8,9 @@ public class Player : MonoBehaviour
     Rigidbody2D rb;
     Vector3 startPosition;
     [SerializeField] float timeRespawn;
+
+    public event Action<Vector2> OnPlayerStartJump;
+    public event Action<Vector2> OnPlayerStartFall;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -20,7 +24,9 @@ public class Player : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
+
             AddForceToPlayer(-jumpForceX, jumpForceY);
+
         }
         else if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -30,6 +36,7 @@ public class Player : MonoBehaviour
     public void AddForceToPlayer(float xValue, float yValue)
     {
         rb.velocity = Vector3.zero;
+        OnPlayerStartJump?.Invoke(new Vector2(xValue, yValue).normalized);
         rb.AddForce(new Vector2(xValue, yValue), ForceMode2D.Impulse);
     }
 
@@ -44,5 +51,12 @@ public class Player : MonoBehaviour
     {
         transform.position = startPosition;
         gameObject.SetActive(true);
+    }
+    private void FixedUpdate()
+    {
+        if(rb.velocity.y < 0)
+        {
+            OnPlayerStartFall?.Invoke(rb.velocity.normalized);
+        }
     }
 }

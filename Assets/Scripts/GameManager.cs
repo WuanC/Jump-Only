@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,11 +10,13 @@ public class GameManager : Singleton<GameManager>
     private const string levelPath = "Levels";
     private int currentLevel = 1;
     private GameObject currentLevelObj;
+    [SerializeField] float timeLoadNewScene;
 
     public Dictionary<string, LevelSO> Levels => levelDatas;
     public int CurrentLevel => currentLevel;
 
     public event Action<string, int> OnLevelChanged;
+    public event Action OnClearLevel;
 
     protected override void Awake()
     {
@@ -22,6 +25,7 @@ public class GameManager : Singleton<GameManager>
     }
     private void Start()
     {
+        Debug.LogError("Game Manager Sstart");
         LoadNewLevel(currentLevel.ToString());
     }
     public void LoadData()
@@ -32,17 +36,25 @@ public class GameManager : Singleton<GameManager>
 
     public void PlayerWin()
     {
-        Time.timeScale = 0.5f;
-        //if (currentLevel == levelDatas.Count) return; //do sth
-        //currentLevel++;
-        //LoadNewLevel(currentLevel.ToString());
+        StartCoroutine(PlayerWinCouroutine());
+    }
+    public IEnumerator PlayerWinCouroutine()
+    {
+        Time.timeScale = 0.3f;
+        OnClearLevel?.Invoke();
+        yield return new WaitForSeconds(timeLoadNewScene);
+        Time.timeScale = 1f;
 
+        if (currentLevel == levelDatas.Count) yield break; //do sth
+        currentLevel++;
+        LoadNewLevel(currentLevel.ToString());
     }
     public void LoadNewLevel(string level)
-    {
+    { 
         if (currentLevelObj != null) Destroy(currentLevelObj);
         currentLevelObj = Instantiate(levelDatas[level].levelPrefabs);
         OnLevelChanged?.Invoke(level, levelDatas.Count);
+        Debug.Log(level);
     }
 
 

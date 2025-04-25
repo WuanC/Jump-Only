@@ -22,11 +22,13 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Died();
+        }
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
-
             AddForceToPlayer(-jumpForceX, jumpForceY);
-
         }
         else if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -45,6 +47,7 @@ public class Player : MonoBehaviour
     {
         rb.velocity = Vector3.zero;
         gameObject.SetActive(false);
+        Observer.Instance.Broadcast(EventId.OnPlayerDied, transform.position);
         Invoke(nameof(RespawnPlayer), timeRespawn);
     }
     public void RespawnPlayer()

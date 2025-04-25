@@ -54,7 +54,6 @@ public class GameManager : Singleton<GameManager>
         if (currentLevelObj != null) Destroy(currentLevelObj);
         currentLevelObj = Instantiate(levelDatas[level].levelPrefabs);
         OnLevelChanged?.Invoke(level, levelDatas.Count);
-        Debug.Log(level);
     }
 
 

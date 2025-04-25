@@ -21,7 +21,14 @@ public class Camera : MonoBehaviour
     
     public void Camera_PlayerDied(object obj)
     {
-        transform.DOShakePosition(shakeDuration, shakeStrength, shakeIterator);
+        var player = camPlayer.Follow;
+        camPlayer.Follow = null;
+        transform.DOShakePosition(shakeDuration, shakeStrength, shakeIterator).OnComplete(
+            () =>
+            {
+                camPlayer.Follow = player;
+                transform.position = Vector3.zero;
+            });
     }
 
     private void Camera_OnClearLevel()

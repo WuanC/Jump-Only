@@ -8,6 +8,7 @@ public class Destination : MonoBehaviour, IInteractWithPlayer
     public void Interact(Player player)
     {
         isBeyond = true;
+        Observer.Instance.Broadcast(EventId.OnPlayerWin, null);
         GameManager.Instance.PlayerWin();
     }
     private void OnTriggerEnter2D(Collider2D collision)

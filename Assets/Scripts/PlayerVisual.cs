@@ -15,8 +15,8 @@ public class PlayerVisual : MonoBehaviour
     private void Start()
     {
         startRotation = transform.rotation;
-        player.OnPlayerStartJump += Player_OnPlayerStartJump;
         player.OnPlayerStartFall += Player_OnPlayerStartFall;
+        Observer.Instance.Register(EventId.OnPlayerJump, Player_OnPlayerStartJump);
         Observer.Instance.Register(EventId.OnPlayerDied, OnPlayerDied);
     }
 
@@ -28,10 +28,11 @@ public class PlayerVisual : MonoBehaviour
         rotateTween = transform.DORotate(new Vector3(0, 0, angleZ + 90), 0.5f);
     }
 
-    private void Player_OnPlayerStartJump(Vector2 obj)
+    private void Player_OnPlayerStartJump(object obj)
     {
+        Vector2 dir = (Vector2)obj;
         anim.SetTrigger(ANIM_JUMP);
-        float angleZ = Mathf.Atan2(obj.y, obj.x) * Mathf.Rad2Deg;
+        float angleZ = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         if (rotateTween != null && rotateTween.IsActive())
             rotateTween.Kill();
         rotateTween = transform.DORotate(new Vector3(0, 0, angleZ - 90), 0.1f);
@@ -44,9 +45,9 @@ public class PlayerVisual : MonoBehaviour
     }
     private void OnDestroy()
     {
-        player.OnPlayerStartJump -= Player_OnPlayerStartJump;
         player.OnPlayerStartFall -= Player_OnPlayerStartFall;
         Observer.Instance.Unregister(EventId.OnPlayerDied, OnPlayerDied);
+        Observer.Instance.Unregister(EventId.OnPlayerJump, Player_OnPlayerStartJump);
         rotateTween?.Kill();
     }
 }

@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     Vector3 startPosition;
     [SerializeField] float timeRespawn;
 
-    public event Action<Vector2> OnPlayerStartJump;
+
     public event Action<Vector2> OnPlayerStartFall;
     private void Awake()
     {
@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
     public void AddForceToPlayer(float xValue, float yValue)
     {
         rb.velocity = Vector3.zero;
-        OnPlayerStartJump?.Invoke(new Vector2(xValue, yValue).normalized);
+        Observer.Instance.Broadcast(EventId.OnPlayerJump, new Vector2(xValue, yValue).normalized);
         rb.AddForce(new Vector2(xValue, yValue), ForceMode2D.Impulse);
     }
 
@@ -60,6 +60,15 @@ public class Player : MonoBehaviour
         if(rb.velocity.y < 0)
         {
             OnPlayerStartFall?.Invoke(rb.velocity.normalized);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            Debug.Log("Player");
+            Observer.Instance.Broadcast(EventId.OnPlayerColliding, null);
         }
     }
 }

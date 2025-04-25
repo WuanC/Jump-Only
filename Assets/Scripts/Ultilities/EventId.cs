@@ -5,5 +5,7 @@ using UnityEngine;
 public enum EventId 
 {
     OnPlayerDied,
-
+    OnPlayerColliding,
+    OnPlayerJump,
+    OnPlayerWin,
 }

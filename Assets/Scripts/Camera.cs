@@ -1,7 +1,5 @@
 using Cinemachine;
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Camera : MonoBehaviour
@@ -18,7 +16,7 @@ public class Camera : MonoBehaviour
         GameManager.Instance.OnClearLevel += Camera_OnClearLevel;
         Observer.Instance.Register(EventId.OnPlayerDied, Camera_PlayerDied);
     }
-    
+
     public void Camera_PlayerDied(object obj)
     {
         var player = camPlayer.Follow;
@@ -39,5 +37,6 @@ public class Camera : MonoBehaviour
     {
         GameManager.Instance.OnClearLevel -= Camera_OnClearLevel;
         Observer.Instance.Unregister(EventId.OnPlayerDied, Camera_PlayerDied);
+        DOTween.Kill(gameObject);
     }
 }

@@ -7,9 +7,11 @@ public abstract class TrapBase : MonoBehaviour, IInteractWithPlayer
         player.Died();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.TryGetComponent<Player>(out Player player))
+        if (collision.gameObject.TryGetComponent<Player>(out Player player))
         {
             Interact(player);
         }

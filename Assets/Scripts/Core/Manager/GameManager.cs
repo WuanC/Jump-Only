@@ -8,7 +8,7 @@ public class GameManager : Singleton<GameManager>
 {
     private Dictionary<string, LevelSO> levelDatas = new();
     private const string levelPath = "Levels";
-    private int currentLevel = 1;
+    [SerializeField] private int currentLevel = 1;
     private GameObject currentLevelObj;
     [SerializeField] float timeLoadNewScene;
 

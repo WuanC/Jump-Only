@@ -1,6 +1,3 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
@@ -19,7 +16,7 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         Observer.Instance.Register(EventId.OnPlayerDied, AudioSource_OnPlayerDied);
-        Observer.Instance.Register(EventId.OnPlayerColliding, AudioSource_OnPlayerColliding);        
+        Observer.Instance.Register(EventId.OnPlayerColliding, AudioSource_OnPlayerColliding);
         Observer.Instance.Register(EventId.OnPlayerJump, AudioSource_OnPlayerJump);
         Observer.Instance.Register(EventId.OnPlayerWin, AudioSource_OnPlayerWin);
     }
@@ -36,7 +33,6 @@ public class AudioManager : MonoBehaviour
     }
     void AudioSource_OnPlayerColliding(object obj)
     {
-        Debug.Log("abc");
         audioSource.PlayOneShot(collide, 3f);
     }
     void AudioSource_OnPlayerJump(object obj)

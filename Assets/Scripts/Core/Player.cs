@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     Rigidbody2D rb;
     Vector3 startPosition;
     [SerializeField] float timeRespawn;
+    bool isDead;
 
 
     public event Action<Vector2> OnPlayerStartFall;
@@ -28,31 +29,36 @@ public class Player : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
+            Observer.Instance.Broadcast(EventId.OnPlayerJump, new Vector2(-jumpForceX, jumpForceY).normalized);
             AddForceToPlayer(-jumpForceX, jumpForceY);
         }
         else if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.RightArrow))
         {
+            Observer.Instance.Broadcast(EventId.OnPlayerJump, new Vector2(jumpForceX, jumpForceY).normalized);
             AddForceToPlayer(jumpForceX, jumpForceY);
         }
     }
     public void AddForceToPlayer(float xValue, float yValue)
     {
         rb.velocity = Vector3.zero;
-        Observer.Instance.Broadcast(EventId.OnPlayerJump, new Vector2(xValue, yValue).normalized);
+       
         rb.AddForce(new Vector2(xValue, yValue), ForceMode2D.Impulse);
     }
 
 
     public void Died()
     {
+        if(isDead) return;
+        isDead = true;
         rb.velocity = Vector3.zero;
         gameObject.SetActive(false);
         Observer.Instance.Broadcast(EventId.OnPlayerDied, transform.position);
+        transform.position = startPosition;
         Invoke(nameof(RespawnPlayer), timeRespawn);
     }
     public void RespawnPlayer()
     {
-        transform.position = startPosition;
+        isDead = false;
         gameObject.SetActive(true);
     }
     private void FixedUpdate()
@@ -67,7 +73,6 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Platform"))
         {
-            Debug.Log("Player");
             Observer.Instance.Broadcast(EventId.OnPlayerColliding, null);
         }
     }

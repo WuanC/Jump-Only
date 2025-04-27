@@ -10,11 +10,17 @@ public class StarContainer : MonoBehaviour
     {
         currentStar = 0;
     }
+    public void MinusStar()
+    {
+        if (currentStar == 0) return;
+        currentStar--;
+    }
     public void AddStar()
     {
         currentStar++;
         if(currentStar == maxStar)
         {
+            Observer.Instance.Broadcast(EventId.OnPlayerWin, null);
             GameManager.Instance.PlayerWin();
         }
     }

@@ -16,23 +16,28 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
     }
+    private void OnEnable()
+    {
+        Observer.Instance.Broadcast(EventId.OnPlayerRespawn, null);
+    }
     private void Start()
     {
         startPosition = transform.position;
+        Observer.Instance.Register(EventId.OnUserInput, Player_OnUserInput);
     }
-
-    void Update()
+    private void OnDestroy()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            Died();
-        }
-        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.LeftArrow))
+        Observer.Instance.Unregister(EventId.OnUserInput, Player_OnUserInput);
+    }
+    public void Player_OnUserInput(object obj)
+    {
+        InputDirection dir = (InputDirection)obj;
+        if (dir == InputDirection.Left)
         {
             Observer.Instance.Broadcast(EventId.OnPlayerJump, new Vector2(-jumpForceX, jumpForceY).normalized);
             AddForceToPlayer(-jumpForceX, jumpForceY);
         }
-        else if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.RightArrow))
+        else if (dir == InputDirection.Right)
         {
             Observer.Instance.Broadcast(EventId.OnPlayerJump, new Vector2(jumpForceX, jumpForceY).normalized);
             AddForceToPlayer(jumpForceX, jumpForceY);

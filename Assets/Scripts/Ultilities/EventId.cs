@@ -1,11 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum EventId 
+public enum EventId
 {
     OnPlayerDied,
+    OnPlayerRespawn,
     OnPlayerColliding,
     OnPlayerJump,
     OnPlayerWin,
+
+    OnTransitionScreen,
+    OnPlayerCompletedGame,
+    OnBackToMenu,
+    OnMuteAudio,
+    OnUserInput
 }

@@ -7,6 +7,14 @@ public class Star : MonoBehaviour, IInteractWithPlayer
     private void Start()
     {
         container = GetComponentInParent<StarContainer>();
+        Observer.Instance.Register(EventId.OnPlayerDied, Star_OnPlayerDied);
+
+
+    }
+    void Star_OnPlayerDied(object obj)
+    {
+        gameObject.SetActive(true);
+        container.MinusStar();
     }
     public void Interact(Player player)
     {
@@ -17,8 +25,11 @@ public class Star : MonoBehaviour, IInteractWithPlayer
     {
         if(collision.TryGetComponent<Player>(out Player player))
         {
-            Debug.Log("interact");
             Interact(player);
         }
+    }
+    private void OnDestroy()
+    {
+        Observer.Instance.Unregister(EventId.OnPlayerDied, Star_OnPlayerDied);
     }
 }

@@ -57,7 +57,6 @@ public class PlatformMoveContainer : MonoBehaviour
     public float CalTimePerUnityUnit()
     {
         float time = timeMove / (arrayPoints.Length  * Vector2.Distance(arrayPoints[1].position, arrayPoints[0].position));
-        Debug.Log(time);
         return time;
 
     }

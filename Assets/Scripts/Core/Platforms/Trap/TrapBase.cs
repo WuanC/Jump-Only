@@ -13,6 +13,7 @@ public abstract class TrapBase : MonoBehaviour, IInteractWithPlayer
     {
         if (collision.gameObject.TryGetComponent<Player>(out Player player))
         {
+            //FindObjectOfType<LogError>().settext(gameObject.name);
             Interact(player);
         }
     }

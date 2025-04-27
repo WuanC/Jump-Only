@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,14 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] float timeLoadNewScene;
 
     public Dictionary<string, LevelSO> Levels => levelDatas;
-    public int CurrentLevel => currentLevel;
+    public int CurrentLevel
+    {
+        get => currentLevel;
+        set
+        {
+            currentLevel = value;
+        }
+    }
 
     public event Action<string, int> OnLevelChanged;
     public event Action OnClearLevel;
@@ -26,7 +33,7 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         Debug.LogError("Game Manager Sstart");
-        LoadNewLevel(currentLevel.ToString());
+        //LoadNewLevel(currentLevel.ToString());
     }
     public void LoadData()
     {
@@ -45,13 +52,26 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForSeconds(timeLoadNewScene);
         Time.timeScale = 1f;
 
-        if (currentLevel == levelDatas.Count) yield break; //do sth
-        currentLevel++;
-        LoadNewLevel(currentLevel.ToString());
+        if (currentLevel == levelDatas.Count)
+        {
+            Observer.Instance.Broadcast(EventId.OnPlayerCompletedGame, null);
+            Destroy(currentLevelObj.gameObject);
+            yield break; //do sth
+        }
+            currentLevel++;
+        Observer.Instance.Broadcast(EventId.OnTransitionScreen, (Action)(() => LoadNewLevel(currentLevel.ToString())));
     }
-    public void LoadNewLevel(string level)
+    public void DeleteCurrentLevel()
+    {
+        if(currentLevelObj != null)
+        {
+            Destroy(currentLevelObj.gameObject);
+        }
+    }
+    public void LoadNewLevel(string level = "1")
     { 
         if (currentLevelObj != null) Destroy(currentLevelObj);
+        CONSTANT.SaveLevel(level);
         currentLevelObj = Instantiate(levelDatas[level].levelPrefabs);
         OnLevelChanged?.Invoke(level, levelDatas.Count);
     }

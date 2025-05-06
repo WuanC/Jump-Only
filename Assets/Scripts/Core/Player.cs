@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
         if (isFristEnable)
         {
             isFristEnable = false;
-            return;
+            return; 
         }
         Observer.Instance.Broadcast(EventId.OnPlayerRespawn, null);
     }

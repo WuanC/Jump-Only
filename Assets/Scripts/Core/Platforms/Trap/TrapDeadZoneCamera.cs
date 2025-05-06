@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class TrapDeadZoneCamera : TrapBase
 {
-    [SerializeField] CinemachineVirtualCamera virtualCamera;
+    CinemachineVirtualCamera virtualCamera;
     public const float SIZE_PER_ONE_UNIT_CAMERA = 15f;
+    public enum PositionByCamera
+    {
+        Up, Down,
+    }
+    public PositionByCamera position;
     private void Awake()
     {
         virtualCamera = GetComponentInParent<CinemachineVirtualCamera>();
@@ -14,7 +19,16 @@ public class TrapDeadZoneCamera : TrapBase
     {
         Observer.Instance.Register(EventId.OnPlayerDied, DeadZone_OnPlayerDied);
         Observer.Instance.Register(EventId.OnPlayerRespawn, DeadZone_OnPlayerSpawn);
-        transform.localPosition = new Vector3(0, -virtualCamera.m_Lens.OrthographicSize, transform.localPosition.z);
+
+        if(position == PositionByCamera.Down)
+        {
+            transform.localPosition = new Vector3(0, -virtualCamera.m_Lens.OrthographicSize, transform.localPosition.z);
+        }
+        else
+        {
+            transform.localPosition = new Vector3(0, +virtualCamera.m_Lens.OrthographicSize, transform.localPosition.z);
+        }
+
         float width = virtualCamera.m_Lens.OrthographicSize * 2 * virtualCamera.m_Lens.Aspect;
         transform.localScale = new Vector3(width * SIZE_PER_ONE_UNIT_CAMERA, transform.localScale.y, transform.localScale.z);
 

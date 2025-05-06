@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     Vector3 startPosition;
     [SerializeField] float timeRespawn;
     bool isDead;
+    bool isFristEnable = true;
 
 
     public event Action<Vector2> OnPlayerStartFall;
@@ -18,6 +19,11 @@ public class Player : MonoBehaviour
     }
     private void OnEnable()
     {
+        if (isFristEnable)
+        {
+            isFristEnable = false;
+            return;
+        }
         Observer.Instance.Broadcast(EventId.OnPlayerRespawn, null);
     }
     private void Start()

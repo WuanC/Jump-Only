@@ -5,7 +5,7 @@ using UnityEngine;
 public class TrapDeadZoneCamera : TrapBase
 {
     [SerializeField] CinemachineVirtualCamera virtualCamera;
-    public const float SIZE_PER_ONE_UNIT_CAMERA = 6.4f;
+    public const float SIZE_PER_ONE_UNIT_CAMERA = 15f;
     private void Awake()
     {
         virtualCamera = GetComponentInParent<CinemachineVirtualCamera>();

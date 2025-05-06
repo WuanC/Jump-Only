@@ -10,5 +10,8 @@ public enum EventId
     OnPlayerCompletedGame,
     OnBackToMenu,
     OnMuteAudio,
-    OnUserInput
+    OnUserInput,
+
+    //Endless Mode
+    OnUpdateSpeed,
 }

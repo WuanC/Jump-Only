@@ -6,13 +6,15 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    private Dictionary<string, LevelSO> levelDatas = new();
-    private const string levelPath = "Levels";
-    [SerializeField] private int currentLevel = 1;
-    private GameObject currentLevelObj;
     [SerializeField] float timeLoadNewScene;
 
+    [Header("Level mode")]
+    private const string levelPath = "Levels";
+    private Dictionary<string, LevelSO> levelDatas = new();
     public Dictionary<string, LevelSO> Levels => levelDatas;
+
+    private GameObject currentLevelObj;
+    [SerializeField] private int currentLevel = 1;
     public int CurrentLevel
     {
         get => currentLevel;
@@ -22,6 +24,12 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+
+    [Header("Endless mode")]
+    private const string endlessPath = "LevelEndless";
+    public GameObject levelEndlessPrefabs;
+
+    //Event
     public event Action<string, int> OnLevelChanged;
     public event Action OnClearLevel;
 
@@ -32,13 +40,16 @@ public class GameManager : Singleton<GameManager>
     }
     private void Start()
     {
-        Debug.LogError("Game Manager Sstart");
-        //LoadNewLevel(currentLevel.ToString());
+        Debug.LogError("Game Manager Start");
+        LoadEndlessLevel();
     }
     public void LoadData()
     {
         List<LevelSO> levelSOs = Resources.LoadAll<LevelSO>(levelPath).ToList();
         levelDatas = levelSOs.ToDictionary(level => level.level);
+
+        List<GameObject> list = Resources.LoadAll<GameObject>(endlessPath).ToList();
+        levelEndlessPrefabs = list.First();
     }
 
     public void PlayerWin()
@@ -74,6 +85,11 @@ public class GameManager : Singleton<GameManager>
         CONSTANT.SaveLevel(level);
         currentLevelObj = Instantiate(levelDatas[level].levelPrefabs);
         OnLevelChanged?.Invoke(level, levelDatas.Count);
+    }
+    public void LoadEndlessLevel()
+    {
+        if (currentLevelObj != null) Destroy(currentLevelObj);
+        currentLevelObj = Instantiate(levelEndlessPrefabs);
     }
 
 

@@ -49,7 +49,7 @@ public class MapController : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(timeToUpdateSpeed);
-            UpdateSpeed(speed * 1.5f);
+            UpdateSpeed(speed * 1.02f);
         }
     }
 

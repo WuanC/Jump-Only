@@ -10,7 +10,7 @@ public class TrapDeadZoneCamera : TrapBase
     {
         Up, Down,
     }
-    public PositionByCamera position;
+    public PositionByCamera position = PositionByCamera.Down;
     private void Awake()
     {
         virtualCamera = GetComponentInParent<CinemachineVirtualCamera>();

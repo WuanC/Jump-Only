@@ -12,18 +12,20 @@ public class PlatformMoveContainer : MonoBehaviour
     [SerializeField] float timeMove;
     private void Start()
     {
-        Vector3[] pathPoints = arrayPoints.Select(t => t.position).ToArray();
+        Vector3[] pathPoints = arrayPoints.Select(t => t.localPosition).ToArray();
         StartCoroutine(Move(moveType, pathPoints));
     }
     public IEnumerator Move(MoveType moveType, Vector3[] pathPoints )
     {
+
+
         if (arrayPoints.Length < 2) yield break;
         for (int i = 0; i < platforms.Length; i++)
         {
-            float distance = Vector2.Distance(platforms[i].transform.position, arrayPoints[0].position);
+            float distance = Vector2.Distance(platforms[i].transform.localPosition, arrayPoints[0].localPosition);
             float time = CalTimePerUnityUnit() * distance;
             var gameObject = platforms[i];
-            platforms[i].transform.DOMove(pathPoints[0], time).SetEase(Ease.Linear).OnComplete(() =>
+            platforms[i].transform.DOLocalMove(pathPoints[0], time).SetEase(Ease.Linear).OnComplete(() =>
             {
                 if (moveType == MoveType.Repeat)
                 {
@@ -41,7 +43,7 @@ public class PlatformMoveContainer : MonoBehaviour
     }
     private void Move(Ease easeMode, LoopType loopMode, Vector3[] pathPoints, GameObject obj)
     {
-        obj.transform.DOPath(pathPoints, timeMove, PathType.Linear)
+        obj.transform.DOLocalPath(pathPoints, timeMove, PathType.Linear)
             .SetEase(easeMode)
             .SetLoops(-1, loopMode);
     }
@@ -56,7 +58,7 @@ public class PlatformMoveContainer : MonoBehaviour
     }
     public float CalTimePerUnityUnit()
     {
-        float time = timeMove / (arrayPoints.Length  * Vector2.Distance(arrayPoints[1].position, arrayPoints[0].position));
+        float time = timeMove / (arrayPoints.Length  * Vector2.Distance(arrayPoints[1].localPosition, arrayPoints[0].localPosition));
         return time;
 
     }

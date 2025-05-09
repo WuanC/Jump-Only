@@ -1,16 +1,23 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MapController : MonoBehaviour
 {
     private const int posDisable = -25;
     private const int posSpawnMap = -5;
+    private int mapPassCount = -2;
+    private int indexCurrentMap = 0;
+    public GameObject[] listObstacleInMaps => endlessSettings.data[indexCurrentMap].listObstacleInMap;
+
+    private EndlessSO endlessSettings;
     [SerializeField] private float timeToUpdateSpeed;
     [SerializeField] private float speed;
     [SerializeField] GameObject[] maps;
     Map lastTileMap;
     private void Start()
     {
+        endlessSettings = Resources.Load<EndlessSO>("LevelEndless/Endess Setting");
         StartCoroutine(UpdateSpeed());
         SpawnMap(true);
         SpawnMap();
@@ -36,7 +43,15 @@ public class MapController : MonoBehaviour
 
         var tileMap = tmpGO.GetComponent<Map>();
         lastTileMap = tileMap;
-        tileMap.Initial(posDisable, posSpawnMap, speed, UpdateMap);
+        mapPassCount++;
+        CheckCanAddNewObjstacle();
+        tileMap.Initial(posDisable, posSpawnMap, speed, this);
+    }
+    public void CheckCanAddNewObjstacle()
+    {
+        if (indexCurrentMap == endlessSettings.data.Length - 1) return;
+        if (mapPassCount <= endlessSettings.data[indexCurrentMap + 1].levelCountPass) return;
+        indexCurrentMap++;
     }
     private void UpdateSpeed(float newSpeed)
     {

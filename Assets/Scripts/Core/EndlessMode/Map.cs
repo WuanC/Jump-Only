@@ -12,12 +12,11 @@ public class Map : MonoBehaviour
 
     private int posSpawnMap;
     private int posDisable;
-    private Action destroyCallBack;
+    private MapController mapController;
     private bool checkCallback;
 
     [Header("Obstacle In Map")]
     [SerializeField] Transform[] _obstaclePosition;
-    [SerializeField] GameObject[] _listObjectInMap;
     List<int> visitedPos = new();
     List<GameObject> obstacleInMaps = new();
     private void Awake()
@@ -38,11 +37,11 @@ public class Map : MonoBehaviour
         Observer.Instance.Unregister(EventId.OnUpdateSpeed, Map_OnUpdateSpeed);
 
     }
-    public void Initial(int posDisable, int posSpawn, float speed, Action destroyCallBack)
+    public void Initial(int posDisable, int posSpawn, float speed, MapController mapController)
     {
         this.posDisable = posDisable;
         this.posSpawnMap = posSpawn;
-        this.destroyCallBack = destroyCallBack;
+        this.mapController = mapController;
         this.speed = speed;
         checkCallback = false;
         SpawnObstacle();
@@ -60,7 +59,7 @@ public class Map : MonoBehaviour
         if(transform.position.y < posSpawnMap && !checkCallback)
         {
             checkCallback = true;
-            destroyCallBack?.Invoke();
+            mapController.UpdateMap();
         }
         if(transform.position.y < posDisable)
         {
@@ -82,7 +81,7 @@ public class Map : MonoBehaviour
 
     #region Spawn GameObject
     public void SpawnObstacle() {
-        if (_listObjectInMap == null || _listObjectInMap.Length == 0 ||
+        if (mapController.listObstacleInMaps == null || mapController.listObstacleInMaps.Length == 0 ||
              _obstaclePosition == null || _obstaclePosition.Length == 0 || obstacleInMaps.Count != 0) return;
         int randomPosCount = UnityEngine.Random.Range(1, _obstaclePosition.Length + 1); 
 
@@ -96,8 +95,8 @@ public class Map : MonoBehaviour
         {            
             int ramdomPosIndex = UnityEngine.Random.Range(0, visitedPos.Count);
 
-            int randomObstacle = UnityEngine.Random.Range(0, _listObjectInMap.Length);
-            GameObject tmpObject = MyPoolManager.Instance.GetFromPool(_listObjectInMap[randomObstacle], transform);
+            int randomObstacle = UnityEngine.Random.Range(0, mapController.listObstacleInMaps.Length);
+            GameObject tmpObject = MyPoolManager.Instance.GetFromPool(mapController.listObstacleInMaps[randomObstacle], transform);
             tmpObject.transform.position = _obstaclePosition[visitedPos[ramdomPosIndex]].transform.position;
             obstacleInMaps.Add(tmpObject);
             visitedPos.RemoveAt(ramdomPosIndex);

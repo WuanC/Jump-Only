@@ -16600,7 +16600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 435a5d8729d57b742bd75172dfb27302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToUpdateSpeed: 5
+  timeToUpdateSpeed: 30
   speed: 3
   maps:
   - {fileID: 2648137685406440967, guid: 54054d44e5796d9448359d5e72cceb23, type: 3}

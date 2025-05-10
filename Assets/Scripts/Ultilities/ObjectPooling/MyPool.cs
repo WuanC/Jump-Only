@@ -15,15 +15,17 @@ public class MyPool : MonoBehaviour
         this.prefab = baseObject;
         this.parent = parent;
     }
-    public GameObject Get()
+    public GameObject Get(Transform newParent = null)
     {
         if (stack.Count > 0)
         {
             tmpObject = stack.Pop();
             tmpObject.SetActive(true);
+            if(newParent != null) tmpObject.transform.SetParent(newParent);
             return tmpObject;
         }
-        tmpObject = Instantiate(prefab, parent);
+
+        tmpObject = (newParent != null) ?  Instantiate(prefab, newParent) : Instantiate(prefab, parent);
         returnToPool = tmpObject.AddComponent<ReturnToPool>();
         returnToPool.pool = this;
         return tmpObject;

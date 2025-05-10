@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +10,6 @@ public class MyPoolManager : Singleton<MyPoolManager>
         {
             pools.Add(baseObject, new MyPool(baseObject, parent));
         }
-        return pools[baseObject].Get();
+        return pools[baseObject].Get(parent);
     }
 }

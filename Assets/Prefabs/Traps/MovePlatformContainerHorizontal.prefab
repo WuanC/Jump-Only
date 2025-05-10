@@ -27,7 +27,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 75, y: 2.88, z: 1}
+  m_LocalScale: {x: 64.1, y: 2.88, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3465213632190268191}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 3465213632190268191}
   - component: {fileID: 8570839096126434576}
   m_Layer: 0
-  m_Name: MovePlatformContainer
+  m_Name: MovePlatformContainerHorizontal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,7 +136,8 @@ MonoBehaviour:
   - {fileID: 3221668948314726333}
   - {fileID: 8917298419849837080}
   moveType: 1
-  platforms: []
+  platforms:
+  - {fileID: 5353404373595241654}
   timeDelay: 0.5
   timeMove: 5
 --- !u!1 &6953370898419867862
@@ -164,7 +165,7 @@ Transform:
   m_GameObject: {fileID: 6953370898419867862}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.68, y: 0, z: 0}
+  m_LocalPosition: {x: -5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -195,7 +196,7 @@ Transform:
   m_GameObject: {fileID: 8862783882712481058}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.82, y: 0, z: 0}
+  m_LocalPosition: {x: 5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -265,5 +266,10 @@ PrefabInstance:
 --- !u!4 &2831622235783163433 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8959428871765953071, guid: 97fdad1a2dbe08e449862db805218e5a, type: 3}
+  m_PrefabInstance: {fileID: 6565606679961854982}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5353404373595241654 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1249366916383135920, guid: 97fdad1a2dbe08e449862db805218e5a, type: 3}
   m_PrefabInstance: {fileID: 6565606679961854982}
   m_PrefabAsset: {fileID: 0}

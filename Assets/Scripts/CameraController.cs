@@ -1,20 +1,22 @@
 using Cinemachine;
 using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
-public class Camera : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
     [SerializeField] CinemachineVirtualCamera camPlayer;
     [SerializeField] CinemachineVirtualCamera camDestination;
 
-
     [SerializeField] float shakeDuration;
     [SerializeField] int shakeIterator;
     [SerializeField] float shakeStrength;
+
     private void Start()
     {
         GameManager.Instance.OnClearLevel += Camera_OnClearLevel;
         Observer.Instance.Register(EventId.OnPlayerDied, Camera_PlayerDied);
+
     }
 
     public void Camera_PlayerDied(object obj)
@@ -28,6 +30,7 @@ public class Camera : MonoBehaviour
                 transform.position = Vector3.zero;
             });
     }
+
 
     private void Camera_OnClearLevel()
     {

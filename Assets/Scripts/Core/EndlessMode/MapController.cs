@@ -1,26 +1,51 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MapController : MonoBehaviour
 {
-    private const int posDisable = -25;
-    private const int posSpawnMap = -5;
-    private int mapPassCount = -2;
+    private const int posSpawnMap = 10;
+    private int mapPassCount = 0;
     private int indexCurrentMap = 0;
     public GameObject[] listObstacleInMaps => endlessSettings.data[indexCurrentMap].listObstacleInMap;
+    public GameObject[] maps => endlessSettings.data[indexCurrentMap].listMap;
 
     private EndlessSO endlessSettings;
     [SerializeField] private float timeToUpdateSpeed;
-    [SerializeField] private float speed;
-    [SerializeField] GameObject[] maps;
+    [field: SerializeField] private float speed;
+    float tempSpeed;
+    Coroutine upSpeedCouroutine;
     Map lastTileMap;
+    private float distance = 0;
     private void Start()
     {
+        Observer.Instance.Register(EventId.OnEnterJumpPad, MapController_OnEnterJumpPad);
+        Observer.Instance.Register(EventId.OnPlayerDied, MapController_OnPlayerDie);
         endlessSettings = Resources.Load<EndlessSO>("LevelEndless/Endess Setting");
         StartCoroutine(UpdateSpeed());
+        StartCoroutine(BroadcastSpeed());
         SpawnMap(true);
         SpawnMap();
+    }
+    private void Update()
+    {
+        distance += speed * Time.deltaTime;
+    }
+    public void OnDestroy()
+    {
+        Observer.Instance.Unregister(EventId.OnEnterJumpPad, MapController_OnEnterJumpPad);
+
+        Observer.Instance.Unregister(EventId.OnPlayerDied, MapController_OnPlayerDie);
+
+    }
+    public void MapController_OnPlayerDie(object obj)
+    {
+        if (tempSpeed == 0) tempSpeed = speed;
+        if (upSpeedCouroutine != null)
+        {
+            StopCoroutine(upSpeedCouroutine);
+            upSpeedCouroutine = null;
+        }
+        UpdateSpeed(tempSpeed);
     }
     public void UpdateMap()
     {
@@ -37,7 +62,7 @@ public class MapController : MonoBehaviour
         else
         {
             int randomIndex = UnityEngine.Random.Range(0, maps.Length);
-            tmpGO = MyPoolManager.Instance.GetFromPool(maps[1], transform);
+            tmpGO = MyPoolManager.Instance.GetFromPool(maps[UnityEngine.Random.Range(0, maps.Length)], transform);
             tmpGO.transform.position = new Vector3(lastTileMap.transform.position.x, lastTileMap.GetValidPosNextPlace(tmpGO.GetComponent<Map>()), lastTileMap.transform.position.z);
         }
 
@@ -45,12 +70,36 @@ public class MapController : MonoBehaviour
         lastTileMap = tileMap;
         mapPassCount++;
         CheckCanAddNewObjstacle();
-        tileMap.Initial(posDisable, posSpawnMap, speed, this);
+        tileMap.Initial(posSpawnMap, speed, this);
     }
+    #region BoostSpeedItem
+    public void MapController_OnEnterJumpPad(object obj)
+    {
+        var tuple = ((float, Vector2))obj;
+        var (duration, dir) = tuple;
+        if (upSpeedCouroutine != null)
+        {
+            StopCoroutine(upSpeedCouroutine);
+            upSpeedCouroutine = null;
+        }
+        else
+        {
+            tempSpeed = speed;
+        }
+        upSpeedCouroutine = StartCoroutine(IncreaseSpeed(duration, 20f, tempSpeed));
+    }
+    public IEnumerator IncreaseSpeed(float duration, float speedUp, float tempSpeed)
+    {
+        UpdateSpeed(speedUp);
+        yield return new WaitForSeconds(duration);
+        UpdateSpeed(tempSpeed);
+
+    }
+    #endregion
     public void CheckCanAddNewObjstacle()
     {
         if (indexCurrentMap == endlessSettings.data.Length - 1) return;
-        if (mapPassCount <= endlessSettings.data[indexCurrentMap + 1].levelCountPass) return;
+        if (mapPassCount < endlessSettings.data[indexCurrentMap + 1].levelCountPass) return;
         indexCurrentMap++;
     }
     private void UpdateSpeed(float newSpeed)
@@ -65,6 +114,14 @@ public class MapController : MonoBehaviour
         {
             yield return new WaitForSeconds(timeToUpdateSpeed);
             UpdateSpeed(speed * 1.02f);
+        }
+    }
+    public IEnumerator BroadcastSpeed()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.1f);
+            Observer.Instance.Broadcast(EventId.OnBroadcastSpeed, distance);
         }
     }
 

@@ -10,9 +10,24 @@ public class PlatformMoveContainer : MonoBehaviour
     [SerializeField] private GameObject[] platforms;
     [SerializeField] float timeDelay;
     [SerializeField] float timeMove;
+
+    [SerializeField] bool randomModePath;
     private void Start()
     {
         Vector3[] pathPoints = arrayPoints.Select(t => t.localPosition).ToArray();
+
+        if (randomModePath)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, 2);
+            if (randomIndex == 0)
+            {
+                moveType = MoveType.Repeat;
+            }
+            else
+            {
+                moveType = MoveType.Sequence;
+            }
+        }
         StartCoroutine(Move(moveType, pathPoints));
     }
     public IEnumerator Move(MoveType moveType, Vector3[] pathPoints )
@@ -27,6 +42,7 @@ public class PlatformMoveContainer : MonoBehaviour
             var gameObject = platforms[i];
             platforms[i].transform.DOLocalMove(pathPoints[0], time).SetEase(Ease.Linear).OnComplete(() =>
             {
+
                 if (moveType == MoveType.Repeat)
                 {
                     Move(Ease.Linear, LoopType.Restart, pathPoints, gameObject);

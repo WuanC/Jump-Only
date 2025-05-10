@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -10,15 +8,16 @@ public class Map : MonoBehaviour
     Tilemap tilemap;
     float speed;
 
-    private int posSpawnMap;
-    private int posDisable;
+    private int distanceSpawn;
+    [SerializeField] private int distanceDisable;
     private MapController mapController;
     private bool checkCallback;
 
-    [Header("Obstacle In Map")]
+    [Header("Obstacle")]
     [SerializeField] Transform[] _obstaclePosition;
     List<int> visitedPos = new();
     List<GameObject> obstacleInMaps = new();
+    bool isReady = false;
     private void Awake()
     {
         tilemap = GetComponent<Tilemap>();
@@ -30,6 +29,7 @@ public class Map : MonoBehaviour
     }
     private void OnDisable()
     {
+        isReady = false;
         ClearDataWhenDisable();
     }
     private void OnDestroy()
@@ -37,14 +37,14 @@ public class Map : MonoBehaviour
         Observer.Instance.Unregister(EventId.OnUpdateSpeed, Map_OnUpdateSpeed);
 
     }
-    public void Initial(int posDisable, int posSpawn, float speed, MapController mapController)
+    public void Initial(int posSpawn, float speed, MapController mapController)
     {
-        this.posDisable = posDisable;
-        this.posSpawnMap = posSpawn;
+        this.distanceSpawn = posSpawn;
         this.mapController = mapController;
         this.speed = speed;
         checkCallback = false;
         SpawnObstacle();
+        isReady = true;
     }
 
     public void Map_OnUpdateSpeed(object obj)
@@ -54,18 +54,21 @@ public class Map : MonoBehaviour
     }
     private void Update()
     {
+        if (!isReady) return;
         transform.position += speed * new Vector3(0, -1, 0) * Time.deltaTime;
-        
-        if(transform.position.y < posSpawnMap && !checkCallback)
+
+        if (Camera.main.transform.position.y - transform.position.y > distanceSpawn && !checkCallback)
         {
             checkCallback = true;
             mapController.UpdateMap();
         }
-        if(transform.position.y < posDisable)
+        if (Camera.main.transform.position.y - transform.position.y > distanceDisable)
         {
             gameObject.SetActive(false);
         }
+
     }
+
     public float GetTopPos()
     {
         return GetBottomPos() + tilemap.cellSize.y * tilemap.size.y;
@@ -80,19 +83,20 @@ public class Map : MonoBehaviour
     }
 
     #region Spawn GameObject
-    public void SpawnObstacle() {
+    public void SpawnObstacle()
+    {
         if (mapController.listObstacleInMaps == null || mapController.listObstacleInMaps.Length == 0 ||
              _obstaclePosition == null || _obstaclePosition.Length == 0 || obstacleInMaps.Count != 0) return;
-        int randomPosCount = UnityEngine.Random.Range(1, _obstaclePosition.Length + 1); 
+        int randomPosCount = UnityEngine.Random.Range(1, _obstaclePosition.Length + 1);
 
         // log 1, 2, 3
 
-         visitedPos = Enumerable.Range(0, _obstaclePosition.Length).ToList();
+        visitedPos = Enumerable.Range(0, _obstaclePosition.Length).ToList();
         // 1 -> 0
         //2 -> 0, 1
         //3 -> 0, 1, 2
         for (int i = 0; i < randomPosCount; i++)
-        {            
+        {
             int ramdomPosIndex = UnityEngine.Random.Range(0, visitedPos.Count);
 
             int randomObstacle = UnityEngine.Random.Range(0, mapController.listObstacleInMaps.Length);
@@ -104,7 +108,7 @@ public class Map : MonoBehaviour
     }
     public void ClearDataWhenDisable()
     {
-        foreach(var go in obstacleInMaps)
+        foreach (var go in obstacleInMaps)
         {
             go.SetActive(false);
         }

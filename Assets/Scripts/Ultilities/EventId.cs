@@ -14,4 +14,7 @@ public enum EventId
 
     //Endless Mode
     OnUpdateSpeed,
+    OnEnterJumpPad,
+    OnBroadcastSpeed,
+
 }

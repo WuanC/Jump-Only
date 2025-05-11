@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4262815188804345962}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point (3)
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7560617982437244557}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point (2)
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
@@ -71,7 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2544693133811277090}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point (1)
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 8302074407016061869}
   - component: {fileID: 5247784167574526756}
   - component: {fileID: 4207870382419623811}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Map 3
   m_TagString: Platform
   m_Icon: {fileID: 0}

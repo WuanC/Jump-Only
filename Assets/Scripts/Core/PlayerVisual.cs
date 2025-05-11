@@ -10,7 +10,6 @@ public class PlayerVisual : MonoBehaviour
     [SerializeField] Player player;
     const string ANIM_JUMP = "isJump";
     const string ANIM_FLY = "isFly";
-    Coroutine flyCoroutine;
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -21,7 +20,6 @@ public class PlayerVisual : MonoBehaviour
         player.OnPlayerStartFall += Player_OnPlayerStartFall;
         Observer.Instance.Register(EventId.OnPlayerJump, Player_OnPlayerStartJump);
         Observer.Instance.Register(EventId.OnPlayerDied, OnPlayerDied);
-        Observer.Instance.Register(EventId.OnEnterJumpPad, Player_OnPlayerStartFly);
     }
 
     private void Player_OnPlayerStartFall(Vector2 obj)
@@ -41,22 +39,7 @@ public class PlayerVisual : MonoBehaviour
             rotateTween.Kill();
         rotateTween = transform.DORotate(new Vector3(0, 0, angleZ - 90), 0.1f);
     }
-    private void Player_OnPlayerStartFly(object obj)
-    {
-        var tuple = ((float, Vector2))obj;
-        Vector2 dir = tuple.Item2;
-        float angleZ = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        if (rotateTween != null && rotateTween.IsActive())
-            rotateTween.Kill();
-        rotateTween = transform.DORotate(new Vector3(0, 0, angleZ - 90), 0.1f);
 
-        if(flyCoroutine != null)
-        {
-            StopCoroutine(flyCoroutine);
-            flyCoroutine = null;
-        }
-        flyCoroutine = StartCoroutine(Fly(tuple.Item1));
-    }
     IEnumerator Fly(float duration)
     {
         anim.SetBool(ANIM_FLY, true);
@@ -69,21 +52,13 @@ public class PlayerVisual : MonoBehaviour
             rotateTween.Kill();
         transform.rotation = startRotation;
     }
-    private void OnDisable()
-    {
-        if (flyCoroutine != null)
-        {
-            StopCoroutine(flyCoroutine);
-            flyCoroutine = null;
-        }
-        anim.SetBool(ANIM_FLY, false);
-    }
+
     private void OnDestroy()
     {
         player.OnPlayerStartFall -= Player_OnPlayerStartFall;
         Observer.Instance.Unregister(EventId.OnPlayerDied, OnPlayerDied);
         Observer.Instance.Unregister(EventId.OnPlayerJump, Player_OnPlayerStartJump);
-        Observer.Instance.Unregister(EventId.OnEnterJumpPad, Player_OnPlayerStartFly);
+
         rotateTween?.Kill();
     }
 }

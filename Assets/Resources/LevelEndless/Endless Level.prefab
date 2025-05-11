@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 4467822180007665590}
   - component: {fileID: 2328017813866690325}
   - component: {fileID: 3734397690419694922}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BackGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16598,7 +16598,7 @@ GameObject:
   - component: {fileID: 7078088360377418295}
   - component: {fileID: 1606231066194273132}
   - component: {fileID: 9024105416767578726}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}

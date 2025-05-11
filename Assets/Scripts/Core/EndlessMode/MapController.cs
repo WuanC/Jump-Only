@@ -12,13 +12,10 @@ public class MapController : MonoBehaviour
     private EndlessSO endlessSettings;
     [SerializeField] private float timeToUpdateSpeed;
     [field: SerializeField] private float speed;
-    float tempSpeed;
-    Coroutine upSpeedCouroutine;
     Map lastTileMap;
     private float distance = 0;
     private void Start()
     {
-        Observer.Instance.Register(EventId.OnEnterJumpPad, MapController_OnEnterJumpPad);
         Observer.Instance.Register(EventId.OnPlayerDied, MapController_OnPlayerDie);
         endlessSettings = Resources.Load<EndlessSO>("LevelEndless/Endess Setting");
         StartCoroutine(UpdateSpeed());
@@ -32,20 +29,12 @@ public class MapController : MonoBehaviour
     }
     public void OnDestroy()
     {
-        Observer.Instance.Unregister(EventId.OnEnterJumpPad, MapController_OnEnterJumpPad);
 
         Observer.Instance.Unregister(EventId.OnPlayerDied, MapController_OnPlayerDie);
 
     }
     public void MapController_OnPlayerDie(object obj)
-    {
-        if (tempSpeed == 0) tempSpeed = speed;
-        if (upSpeedCouroutine != null)
-        {
-            StopCoroutine(upSpeedCouroutine);
-            upSpeedCouroutine = null;
-        }
-        UpdateSpeed(tempSpeed);
+    { 
     }
     public void UpdateMap()
     {
@@ -72,30 +61,6 @@ public class MapController : MonoBehaviour
         CheckCanAddNewObjstacle();
         tileMap.Initial(posSpawnMap, speed, this);
     }
-    #region BoostSpeedItem
-    public void MapController_OnEnterJumpPad(object obj)
-    {
-        var tuple = ((float, Vector2))obj;
-        var (duration, dir) = tuple;
-        if (upSpeedCouroutine != null)
-        {
-            StopCoroutine(upSpeedCouroutine);
-            upSpeedCouroutine = null;
-        }
-        else
-        {
-            tempSpeed = speed;
-        }
-        upSpeedCouroutine = StartCoroutine(IncreaseSpeed(duration, 20f, tempSpeed));
-    }
-    public IEnumerator IncreaseSpeed(float duration, float speedUp, float tempSpeed)
-    {
-        UpdateSpeed(speedUp);
-        yield return new WaitForSeconds(duration);
-        UpdateSpeed(tempSpeed);
-
-    }
-    #endregion
     public void CheckCanAddNewObjstacle()
     {
         if (indexCurrentMap == endlessSettings.data.Length - 1) return;

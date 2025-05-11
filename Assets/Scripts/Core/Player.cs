@@ -12,12 +12,9 @@ public class Player : MonoBehaviour
     [SerializeField] float timeRespawn;
     bool isDead;
     bool isFristEnable = true;
-    bool bootSpeed;
 
-    [Header("Boots Speed")]
+
     private Collider2D playerCol;
-    private Coroutine boosts;
-    [SerializeField] float horizontalSpeed;
 
 
     public event Action<Vector2> OnPlayerStartFall;
@@ -40,22 +37,17 @@ public class Player : MonoBehaviour
     {
         startPosition = transform.position;
         Observer.Instance.Register(EventId.OnUserInput, Player_OnUserInput);
-        Observer.Instance.Register(EventId.OnEnterJumpPad, Player_OnEnterJumpPad);
+
     }
     private void OnDisable()
     {
-        if (boosts != null)
-        {
-            StopCoroutine(boosts);
-            boosts = null;
-        }
-        bootSpeed = false;
+
         rb.velocity = Vector3.zero;
     }
     private void OnDestroy()
     {
         Observer.Instance.Unregister(EventId.OnUserInput, Player_OnUserInput);
-        Observer.Instance.Unregister(EventId.OnEnterJumpPad, Player_OnEnterJumpPad);
+
     }
 
     public void Player_OnUserInput(object obj)
@@ -74,24 +66,9 @@ public class Player : MonoBehaviour
 
     }
 
-    void Player_OnEnterJumpPad(object obj)
-    {
-        var tuple = ((float, Vector2))obj;
-        if(boosts != null)
-        {
-            StopCoroutine(boosts);
-            boosts = null;
-        }
-        boosts = StartCoroutine(OnEnterJumpPad(tuple.Item1));
-    }
-    IEnumerator OnEnterJumpPad(float duration)
-    {
-        rb.velocity = Vector3.zero;
-        bootSpeed = true;
-        yield return new WaitForSeconds(duration);
-        bootSpeed = false;
-        rb.velocity = Vector3.zero;
-    }
+
+
+
     public void AddForceToPlayer(float xValue, float yValue)
     {
         rb.velocity = Vector3.zero;       
@@ -116,50 +93,10 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (bootSpeed)
-        {
-            rb.velocity = CheckInput() * horizontalSpeed;
-        }
         if(rb.velocity.y < 0)
         {
             OnPlayerStartFall?.Invoke(rb.velocity.normalized);
         }
-    }
-    public Vector2 CheckInput()
-    {
-        float dirX = 0; ;
-        float dirY = 0 ;
-        if(Input.GetKey(KeyCode.LeftArrow)) {
-            dirX = -1;
-        }
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            dirX = 1;
-        }
-        else if (Input.GetMouseButton(0))
-        {
-            if (EventSystem.current.IsPointerOverGameObject())
-            {
-                return Vector2.zero;
-            }
-            Vector2 inputPosition = Input.mousePosition;
-
-            if (inputPosition.x < Screen.width / 2)
-            {
-                dirX = -1;
-            }
-            else
-            {
-                dirX = 1;
-            }
-        }
-        if(Input.GetKey(KeyCode.UpArrow)) {
-            dirY = 1;
-        }
-        else if (Input.GetKey(KeyCode.DownArrow)) {
-            dirY = -1;
-        }
-        return new Vector2(dirX, dirY);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

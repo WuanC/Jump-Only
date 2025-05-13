@@ -37,9 +37,9 @@ public class Map : MonoBehaviour
         Observer.Instance.Unregister(EventId.OnUpdateSpeed, Map_OnUpdateSpeed);
 
     }
-    public void Initial(int posSpawn, float speed, MapController mapController)
+    public void Initial(int distanceSpawn, float speed, MapController mapController)
     {
-        this.distanceSpawn = posSpawn;
+        this.distanceSpawn = distanceSpawn;
         this.mapController = mapController;
         this.speed = speed;
         checkCallback = false;
@@ -102,6 +102,10 @@ public class Map : MonoBehaviour
             int randomObstacle = UnityEngine.Random.Range(0, mapController.listObstacleInMaps.Length);
             GameObject tmpObject = MyPoolManager.Instance.GetFromPool(mapController.listObstacleInMaps[randomObstacle], transform);
             tmpObject.transform.position = _obstaclePosition[visitedPos[ramdomPosIndex]].transform.position;
+            //if(tmpObject.TryGetComponent<TrapBase>(out TrapBase trapBase))
+            //{
+            //    trapBase.Ready();
+            //}
             obstacleInMaps.Add(tmpObject);
             visitedPos.RemoveAt(ramdomPosIndex);
         }

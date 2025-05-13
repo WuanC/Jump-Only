@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1319219418799555312}
   - component: {fileID: 4520916742575759909}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3465213632190268191}
   - component: {fileID: 8570839096126434576}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: MovePlatformContainerHorizontal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,6 +140,7 @@ MonoBehaviour:
   - {fileID: 5353404373595241654}
   timeDelay: 0.5
   timeMove: 5
+  randomModePath: 0
 --- !u!1 &6953370898419867862
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,7 +150,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3221668948314726333}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Point (1)
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
@@ -180,7 +181,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8917298419849837080}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Point (2)
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}

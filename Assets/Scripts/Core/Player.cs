@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
@@ -28,10 +26,10 @@ public class Player : MonoBehaviour
         if (isFristEnable)
         {
             isFristEnable = false;
-            return; 
+            return;
         }
         Observer.Instance.Broadcast(EventId.OnPlayerRespawn, null);
-        
+
     }
     private void Start()
     {
@@ -71,14 +69,14 @@ public class Player : MonoBehaviour
 
     public void AddForceToPlayer(float xValue, float yValue)
     {
-        rb.velocity = Vector3.zero;       
+        rb.velocity = Vector3.zero;
         rb.AddForce(new Vector2(xValue, yValue), ForceMode2D.Impulse);
     }
 
 
     public void Died()
     {
-        if(isDead) return;
+        if (isDead) return;
         isDead = true;
         rb.velocity = Vector3.zero;
         gameObject.SetActive(false);
@@ -93,7 +91,7 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if(rb.velocity.y < 0)
+        if (rb.velocity.y < 0)
         {
             OnPlayerStartFall?.Invoke(rb.velocity.normalized);
         }
@@ -106,4 +104,5 @@ public class Player : MonoBehaviour
             Observer.Instance.Broadcast(EventId.OnPlayerColliding, null);
         }
     }
+   
 }

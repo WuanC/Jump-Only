@@ -4,7 +4,7 @@ using UnityEngine;
 public class MyPoolManager : Singleton<MyPoolManager>
 {
     private Dictionary<GameObject, MyPool> pools = new Dictionary<GameObject, MyPool>();
-    public GameObject GetFromPool(GameObject baseObject, Transform parent)
+    public GameObject GetFromPool(GameObject baseObject, Transform parent = null)
     {
         if (!pools.ContainsKey(baseObject))
         {

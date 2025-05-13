@@ -5,6 +5,8 @@ using UnityEngine;
 public class TrapDeadZoneCamera : TrapBase
 {
     CinemachineVirtualCamera virtualCamera;
+    SpriteRenderer sr;
+    BoxCollider2D boxCol;
     public const float SIZE_PER_ONE_UNIT_CAMERA = 15f;
     public enum PositionByCamera
     {
@@ -14,6 +16,8 @@ public class TrapDeadZoneCamera : TrapBase
     private void Awake()
     {
         virtualCamera = GetComponentInParent<CinemachineVirtualCamera>();
+        sr = GetComponent<SpriteRenderer>();
+        boxCol = GetComponent<BoxCollider2D>();
     }
     private void Start()
     {
@@ -26,11 +30,15 @@ public class TrapDeadZoneCamera : TrapBase
         }
         else
         {
+            Vector3 newLocalAngle = new Vector3(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z + 180);
+            transform.localEulerAngles = newLocalAngle;
             transform.localPosition = new Vector3(0, +virtualCamera.m_Lens.OrthographicSize, transform.localPosition.z);
         }
 
         float width = virtualCamera.m_Lens.OrthographicSize * 2 * virtualCamera.m_Lens.Aspect;
-        transform.localScale = new Vector3(width * SIZE_PER_ONE_UNIT_CAMERA, transform.localScale.y, transform.localScale.z);
+        sr.size = new Vector2(width, 1);
+        boxCol.size = new Vector2(width, 1);
+ 
 
     }
     private void OnDestroy()

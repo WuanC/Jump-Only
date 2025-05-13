@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9112374886026340670}
   - component: {fileID: 7582692880310741367}
   - component: {fileID: 8148707464798216937}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Saw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -3049067163339015078, guid: c016f0eb0a188a14ab7f86d910097523, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 397b0c5ffd73eed4aa6c534b2f5a5e04, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

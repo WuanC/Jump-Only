@@ -21,11 +21,11 @@ public class MyPool : MonoBehaviour
         {
             tmpObject = stack.Pop();
             tmpObject.SetActive(true);
-            if(newParent != null) tmpObject.transform.SetParent(newParent);
+            if(newParent != null && newParent != parent) tmpObject.transform.SetParent(newParent);
             return tmpObject;
         }
 
-        tmpObject = (newParent != null) ?  Instantiate(prefab, newParent) : Instantiate(prefab, parent);
+        tmpObject = (newParent != null && newParent != parent) ?  Instantiate(prefab, newParent) : Instantiate(prefab, parent);
         returnToPool = tmpObject.AddComponent<ReturnToPool>();
         returnToPool.pool = this;
         return tmpObject;

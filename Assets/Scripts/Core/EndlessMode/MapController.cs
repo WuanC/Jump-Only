@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MapController : MonoBehaviour
 {
-    private const int posSpawnMap = 10;
+    private const int distanceSpawn = 10;
     private int mapPassCount = 0;
     private int indexCurrentMap = 0;
     public GameObject[] listObstacleInMaps => endlessSettings.data[indexCurrentMap].listObstacleInMap;
@@ -59,7 +59,7 @@ public class MapController : MonoBehaviour
         lastTileMap = tileMap;
         mapPassCount++;
         CheckCanAddNewObjstacle();
-        tileMap.Initial(posSpawnMap, speed, this);
+        tileMap.Initial(distanceSpawn, speed, this);
     }
     public void CheckCanAddNewObjstacle()
     {

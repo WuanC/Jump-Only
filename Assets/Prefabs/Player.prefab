@@ -85,10 +85,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1639389981
+  m_SortingLayer: 2
   m_SortingOrder: 3
-  m_Sprite: {fileID: -3246028407001408874, guid: f42176bbc0b84b54e83c161abc6eb071, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e461bd86773742642be196c806aea603, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -198,10 +198,6 @@ MonoBehaviour:
   jumpForceY: 14
   jumpForceX: 5
   timeRespawn: 1
-  horizontalSpeed: 0
-  wallLayer:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!96 &1394851334125326190
 TrailRenderer:
   serializedVersion: 3
@@ -356,6 +352,6 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.26127386}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.7699671

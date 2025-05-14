@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
 
 
     private Collider2D playerCol;
+    private PlayerBoost playerBoost;
 
 
     public event Action<Vector2> OnPlayerStartFall;
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
     {
         playerCol = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
+        playerBoost = GetComponent<PlayerBoost>();
     }
     private void OnEnable()
     {
@@ -77,6 +79,11 @@ public class Player : MonoBehaviour
     public void Died()
     {
         if (isDead) return;
+        if (playerBoost.IsInvicibility)
+        {
+            playerBoost.NotifyEventOnPlayerDied();
+            return;
+        }
         isDead = true;
         rb.velocity = Vector3.zero;
         gameObject.SetActive(false);

@@ -17,4 +17,9 @@ public enum EventId
     OnEnterJumpPad,
     OnBroadcastSpeed,
 
+    //Boost
+    OnAddBoost,
+    OnRemoveBoost,
+    OnUpdateBoost
+
 }

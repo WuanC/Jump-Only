@@ -21,6 +21,7 @@ public class BoostGroup : MonoBehaviour
         if (!boostIcons.ContainsKey(boostBase.boostData.name))
         {
             BoostIcon newIcon = Instantiate(iconPrefab, parent);
+            newIcon.Initial(boostBase.boostData.icon);
             boostIcons[boostBase.boostData.name] = newIcon;
         }
     }
@@ -36,6 +37,7 @@ public class BoostGroup : MonoBehaviour
     {
         BoostBase boostBase = obj as BoostBase;
         if (!boostIcons.ContainsKey(boostBase.boostData.name)) return;
+        Destroy(boostIcons[boostBase.boostData.name].gameObject);
         boostIcons.Remove(boostBase.boostData.name);
     }
     private void OnDestroy()

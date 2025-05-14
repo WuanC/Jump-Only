@@ -10,8 +10,11 @@ public class BoostWorld : MonoBehaviour
         if (collision.gameObject.TryGetComponent<PlayerBoost>(out PlayerBoost playerBoost))
         {
             boost.playerBoost = playerBoost;
-            BoostBase tmp = Instantiate(boost);
-            tmp.Active();
+            if (!playerBoost.HasKey(boost.boostData.name))
+            {
+                BoostBase tmp = Instantiate(boost);
+                tmp.Active();
+            }
             Destroy(gameObject);
         }
     }

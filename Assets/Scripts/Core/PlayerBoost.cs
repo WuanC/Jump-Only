@@ -13,62 +13,33 @@ public class PlayerBoost : MonoBehaviour
     public event Action OnEndSlowMotion;
 
 
-    Dictionary<string, TimedBoost> timeBoostDic = new();
-    Dictionary<string, UsageBoost> usageBoostDic = new();
-    public bool CanAddBoost(BoostType type, BoostBase boost)
+    Dictionary<string, BoostBase> boostDic = new();
+    public bool CanAddBoost(BoostBase boost)
     {
-        if (type == BoostType.Usage)
-        {
-            if (!usageBoostDic.ContainsKey(boost.boostData.name))
+            if (!boostDic.ContainsKey(boost.boostData.name))
             {
-                usageBoostDic[boost.boostData.name] = (UsageBoost)boost;
+                boostDic[boost.boostData.name] = boost;
                 Observer.Instance.Broadcast(EventId.OnAddBoost, boost);
             }
             else
             {
                 boost.ResetBoost();
-                Observer.Instance.Broadcast(EventId.OnUpdateSpeed, (boost.boostData.name, 1f));
+                Observer.Instance.Broadcast(EventId.OnUpdateBoost, Tuple.Create(boost.boostData.name, 1f));
+                Debug.Log("update");
                 return false;
             }
-
-        }
-        else if (type == BoostType.Time)
-        {
-            if (!timeBoostDic.ContainsKey(boost.boostData.name))
-            {
-                timeBoostDic[boost.boostData.name] = (TimedBoost)boost;
-                Observer.Instance.Broadcast(EventId.OnAddBoost, boost);
-            }
-            else
-            {
-                boost.ResetBoost();
-                Observer.Instance.Broadcast(EventId.OnUpdateSpeed, (boost.boostData.name, 1f));
-                return false;
-            }
-        }
         return true;
     }
 
-    public void RemoveBoost(BoostType type, BoostBase boost)
+    public void RemoveBoost(BoostBase boost)
     {
-        if (type == BoostType.Usage)
-        {
-            if (usageBoostDic.ContainsKey(boost.boostData.name))
+ 
+            if (boostDic.ContainsKey(boost.boostData.name))
             {
-                BoostBase tmp = timeBoostDic[boost.boostData.name];
-                usageBoostDic.Remove(boost.boostData.name);
-                Destroy(tmp);
+                BoostBase tmp = boostDic[boost.boostData.name];
+                boostDic.Remove(boost.boostData.name);
+                Destroy(tmp.gameObject);
             }
-        }
-        else if (type == BoostType.Usage)
-        {
-            if (timeBoostDic.ContainsKey(boost.boostData.name))
-            {
-                BoostBase tmp = timeBoostDic[boost.boostData.name];
-                timeBoostDic.Remove(boost.boostData.name);
-                Destroy(tmp);
-            }
-        }
         //Update UI
     }
 
@@ -76,7 +47,16 @@ public class PlayerBoost : MonoBehaviour
     {
         UpdateTimeScale();
     }
-
+    public bool HasKey(string key)
+    {
+        if(boostDic.ContainsKey(key))
+        {
+            boostDic[key].ResetBoost();
+            Observer.Instance.Broadcast(EventId.OnUpdateBoost, Tuple.Create(boostDic[key].boostData.name, 1f));
+            return true;
+        }
+        return false;
+    }
     #region Invicibility Shield
     public void SetInvicibility(bool isInvicibility)
     {

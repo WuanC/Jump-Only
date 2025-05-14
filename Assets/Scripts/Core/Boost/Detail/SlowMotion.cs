@@ -6,6 +6,8 @@ public class SlowMotion : TimedBoost
     float tempTimeScale;
     public override void Excute()
     {
+        duration = duration * timeScale;
+        timeLeft = duration;
         tempTimeScale = Time.timeScale;
         Time.timeScale = timeScale;
     }

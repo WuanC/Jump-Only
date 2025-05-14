@@ -2,7 +2,6 @@ using UnityEngine;
 
 public abstract class BoostBase : MonoBehaviour, IBoost
 {
-    public BoostType type;
     public BoostSO boostData;
     public  PlayerBoost playerBoost;
     public abstract void Active();

@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -12,16 +14,17 @@ public class Player : MonoBehaviour
     bool isFristEnable = true;
 
 
-    private Collider2D playerCol;
     private PlayerBoost playerBoost;
-
+    private PlayerVisual visual;
+    [SerializeField] LayerMask trapLayer;
+    [SerializeField] float durationIgnore;
 
     public event Action<Vector2> OnPlayerStartFall;
     private void Awake()
     {
-        playerCol = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
         playerBoost = GetComponent<PlayerBoost>();
+        visual = GetComponentInChildren<PlayerVisual>();
     }
     private void OnEnable()
     {
@@ -88,13 +91,29 @@ public class Player : MonoBehaviour
         rb.velocity = Vector3.zero;
         gameObject.SetActive(false);
         Observer.Instance.Broadcast(EventId.OnPlayerDied, transform.position);
-        transform.position = startPosition;
-        Invoke(nameof(RespawnPlayer), timeRespawn);
+        GameManager.Instance.RespawnEndless(this);
+        //Invoke(nameof(RespawnPlayer), timeRespawn);
     }
     public void RespawnPlayer()
     {
+        transform.position = startPosition;
         isDead = false;
         gameObject.SetActive(true);
+    }
+    public void RespawnEndless()
+    {
+        isDead = false;
+        gameObject.SetActive(true);
+        StartCoroutine(IgnoreTrap(durationIgnore));
+    }
+    public IEnumerator IgnoreTrap(float duration)
+    {
+        int trapLayerIndex = Mathf.RoundToInt(Mathf.Log(trapLayer.value, 2));
+        Physics2D.IgnoreLayerCollision(gameObject.layer, trapLayerIndex, true);
+        visual.Immortal(true);
+        yield return new WaitForSeconds(duration);
+        Physics2D.IgnoreLayerCollision(gameObject.layer, trapLayerIndex, false);
+        visual.Immortal(false);
     }
     private void FixedUpdate()
     {

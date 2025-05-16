@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6667011985803183130}
   - component: {fileID: 1943084259256311591}
   - component: {fileID: 6200747791999364678}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 7365376571089505484}
   - component: {fileID: 1394851334125326190}
   - component: {fileID: 8429678882821006649}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,6 +172,10 @@ MonoBehaviour:
   jumpForceY: 14
   jumpForceX: 5
   timeRespawn: 1
+  trapLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  durationIgnore: 3
 --- !u!114 &8787437281717031427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,7 +188,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16d87255f56d9046bccc51413f7ef96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeSlowScale: 0
 --- !u!50 &7365376571089505484
 Rigidbody2D:
   serializedVersion: 4

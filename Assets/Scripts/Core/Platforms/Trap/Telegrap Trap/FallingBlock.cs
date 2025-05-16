@@ -7,6 +7,7 @@ public class FallingBlock : TrapBase
     [SerializeField] float speed;
     bool canMove;
     bool isSpawned;
+    private Vector2 startPos;
     [SerializeField] float distanceSpawn;
     [SerializeField] float distanceDisable;
     [SerializeField] float warningDuration; 
@@ -14,14 +15,22 @@ public class FallingBlock : TrapBase
     {
         canMove = true;
     }
+    private void OnEnable()
+    {
+        startPos = transform.position;
+    }
     private void Update()
     {
-        if(!isSpawned && transform.position.y - Camera.main.transform.position.y > distanceSpawn)
+        if(!isSpawned && transform.position.y - Camera.main.transform.position.y < distanceSpawn)
         {
             Spawn();
             isSpawned = true;
         }
-        if (!canMove) return;
+        if (!canMove)
+        {
+            //transform.position = startPos;
+            return;
+        }
         transform.position += Vector3.down * speed * Time.deltaTime;
         if (Camera.main.transform.position.y - transform.position.y > distanceDisable)
         {

@@ -5,14 +5,16 @@ using UnityEngine;
 public class PlayerVisual : MonoBehaviour
 {
     private Animator anim;
+    private SpriteRenderer sr;
     private Tween rotateTween;
+    private Tween fadeTween;
     private Quaternion startRotation;
     [SerializeField] Player player;
     const string ANIM_JUMP = "isJump";
-    const string ANIM_FLY = "isFly";
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        sr = GetComponent<SpriteRenderer>();
     }
     private void Start()
     {
@@ -39,20 +41,27 @@ public class PlayerVisual : MonoBehaviour
             rotateTween.Kill();
         rotateTween = transform.DORotate(new Vector3(0, 0, angleZ - 90), 0.1f);
     }
-
-    IEnumerator Fly(float duration)
-    {
-        anim.SetBool(ANIM_FLY, true);
-        yield return new WaitForSeconds(duration);
-        anim.SetBool(ANIM_FLY, false);
-    }
     private void OnPlayerDied(object obj)
     {
         if (rotateTween != null && rotateTween.IsActive())
             rotateTween.Kill();
         transform.rotation = startRotation;
     }
-
+    public void Immortal(bool isImortal)
+    {
+        if (isImortal)
+        {
+            sr.DOFade(0.5f, 0.3f).SetLoops(-1, LoopType.Yoyo);
+        }
+        else
+        {
+            fadeTween?.Kill();
+            Color color = sr.color;
+            color.a = 1f;
+            sr.color = color;
+            sr.DOKill();
+        }
+    }
     private void OnDestroy()
     {
         player.OnPlayerStartFall -= Player_OnPlayerStartFall;
@@ -60,5 +69,6 @@ public class PlayerVisual : MonoBehaviour
         Observer.Instance.Unregister(EventId.OnPlayerJump, Player_OnPlayerStartJump);
 
         rotateTween?.Kill();
+        fadeTween?.Kill();
     }
 }

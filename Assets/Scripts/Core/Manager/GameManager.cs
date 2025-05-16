@@ -33,6 +33,10 @@ public class GameManager : Singleton<GameManager>
     public event Action<string, int> OnLevelChanged;
     public event Action OnClearLevel;
 
+    [Header("Player Spawn Endless")]
+    [SerializeField] float radiusCheckObstacle;
+    [SerializeField] LayerMask obstacle;
+    Player player;
     protected override void Awake()
     {
         base.Awake();
@@ -41,6 +45,10 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         LoadEndlessLevel();
+    }
+    private void Update()
+    {
+        
     }
     public void LoadData()
     {
@@ -91,5 +99,43 @@ public class GameManager : Singleton<GameManager>
         currentLevelObj = Instantiate(levelEndlessPrefabs);
     }
 
+    #region spawn endless
+
+    private Vector2 tmpPos;
+    public void RespawnEndless(Player player)
+    {
+        this.player = player;
+        StartCoroutine(SpawnPlayerCheckPoint(radiusCheckObstacle, player));
+    }
+    IEnumerator SpawnPlayerCheckPoint(float radiusCheck, Player player)
+    {
+        Vector2 newPos = player.transform.position;
+        while (true)
+        {
+            newPos = (Vector2)Camera.main.transform.position + UnityEngine.Random.insideUnitCircle * radiusCheckObstacle;
+            //RaycastHit2D hit = Physics2D.Raycast((Vector2)Camera.main.transform.position, newPos - (Vector2)Camera.main.transform.position, Mathf.Infinity, obstacle);
+            Collider2D hit = Physics2D.OverlapPoint(newPos, obstacle);
+            if (hit == null)
+            {
+                break;
+            }
+            else
+            {
+                tmpPos = newPos;
+                Debug.LogError(hit.gameObject.name);
+            }
+            yield return null;
+        }
+        player.transform.position = newPos;
+        player.RespawnEndless();
+    }
+
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawRay(Camera.main.transform.position, new Vector3(tmpPos.x, tmpPos.y, 0) - Camera.main.transform.position);
+        Gizmos.DrawWireSphere((Vector2)Camera.main.transform.position, radiusCheckObstacle);
+    }
+    #endregion
 
 }

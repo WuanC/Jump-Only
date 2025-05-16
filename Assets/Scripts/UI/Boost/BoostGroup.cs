@@ -14,6 +14,8 @@ public class BoostGroup : MonoBehaviour
         Observer.Instance.Register(EventId.OnUpdateBoost, BoostGroup_OnUpdateBoost);
         Observer.Instance.Register(EventId.OnAddBoost, BoostGroup_OnAddBoost);
         Observer.Instance.Register(EventId.OnRemoveBoost, BoostGroup_OnRemoveBoost);
+
+        Observer.Instance.Register(EventId.OnTransitionScreen, BoostGroup_OnTransitionScreen);
     }
     void BoostGroup_OnAddBoost(object obj)
     {
@@ -40,10 +42,19 @@ public class BoostGroup : MonoBehaviour
         Destroy(boostIcons[boostBase.boostData.name].gameObject);
         boostIcons.Remove(boostBase.boostData.name);
     }
+    void BoostGroup_OnTransitionScreen(object obj)
+    {
+        foreach(var key in boostIcons.Keys)
+        {
+            Destroy(boostIcons[key].gameObject);
+        }
+        boostIcons.Clear();
+    }
     private void OnDestroy()
     {
         Observer.Instance.Unregister(EventId.OnUpdateBoost, BoostGroup_OnUpdateBoost);
         Observer.Instance.Unregister(EventId.OnAddBoost, BoostGroup_OnAddBoost);
         Observer.Instance.Unregister(EventId.OnRemoveBoost, BoostGroup_OnRemoveBoost);
+        Observer.Instance.Unregister(EventId.OnTransitionScreen, BoostGroup_OnTransitionScreen);
     }
 }

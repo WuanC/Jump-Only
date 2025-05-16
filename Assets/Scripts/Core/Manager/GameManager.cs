@@ -40,8 +40,7 @@ public class GameManager : Singleton<GameManager>
     }
     private void Start()
     {
-        Debug.LogError("Game Manager Start");
-        //LoadEndlessLevel();
+        LoadEndlessLevel();
     }
     public void LoadData()
     {

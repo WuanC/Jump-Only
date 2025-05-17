@@ -16,7 +16,7 @@ public class Map : MonoBehaviour
     [Header("Obstacle")]
     [SerializeField] Transform[] _obstaclePosition;
     List<int> visitedPos = new();
-    List<GameObject> obstacleInMaps = new();
+    [SerializeField] List<GameObject> obstacleInMaps = new();
     bool isReady = false;
     private void Awake()
     {
@@ -100,7 +100,9 @@ public class Map : MonoBehaviour
             int ramdomPosIndex = UnityEngine.Random.Range(0, visitedPos.Count);
 
             int randomObstacle = UnityEngine.Random.Range(0, mapController.listObstacleInMaps.Length);
-            GameObject tmpObject = MyPoolManager.Instance.GetFromPool(mapController.listObstacleInMaps[randomObstacle], transform);
+            GameObject mapPrefab = mapController.listObstacleInMaps[randomObstacle];
+            mapController.keyObject.Add(mapPrefab);
+            GameObject tmpObject = MyPoolManager.Instance.GetFromPool(mapPrefab, transform);
             tmpObject.transform.position = _obstaclePosition[visitedPos[ramdomPosIndex]].transform.position;
             //if(tmpObject.TryGetComponent<TrapBase>(out TrapBase trapBase))
             //{

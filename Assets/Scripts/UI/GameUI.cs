@@ -5,16 +5,14 @@ using UnityEngine.UI;
 public class GameUI : MonoBehaviour
 {
     public TextMeshProUGUI textLevel;
-    public TextMeshProUGUI textDistance;
-
-
-
     public Button menuBtn;
     public Button musicBtn;
+
+
     public void Awake()
     {
         GameManager.Instance.OnLevelChanged += GameManager_OnLevelChanged;
-        Observer.Instance.Register(EventId.OnBroadcastSpeed, GameEndlessUI_OnBroadcastSpeed);
+
         musicBtn.onClick.AddListener(OnMusicBtnClicked);
         menuBtn.onClick.AddListener(OnMenuBtnClicked);
     }
@@ -31,15 +29,11 @@ public class GameUI : MonoBehaviour
         GameManager.Instance.DeleteCurrentLevel();
         Observer.Instance.Broadcast(EventId.OnBackToMenu, null);
     }
-    public void GameEndlessUI_OnBroadcastSpeed(object obj)
-    {
-        float speed = (float)obj;
-        textDistance.text = ((int)speed).ToString();
-    }
+
 
     public void OnDestroy()
     {
         GameManager.Instance.OnLevelChanged -= GameManager_OnLevelChanged;
-        Observer.Instance.Unregister(EventId.OnBroadcastSpeed, GameEndlessUI_OnBroadcastSpeed);
+
     }
 }

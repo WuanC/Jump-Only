@@ -91,8 +91,16 @@ public class Player : MonoBehaviour
         rb.velocity = Vector3.zero;
         gameObject.SetActive(false);
         Observer.Instance.Broadcast(EventId.OnPlayerDied, transform.position);
-        GameManager.Instance.RespawnEndless(this);
-        //Invoke(nameof(RespawnPlayer), timeRespawn);
+        if(GameManager.Instance.gameMode == EGameMode.Endless)
+        {
+            GameManager.Instance.RespawnEndless(this);
+        }
+        else if(GameManager.Instance.gameMode == EGameMode.Adventure)
+        {
+            Invoke(nameof(RespawnPlayer), timeRespawn);
+        }
+
+
     }
     public void RespawnPlayer()
     {

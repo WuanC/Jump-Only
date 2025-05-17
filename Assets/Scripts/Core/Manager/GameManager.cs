@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+
+    public EGameMode gameMode;
+
     [SerializeField] float timeLoadNewScene;
 
     [Header("Level mode")]
@@ -44,11 +47,7 @@ public class GameManager : Singleton<GameManager>
     }
     private void Start()
     {
-        LoadEndlessLevel();
-    }
-    private void Update()
-    {
-        
+        //LoadEndlessLevel();
     }
     public void LoadData()
     {
@@ -78,6 +77,8 @@ public class GameManager : Singleton<GameManager>
         }
             currentLevel++;
         Observer.Instance.Broadcast(EventId.OnTransitionScreen, (Action)(() => LoadNewLevel(currentLevel.ToString())));
+
+        
     }
     public void DeleteCurrentLevel()
     {
@@ -87,7 +88,8 @@ public class GameManager : Singleton<GameManager>
         }
     }
     public void LoadNewLevel(string level = "1")
-    { 
+    {
+        gameMode = EGameMode.Adventure;
         if (currentLevelObj != null) Destroy(currentLevelObj);
         CONSTANT.SaveLevel(level);
         currentLevelObj = Instantiate(levelDatas[level].levelPrefabs);
@@ -95,6 +97,7 @@ public class GameManager : Singleton<GameManager>
     }
     public void LoadEndlessLevel()
     {
+        gameMode = EGameMode.Endless;
         if (currentLevelObj != null) Destroy(currentLevelObj);
         currentLevelObj = Instantiate(levelEndlessPrefabs);
     }
@@ -113,29 +116,43 @@ public class GameManager : Singleton<GameManager>
         while (true)
         {
             newPos = (Vector2)Camera.main.transform.position + UnityEngine.Random.insideUnitCircle * radiusCheckObstacle;
-            //RaycastHit2D hit = Physics2D.Raycast((Vector2)Camera.main.transform.position, newPos - (Vector2)Camera.main.transform.position, Mathf.Infinity, obstacle);
-            Collider2D hit = Physics2D.OverlapPoint(newPos, obstacle);
-            if (hit == null)
+
+            RaycastHit hit;
+            Physics.Raycast(Camera.main.transform.position, new Vector3(newPos.x, newPos.y, 0) - Camera.main.transform.position,out hit, Mathf.Infinity, obstacle);
+           //Collider2D hit = Physics2D.OverlapPoint(newPos, obstacle);
+            if (hit.collider == null)
             {
                 break;
             }
             else
             {
                 tmpPos = newPos;
-                Debug.LogError(hit.gameObject.name);
+                Debug.LogError(hit.collider.gameObject.name);
             }
             yield return null;
         }
         player.transform.position = newPos;
-        player.RespawnEndless();
     }
 
-    
+    public void ContinueEndlessMode()
+    {
+        if(player != null) player.RespawnEndless();
+    }
+    public void RestartEndlessMode()
+    {
+        LoadEndlessLevel();
+    }
     private void OnDrawGizmos()
     {
+        Gizmos.color = Color.yellow;
         Gizmos.DrawRay(Camera.main.transform.position, new Vector3(tmpPos.x, tmpPos.y, 0) - Camera.main.transform.position);
         Gizmos.DrawWireSphere((Vector2)Camera.main.transform.position, radiusCheckObstacle);
     }
     #endregion
 
+}
+public enum EGameMode
+{
+    Endless,
+    Adventure,
 }

@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MapController : MonoBehaviour
@@ -11,17 +13,23 @@ public class MapController : MonoBehaviour
 
     private EndlessSO endlessSettings;
     [SerializeField] private float timeToUpdateSpeed;
-    [field: SerializeField] private float speed;
+    [SerializeField] private float speed;
+    private float tempSpeed;
+    private bool isPlayerAlive;
     Map lastTileMap;
     private float distance = 0;
+
+    public HashSet<GameObject> keyObject = new HashSet<GameObject>();
     private void Start()
     {
         Observer.Instance.Register(EventId.OnPlayerDied, MapController_OnPlayerDie);
+        Observer.Instance.Register(EventId.OnPlayerRespawn, MapController_OnPlayerRespawn);
         endlessSettings = Resources.Load<EndlessSO>("LevelEndless/Endess Setting");
         StartCoroutine(UpdateSpeed());
         StartCoroutine(BroadcastSpeed());
         SpawnMap(true);
         SpawnMap();
+        isPlayerAlive = true;
     }
     private void Update()
     {
@@ -29,13 +37,29 @@ public class MapController : MonoBehaviour
     }
     public void OnDestroy()
     {
-
+        Observer.Instance.Unregister(EventId.OnPlayerRespawn, MapController_OnPlayerRespawn);
         Observer.Instance.Unregister(EventId.OnPlayerDied, MapController_OnPlayerDie);
+        foreach(GameObject obj in keyObject)
+        {
+            MyPoolManager.Instance.DeleteKey(obj);
+        }
 
     }
+    #region Player Health
     public void MapController_OnPlayerDie(object obj)
-    { 
+    {
+        isPlayerAlive = false;
+        tempSpeed = speed;
+        UpdateSpeed(0);
     }
+
+    public void MapController_OnPlayerRespawn(object obj)
+    {
+        isPlayerAlive = true;
+        UpdateSpeed(tempSpeed);
+    }
+
+    #endregion
     public void UpdateMap()
     {
         SpawnMap();
@@ -46,12 +70,15 @@ public class MapController : MonoBehaviour
         if (isFirst)
         {
             tmpGO = MyPoolManager.Instance.GetFromPool(maps[0], transform);
+            keyObject.Add(maps[0]);
             tmpGO.transform.position = Vector3.zero;
         }
         else
         {
             int randomIndex = UnityEngine.Random.Range(0, maps.Length);
-            tmpGO = MyPoolManager.Instance.GetFromPool(maps[UnityEngine.Random.Range(0, maps.Length)], transform);
+            GameObject map = maps[UnityEngine.Random.Range(0, maps.Length)];
+            keyObject.Add(map);
+            tmpGO = MyPoolManager.Instance.GetFromPool(map, transform);
             tmpGO.transform.position = new Vector3(lastTileMap.transform.position.x, lastTileMap.GetValidPosNextPlace(tmpGO.GetComponent<Map>()), lastTileMap.transform.position.z);
         }
 
@@ -77,17 +104,28 @@ public class MapController : MonoBehaviour
     {
         while (true)
         {
+            if (!isPlayerAlive)
+            {
+                yield return null;
+                continue;
+            }
             yield return new WaitForSeconds(timeToUpdateSpeed);
-            UpdateSpeed(speed * 1.02f);
+            UpdateSpeed(speed * 1.1f);
         }
     }
     public IEnumerator BroadcastSpeed()
     {
         while (true)
         {
+            if (!isPlayerAlive)
+            {
+                yield return null;
+                continue;
+            }
             yield return new WaitForSeconds(0.1f);
             Observer.Instance.Broadcast(EventId.OnBroadcastSpeed, distance);
         }
     }
+    
 
 }

@@ -12,4 +12,11 @@ public class MyPoolManager : Singleton<MyPoolManager>
         }
         return pools[baseObject].Get(parent);
     }
+
+    public void DeleteKey(GameObject key) {
+        if (!pools.ContainsKey(key)) return;
+        pools[key].ClearPool();
+        pools.Remove(key);
+    
+    }
 }

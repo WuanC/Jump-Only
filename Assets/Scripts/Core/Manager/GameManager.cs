@@ -38,7 +38,7 @@ public class GameManager : Singleton<GameManager>
 
     [Header("Player Spawn Endless")]
     [SerializeField] float radiusCheckObstacle;
-    [SerializeField] LayerMask obstacle;
+    //[SerializeField] LayerMask obstacle;
     Player player;
     protected override void Awake()
     {
@@ -108,17 +108,17 @@ public class GameManager : Singleton<GameManager>
     public void RespawnEndless(Player player)
     {
         this.player = player;
-        StartCoroutine(SpawnPlayerCheckPoint(radiusCheckObstacle, player));
+        StartCoroutine(SetPosGOInRange((Vector2)Camera.main.transform.position ,radiusCheckObstacle, player.transform));
     }
-    IEnumerator SpawnPlayerCheckPoint(float radiusCheck, Player player)
+    public IEnumerator SetPosGOInRange(Vector2 pointOrigin,float radiusCheck, Transform gameObj)
     {
-        Vector2 newPos = player.transform.position;
+        Vector2 newPos = gameObj.position;
         while (true)
         {
-            newPos = (Vector2)Camera.main.transform.position + UnityEngine.Random.insideUnitCircle * radiusCheckObstacle;
+            newPos = pointOrigin + UnityEngine.Random.insideUnitCircle * radiusCheck;
 
             RaycastHit hit;
-            Physics.Raycast(Camera.main.transform.position, new Vector3(newPos.x, newPos.y, 0) - Camera.main.transform.position,out hit, Mathf.Infinity, obstacle);
+            Physics.Raycast(Camera.main.transform.position, new Vector3(newPos.x, newPos.y, 0) - Camera.main.transform.position,out hit, Mathf.Infinity);
            //Collider2D hit = Physics2D.OverlapPoint(newPos, obstacle);
             if (hit.collider == null)
             {
@@ -131,7 +131,7 @@ public class GameManager : Singleton<GameManager>
             }
             yield return null;
         }
-        player.transform.position = newPos;
+        gameObj.position = newPos;
     }
 
     public void ContinueEndlessMode()
@@ -148,6 +148,8 @@ public class GameManager : Singleton<GameManager>
         Gizmos.DrawRay(Camera.main.transform.position, new Vector3(tmpPos.x, tmpPos.y, 0) - Camera.main.transform.position);
         Gizmos.DrawWireSphere((Vector2)Camera.main.transform.position, radiusCheckObstacle);
     }
+
+
     #endregion
 
 }

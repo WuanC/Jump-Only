@@ -196,7 +196,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1341421019077820802
 Transform:
   m_ObjectHideFlags: 0
@@ -367,6 +367,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToUpdateSpeed: 30
   speed: 3
+  boostWorldPrefab: {fileID: 908756412989159256, guid: 9321aae8680e73844ba264d8ae6173e8, type: 3}
+  boostBasePrefabs:
+  - {fileID: 6476964789228643938, guid: 0f3d5fdf9eba12444803a172d53ad178, type: 3}
+  - {fileID: 8497758112960294187, guid: dec849be3fc1c4849a27bf3b63b9c3c1, type: 3}
 --- !u!1001 &1571578028591408333
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -476,7 +480,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6631921307486304612, guid: 3adcae2ac48f2bf4a8d71811ce72607c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8269452183022509752, guid: 3adcae2ac48f2bf4a8d71811ce72607c, type: 3}
       propertyPath: m_LocalPosition.x

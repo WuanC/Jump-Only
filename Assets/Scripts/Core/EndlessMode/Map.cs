@@ -8,6 +8,7 @@ public class Map : MonoBehaviour
     Tilemap tilemap;
     float speed;
 
+
     private int distanceSpawn;
     [SerializeField] private int distanceDisable;
     private MapController mapController;
@@ -16,7 +17,12 @@ public class Map : MonoBehaviour
     [Header("Obstacle")]
     [SerializeField] Transform[] _obstaclePosition;
     List<int> visitedPos = new();
-    [SerializeField] List<GameObject> obstacleInMaps = new();
+    [SerializeField] List<GameObject> goInMap = new();
+
+
+    [Header("Boost")]
+    [SerializeField] Transform boostPos;
+    [SerializeField] float radius;
     bool isReady = false;
     private void Awake()
     {
@@ -44,6 +50,8 @@ public class Map : MonoBehaviour
         this.speed = speed;
         checkCallback = false;
         SpawnObstacle();
+        if(boostPos != null)
+        SpawnBoost(100f, transform, boostPos.position, radius);
         isReady = true;
     }
 
@@ -86,7 +94,7 @@ public class Map : MonoBehaviour
     public void SpawnObstacle()
     {
         if (mapController.listObstacleInMaps == null || mapController.listObstacleInMaps.Length == 0 ||
-             _obstaclePosition == null || _obstaclePosition.Length == 0 || obstacleInMaps.Count != 0) return;
+             _obstaclePosition == null || _obstaclePosition.Length == 0 || goInMap.Count != 0) return;
         int randomPosCount = UnityEngine.Random.Range(1, _obstaclePosition.Length + 1);
 
         // log 1, 2, 3
@@ -104,23 +112,40 @@ public class Map : MonoBehaviour
             mapController.keyObject.Add(mapPrefab);
             GameObject tmpObject = MyPoolManager.Instance.GetFromPool(mapPrefab, transform);
             tmpObject.transform.position = _obstaclePosition[visitedPos[ramdomPosIndex]].transform.position;
-            //if(tmpObject.TryGetComponent<TrapBase>(out TrapBase trapBase))
-            //{
-            //    trapBase.Ready();
-            //}
-            obstacleInMaps.Add(tmpObject);
+            goInMap.Add(tmpObject);
             visitedPos.RemoveAt(ramdomPosIndex);
+        }
+    }
+    public void SpawnBoost(float rate, Transform mapParent, Vector2 posititon, float radiusCheckSpawn)
+    {
+
+        float randomNumber = UnityEngine.Random.Range(0, 100);
+        if (randomNumber > rate) return;
+        if (mapParent == null) Debug.Log("null dung");
+        GameObject boostWorldGO = MyPoolManager.Instance.GetFromPool(mapController.boostWorldPrefab, mapParent);
+        mapController.keyObject.Add(mapController.boostWorldPrefab);
+        goInMap.Add(boostWorldGO);
+        StartCoroutine(GameManager.Instance.SetPosGOInRange(posititon, radiusCheckSpawn, boostWorldGO.transform));
+
+        if (boostWorldGO.TryGetComponent<BoostWorld>(out BoostWorld bw))
+        {
+            bw.SetData(mapController.boostBasePrefabs[Random.Range(0, mapController.boostBasePrefabs.Count)]);
         }
     }
     public void ClearDataWhenDisable()
     {
-        foreach (var go in obstacleInMaps)
+        foreach (var go in goInMap)
         {
             go.SetActive(false);
         }
-        obstacleInMaps.Clear();
+        goInMap.Clear();
     }
-
+    private void OnDrawGizmosSelected()
+    {
+        if (boostPos == null) return;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(boostPos.position, radius);
+    }
 
     #endregion
 }

@@ -11,7 +11,7 @@ public class PlayerBoost : MonoBehaviour
     public bool IsInvicibility => isInvicibility;
     public event Action OnPlayerDied;
     public event Action OnEndSlowMotion;
-
+    public event Action OnPlayerBoostDestroy;
 
     Dictionary<string, BoostBase> boostDic = new();
     public bool CanAddBoost(BoostBase boost)
@@ -19,6 +19,7 @@ public class PlayerBoost : MonoBehaviour
             if (!boostDic.ContainsKey(boost.boostData.name))
             {
                 boostDic[boost.boostData.name] = boost;
+                
                 Observer.Instance.Broadcast(EventId.OnAddBoost, boost);
             }
             else
@@ -83,4 +84,9 @@ public class PlayerBoost : MonoBehaviour
         }
     }
     #endregion
+
+    private void OnDestroy()
+    {
+        OnPlayerBoostDestroy?.Invoke();
+    }
 }

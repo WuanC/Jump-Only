@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class InvincibilityShield : UsageBoost
 {
     public override void Excute()
-    { 
+    {
+        base.Excute();
         playerBoost.SetInvicibility(true);
         playerBoost.OnPlayerDied += PlayerBoost_OnPlayerDied;
     }

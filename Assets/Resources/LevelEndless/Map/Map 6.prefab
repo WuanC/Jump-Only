@@ -31,6 +31,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8360295960006004895}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2978026969533350652
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5749675127430516116}
+  m_Layer: 6
+  m_Name: BoostPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5749675127430516116
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2978026969533350652}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.88, y: -3.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8360295960006004895}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4919794650852631008
 GameObject:
   m_ObjectHideFlags: 0
@@ -69,6 +100,7 @@ Transform:
   - {fileID: 3197344207528394079}
   - {fileID: 4356124106901237329}
   - {fileID: 807422665858271192}
+  - {fileID: 5749675127430516116}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1839735485 &8180217364756314283
@@ -8334,7 +8366,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 12
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -18403,8 +18435,8 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 1
-    m_Data: {fileID: 21300000, guid: 8a9be08ab3b038140aa7ae7eebad7cef, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 24
     m_Data: {fileID: 21300000, guid: 769e861d9962f59468cb09a8fa122f17, type: 3}
   - m_RefCount: 2
@@ -18423,8 +18455,8 @@ Tilemap:
     m_Data: {fileID: 21300000, guid: a955405470b6924428aa9c5484814410, type: 3}
   - m_RefCount: 2
     m_Data: {fileID: 21300000, guid: 76dc894d61fdb0a4ba4f42ccb660718a, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300000, guid: 8a9be08ab3b038140aa7ae7eebad7cef, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 1829
     m_Data:
@@ -18739,6 +18771,9 @@ MonoBehaviour:
   distanceDisable: 50
   _obstaclePosition:
   - {fileID: 807422665858271192}
+  goInMap: []
+  boostPos: {fileID: 5749675127430516116}
+  radius: 3.03
 --- !u!1001 &3144230493428864271
 PrefabInstance:
   m_ObjectHideFlags: 0

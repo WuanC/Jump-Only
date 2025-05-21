@@ -68,7 +68,6 @@ public class PlatformMoveContainer : MonoBehaviour
     {
         foreach (var platform in platforms)
         {
-            if (platform != null)
                 DOTween.Kill(platform.transform);
         }
     }

@@ -1453,9 +1453,6 @@ MonoBehaviour:
   currentLevel: 16
   levelEndlessPrefabs: {fileID: 0}
   radiusCheckObstacle: 4
-  obstacle:
-    serializedVersion: 2
-    m_Bits: 72
 --- !u!4 &543958809
 Transform:
   m_ObjectHideFlags: 0

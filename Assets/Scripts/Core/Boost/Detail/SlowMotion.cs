@@ -6,6 +6,7 @@ public class SlowMotion : TimedBoost
     float tempTimeScale;
     public override void Excute()
     {
+        base.Excute();
         duration = duration * timeScale;
         timeLeft = duration;
         tempTimeScale = Time.timeScale;
@@ -14,7 +15,7 @@ public class SlowMotion : TimedBoost
     public override void Deactive()
     {
         base.Deactive();
-        Time.timeScale = tempTimeScale;
+        Time.timeScale = 1;
     }
 
 

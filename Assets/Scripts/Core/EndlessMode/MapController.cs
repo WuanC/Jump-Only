@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MapController : MonoBehaviour
@@ -18,8 +17,12 @@ public class MapController : MonoBehaviour
     private bool isPlayerAlive;
     Map lastTileMap;
     private float distance = 0;
-
     public HashSet<GameObject> keyObject = new HashSet<GameObject>();
+
+    [Header("Spawn Boost")]
+    public GameObject boostWorldPrefab;
+    public List<BoostBase> boostBasePrefabs;
+
     private void Start()
     {
         Observer.Instance.Register(EventId.OnPlayerDied, MapController_OnPlayerDie);
@@ -39,7 +42,7 @@ public class MapController : MonoBehaviour
     {
         Observer.Instance.Unregister(EventId.OnPlayerRespawn, MapController_OnPlayerRespawn);
         Observer.Instance.Unregister(EventId.OnPlayerDied, MapController_OnPlayerDie);
-        foreach(GameObject obj in keyObject)
+        foreach (GameObject obj in keyObject)
         {
             MyPoolManager.Instance.DeleteKey(obj);
         }
@@ -60,6 +63,8 @@ public class MapController : MonoBehaviour
     }
 
     #endregion
+
+    #region Spawn Map
     public void UpdateMap()
     {
         SpawnMap();
@@ -94,6 +99,9 @@ public class MapController : MonoBehaviour
         if (mapPassCount < endlessSettings.data[indexCurrentMap + 1].levelCountPass) return;
         indexCurrentMap++;
     }
+
+    #endregion
+
     private void UpdateSpeed(float newSpeed)
     {
         if (newSpeed < 0) return;
@@ -126,6 +134,6 @@ public class MapController : MonoBehaviour
             Observer.Instance.Broadcast(EventId.OnBroadcastSpeed, distance);
         }
     }
-    
+
 
 }

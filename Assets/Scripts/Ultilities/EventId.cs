@@ -20,6 +20,9 @@ public enum EventId
     //Boost
     OnAddBoost,
     OnRemoveBoost,
-    OnUpdateBoost
+    OnUpdateBoost,
+
+    //Skin
+    OnSelectedSkin,
 
 }

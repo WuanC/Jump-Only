@@ -13,7 +13,7 @@ public class PlayerSkin : MonoBehaviour
     }
     public void EnableSkin()
     {
-        int idSkin = GameManager.Instance.idSkinSelected;
+        int idSkin = GameManager.Instance.IdSkinSelected;
         for (int i = 0; i < skins.Length; i++)
         {
             if (skins[i].skinData.id == idSkin) skins[i].gameObject.SetActive(true);

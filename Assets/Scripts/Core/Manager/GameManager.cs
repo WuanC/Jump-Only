@@ -41,8 +41,8 @@ public class GameManager : Singleton<GameManager>
     //[SerializeField] LayerMask obstacle;
     Player player;
 
-    [Header("Player skin")]
-    public int idSkinSelected;
+    
+    public int IdSkinSelected { get; set; }
     protected override void Awake()
     {
         base.Awake();
@@ -51,6 +51,7 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         //LoadEndlessLevel();
+        
     }
     public void LoadData()
     {
@@ -94,7 +95,7 @@ public class GameManager : Singleton<GameManager>
     {
         gameMode = EGameMode.Adventure;
         if (currentLevelObj != null) Destroy(currentLevelObj);
-        CONSTANT.SaveLevel(level);
+        SAVE.SaveLevel(level);
         currentLevelObj = Instantiate(levelDatas[level].levelPrefabs);
         OnLevelChanged?.Invoke(level, levelDatas.Count);
     }

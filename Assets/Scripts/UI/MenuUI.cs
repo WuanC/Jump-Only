@@ -61,7 +61,7 @@ public class MenuUI : MonoBehaviour
         {
             startPanel.SetActive(false);
             endPanel.SetActive(false);
-            GameManager.Instance.CurrentLevel = CONSTANT.GetCurrentLevel();
+            GameManager.Instance.CurrentLevel = SAVE.GetCurrentLevel();
             GameManager.Instance.LoadNewLevel(GameManager.Instance.CurrentLevel.ToString());
         }));
     }

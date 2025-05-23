@@ -70,5 +70,8 @@ public class PlayerVisual : MonoBehaviour
 
         rotateTween?.Kill();
         fadeTween?.Kill();
+        sr.DOKill() ;
+        DOTween.Kill(gameObject);
+
     }
 }

@@ -40,6 +40,9 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] float radiusCheckObstacle;
     //[SerializeField] LayerMask obstacle;
     Player player;
+
+    [Header("Player skin")]
+    public int idSkinSelected;
     protected override void Awake()
     {
         base.Awake();
@@ -151,7 +154,6 @@ public class GameManager : Singleton<GameManager>
 
 
     #endregion
-
 }
 public enum EGameMode
 {

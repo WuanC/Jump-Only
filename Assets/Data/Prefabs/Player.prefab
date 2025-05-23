@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1158265333694016194}
   - component: {fileID: 1775663024219994316}
   - component: {fileID: 5807907983745079393}
+  - component: {fileID: 5571636007173837490}
   m_Layer: 7
   m_Name: Visual Purple
   m_TagString: Untagged
@@ -120,6 +121,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5571636007173837490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1586193896410241016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c82429f33e0b2347bdb1a14ecf9e1be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinData: {fileID: 11400000, guid: e1492518ab073684b861357be7c6a391, type: 2}
 --- !u!1 &1745308241030149258
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,6 +146,7 @@ GameObject:
   - component: {fileID: 9033049902967157122}
   - component: {fileID: 4508586006142529453}
   - component: {fileID: 7218209898391462222}
+  - component: {fileID: 5159722922816122455}
   m_Layer: 7
   m_Name: Visual Orange
   m_TagString: Untagged
@@ -240,6 +255,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5159722922816122455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1745308241030149258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c82429f33e0b2347bdb1a14ecf9e1be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinData: {fileID: 11400000, guid: b38e4883eb8dae5409fbb2952500d346, type: 2}
 --- !u!1 &2168641514982915613
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,6 +280,7 @@ GameObject:
   - component: {fileID: 1630605362537500271}
   - component: {fileID: 638472701944745185}
   - component: {fileID: 4043084871772343135}
+  - component: {fileID: 2844753557456664402}
   m_Layer: 7
   m_Name: Visual Yellow
   m_TagString: Untagged
@@ -360,6 +389,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2844753557456664402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2168641514982915613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c82429f33e0b2347bdb1a14ecf9e1be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinData: {fileID: 11400000, guid: 20ce70b4e56d1bb46a55c28e7565ead1, type: 2}
 --- !u!1 &6535737702909247639
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,6 +414,7 @@ GameObject:
   - component: {fileID: 6667011985803183130}
   - component: {fileID: 1943084259256311591}
   - component: {fileID: 6200747791999364678}
+  - component: {fileID: 4494260138841933903}
   m_Layer: 7
   m_Name: Visual Green
   m_TagString: Untagged
@@ -480,6 +523,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4494260138841933903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6535737702909247639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c82429f33e0b2347bdb1a14ecf9e1be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinData: {fileID: 11400000, guid: bfe59d86111f8774b92f195baaadae7e, type: 2}
 --- !u!1 &6631921307486304612
 GameObject:
   m_ObjectHideFlags: 0
@@ -491,6 +547,7 @@ GameObject:
   - component: {fileID: 8269452183022509752}
   - component: {fileID: 2960570058501620236}
   - component: {fileID: 8787437281717031427}
+  - component: {fileID: 151280244689664753}
   - component: {fileID: 7365376571089505484}
   - component: {fileID: 1394851334125326190}
   - component: {fileID: 8429678882821006649}
@@ -552,6 +609,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16d87255f56d9046bccc51413f7ef96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &151280244689664753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6631921307486304612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b16b9c30eda08d42ae2277c42873314, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skins: []
 --- !u!50 &7365376571089505484
 Rigidbody2D:
   serializedVersion: 4
@@ -748,6 +818,7 @@ GameObject:
   - component: {fileID: 324262517706939957}
   - component: {fileID: 1638357550417490531}
   - component: {fileID: 8875019043734657898}
+  - component: {fileID: 1811551220772966951}
   m_Layer: 7
   m_Name: Visual Pink
   m_TagString: Untagged
@@ -856,3 +927,16 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1811551220772966951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6986690084395137318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c82429f33e0b2347bdb1a14ecf9e1be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinData: {fileID: 11400000, guid: c2a4f9a840d7bef4e9843b742a69f674, type: 2}

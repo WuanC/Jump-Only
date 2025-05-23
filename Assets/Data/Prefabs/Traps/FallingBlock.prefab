@@ -48,8 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   telegraphTrap: {fileID: 3330900986183348402, guid: 5d33dd156108ed54896839324857db17, type: 3}
   speed: 10
-  distanceSpawn: 17
-  distanceDisable: 25
+  distanceSpawnTele: 30
+  distanceDisable: 30
   warningDuration: 1
 --- !u!212 &5421291280173643034
 SpriteRenderer:

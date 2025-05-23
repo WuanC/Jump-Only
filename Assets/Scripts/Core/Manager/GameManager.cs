@@ -119,19 +119,22 @@ public class GameManager : Singleton<GameManager>
         Vector2 newPos = gameObj.position;
         while (true)
         {
+            Debug.Log("a");
             newPos = pointOrigin + UnityEngine.Random.insideUnitCircle * radiusCheck;
 
-            RaycastHit hit;
-            Physics.Raycast(Camera.main.transform.position, new Vector3(newPos.x, newPos.y, 0) - Camera.main.transform.position,out hit, Mathf.Infinity);
-           //Collider2D hit = Physics2D.OverlapPoint(newPos, obstacle);
-            if (hit.collider == null)
+            //RaycastHit hit;
+            //Physics.Raycast(Camera.main.transform.position, new Vector3(newPos.x, newPos.y, 0) - Camera.main.transform.position,out hit, Mathf.Infinity);
+           Collider2D hit = Physics2D.OverlapPoint(newPos);
+            if (hit == null)
             {
+                Debug.Log(newPos);
+                Time.timeScale = 0f;
                 break;
             }
             else
             {
                 tmpPos = newPos;
-                Debug.LogError(hit.collider.gameObject.name);
+                Debug.LogError(hit.gameObject.name);
             }
             yield return null;
         }

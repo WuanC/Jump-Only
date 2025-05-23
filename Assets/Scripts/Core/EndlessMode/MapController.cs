@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MapController : MonoBehaviour
 {
-    private const int distanceSpawn = 10;
+    private const int distanceSpawn = 7;
     private int mapPassCount = 0;
     private int indexCurrentMap = 0;
     public GameObject[] listObstacleInMaps => endlessSettings.data[indexCurrentMap].listObstacleInMap;
@@ -23,14 +23,18 @@ public class MapController : MonoBehaviour
     public GameObject boostWorldPrefab;
     public List<BoostBase> boostBasePrefabs;
 
+
+    string real = "Endless Setting";
+    string test = "TestSetting";
     private void Start()
     {
         Observer.Instance.Register(EventId.OnPlayerDied, MapController_OnPlayerDie);
         Observer.Instance.Register(EventId.OnPlayerRespawn, MapController_OnPlayerRespawn);
-        endlessSettings = Resources.Load<EndlessSO>("LevelEndless/Endess Setting");
+        endlessSettings = Resources.Load<EndlessSO>($"LevelEndless/{test}");
         StartCoroutine(UpdateSpeed());
         StartCoroutine(BroadcastSpeed());
         SpawnMap(true);
+        SpawnMap();
         SpawnMap();
         isPlayerAlive = true;
     }

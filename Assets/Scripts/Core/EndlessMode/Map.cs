@@ -67,6 +67,7 @@ public class Map : MonoBehaviour
 
         if (Camera.main.transform.position.y - transform.position.y > distanceSpawn && !checkCallback)
         {
+            Debug.Log("Spawn");
             checkCallback = true;
             mapController.UpdateMap();
         }
@@ -95,7 +96,7 @@ public class Map : MonoBehaviour
     {
         if (mapController.listObstacleInMaps == null || mapController.listObstacleInMaps.Length == 0 ||
              _obstaclePosition == null || _obstaclePosition.Length == 0 || goInMap.Count != 0) return;
-        int randomPosCount = UnityEngine.Random.Range(1, _obstaclePosition.Length + 1);
+        int randomPosCount = UnityEngine.Random.Range(0, _obstaclePosition.Length + 1);
 
         // log 1, 2, 3
 

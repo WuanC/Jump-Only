@@ -349,7 +349,7 @@ Grid:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8796853727323743373}
   m_Enabled: 1
-  m_CellSize: {x: 1, y: 1, z: 0}
+  m_CellSize: {x: 0.8, y: 0.8, z: 0}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
@@ -389,7 +389,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4571115686490304575, guid: b0131005b1501f448ba97bf864f472be, type: 3}
       propertyPath: m_Lens.OrthographicSize
-      value: 12.31
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 5023840880929075115, guid: b0131005b1501f448ba97bf864f472be, type: 3}
       propertyPath: position

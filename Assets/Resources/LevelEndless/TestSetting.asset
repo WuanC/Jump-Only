@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 941b97b36b7292e49b4d9fef79f6e23b, type: 3}
-  m_Name: Endess Setting
+  m_Name: TestSetting
   m_EditorClassIdentifier: 
   data:
   - levelCountPass: 0
@@ -20,8 +20,6 @@ MonoBehaviour:
     - {fileID: 2648137685406440967, guid: 54054d44e5796d9448359d5e72cceb23, type: 3}
   - levelCountPass: 1
     listObstacleInMap:
-    - {fileID: 1249366916383135920, guid: 97fdad1a2dbe08e449862db805218e5a, type: 3}
-    - {fileID: 2516678256166038577, guid: 16b952c5562395b46a49940c928f769a, type: 3}
-    - {fileID: 280713432894998549, guid: 45a44b7564002304698e9c9b821035c7, type: 3}
+    - {fileID: 2750889349835855311, guid: 954fdbf4d941c1a41b73ab0177e6cef3, type: 3}
     listMap:
-    - {fileID: 7139640757180211701, guid: 62e0e5d51bd3b2949be58b12cc800223, type: 3}
+    - {fileID: 8604745704248362612, guid: 81483b74f3ee9204a99b0db475ff267e, type: 3}

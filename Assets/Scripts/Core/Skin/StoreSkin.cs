@@ -5,6 +5,6 @@ using UnityEngine;
 public class StoreSkin : MonoBehaviour
 {
     public SkinSO skinData;
-    private bool status; //lock or unlock
+    public bool Status { get; set; } 
 
 }

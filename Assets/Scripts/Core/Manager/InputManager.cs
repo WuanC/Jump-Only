@@ -5,7 +5,7 @@ public class InputManager : MonoBehaviour
 {
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // Khi nhấn chuột hoặc chạm màn hình
+        if (Input.GetMouseButtonDown(0)) 
         {
             if (EventSystem.current.IsPointerOverGameObject())
             {

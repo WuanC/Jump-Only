@@ -13,5 +13,6 @@ public struct MapData
 {
     public int levelCountPass;
     public GameObject[] listObstacleInMap;
+    public GameObject[] listMap;
 }
 

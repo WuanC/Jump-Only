@@ -1,16 +1,18 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
     public TextMeshProUGUI textLevel;
-
     public Button menuBtn;
     public Button musicBtn;
+
+
     public void Awake()
     {
         GameManager.Instance.OnLevelChanged += GameManager_OnLevelChanged;
+
         musicBtn.onClick.AddListener(OnMusicBtnClicked);
         menuBtn.onClick.AddListener(OnMenuBtnClicked);
     }
@@ -27,8 +29,11 @@ public class GameUI : MonoBehaviour
         GameManager.Instance.DeleteCurrentLevel();
         Observer.Instance.Broadcast(EventId.OnBackToMenu, null);
     }
+
+
     public void OnDestroy()
     {
         GameManager.Instance.OnLevelChanged -= GameManager_OnLevelChanged;
+
     }
 }

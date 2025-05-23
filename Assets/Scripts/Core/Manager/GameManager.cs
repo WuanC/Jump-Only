@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+
+    public EGameMode gameMode;
+
     [SerializeField] float timeLoadNewScene;
 
     [Header("Level mode")]
@@ -33,6 +36,13 @@ public class GameManager : Singleton<GameManager>
     public event Action<string, int> OnLevelChanged;
     public event Action OnClearLevel;
 
+    [Header("Player Spawn Endless")]
+    [SerializeField] float radiusCheckObstacle;
+    //[SerializeField] LayerMask obstacle;
+    Player player;
+
+    [Header("Player skin")]
+    public int idSkinSelected;
     protected override void Awake()
     {
         base.Awake();
@@ -40,8 +50,7 @@ public class GameManager : Singleton<GameManager>
     }
     private void Start()
     {
-        Debug.LogError("Game Manager Start");
-        LoadEndlessLevel();
+        //LoadEndlessLevel();
     }
     public void LoadData()
     {
@@ -71,6 +80,8 @@ public class GameManager : Singleton<GameManager>
         }
             currentLevel++;
         Observer.Instance.Broadcast(EventId.OnTransitionScreen, (Action)(() => LoadNewLevel(currentLevel.ToString())));
+
+        
     }
     public void DeleteCurrentLevel()
     {
@@ -80,7 +91,8 @@ public class GameManager : Singleton<GameManager>
         }
     }
     public void LoadNewLevel(string level = "1")
-    { 
+    {
+        gameMode = EGameMode.Adventure;
         if (currentLevelObj != null) Destroy(currentLevelObj);
         CONSTANT.SaveLevel(level);
         currentLevelObj = Instantiate(levelDatas[level].levelPrefabs);
@@ -88,9 +100,63 @@ public class GameManager : Singleton<GameManager>
     }
     public void LoadEndlessLevel()
     {
+        gameMode = EGameMode.Endless;
         if (currentLevelObj != null) Destroy(currentLevelObj);
         currentLevelObj = Instantiate(levelEndlessPrefabs);
     }
 
+    #region spawn endless
 
+    private Vector2 tmpPos;
+    public void RespawnEndless(Player player)
+    {
+        this.player = player;
+        StartCoroutine(SetPosGOInRange((Vector2)Camera.main.transform.position ,radiusCheckObstacle, player.transform));
+    }
+    public IEnumerator SetPosGOInRange(Vector2 pointOrigin,float radiusCheck, Transform gameObj)
+    {
+        Vector2 newPos = gameObj.position;
+        while (true)
+        {
+            newPos = pointOrigin + UnityEngine.Random.insideUnitCircle * radiusCheck;
+
+            RaycastHit hit;
+            Physics.Raycast(Camera.main.transform.position, new Vector3(newPos.x, newPos.y, 0) - Camera.main.transform.position,out hit, Mathf.Infinity);
+           //Collider2D hit = Physics2D.OverlapPoint(newPos, obstacle);
+            if (hit.collider == null)
+            {
+                break;
+            }
+            else
+            {
+                tmpPos = newPos;
+                Debug.LogError(hit.collider.gameObject.name);
+            }
+            yield return null;
+        }
+        gameObj.position = newPos;
+    }
+
+    public void ContinueEndlessMode()
+    {
+        if(player != null) player.RespawnEndless();
+    }
+    public void RestartEndlessMode()
+    {
+        LoadEndlessLevel();
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawRay(Camera.main.transform.position, new Vector3(tmpPos.x, tmpPos.y, 0) - Camera.main.transform.position);
+        Gizmos.DrawWireSphere((Vector2)Camera.main.transform.position, radiusCheckObstacle);
+    }
+
+
+    #endregion
+}
+public enum EGameMode
+{
+    Endless,
+    Adventure,
 }

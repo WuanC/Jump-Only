@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -67,7 +68,6 @@ public class Map : MonoBehaviour
 
         if (Camera.main.transform.position.y - transform.position.y > distanceSpawn && !checkCallback)
         {
-            Debug.Log("Spawn");
             checkCallback = true;
             mapController.UpdateMap();
         }
@@ -131,7 +131,14 @@ public class Map : MonoBehaviour
         if (boostWorldGO.TryGetComponent<BoostWorld>(out BoostWorld bw))
         {
             bw.SetData(mapController.boostBasePrefabs[Random.Range(0, mapController.boostBasePrefabs.Count)]);
+            bw.OnDisable += OnBoostDisable;
         }
+    }
+    public void OnBoostDisable(BoostWorld bw ,GameObject obj)
+    {
+       goInMap.Remove(obj);
+       bw.OnDisable -= OnBoostDisable;
+
     }
     public void ClearDataWhenDisable()
     {

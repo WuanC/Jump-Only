@@ -58,7 +58,7 @@ MonoBehaviour:
   - {fileID: 6131449336465282572}
   timeDelay: 1.5
   timeMove: 5
-  randomModePath: 1
+  randomModePath: 0
 --- !u!1 &3331525109208325367
 GameObject:
   m_ObjectHideFlags: 0

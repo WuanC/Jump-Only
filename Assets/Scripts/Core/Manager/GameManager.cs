@@ -119,7 +119,6 @@ public class GameManager : Singleton<GameManager>
         Vector2 newPos = gameObj.position;
         while (true)
         {
-            Debug.Log("a");
             newPos = pointOrigin + UnityEngine.Random.insideUnitCircle * radiusCheck;
 
             //RaycastHit hit;
@@ -127,14 +126,11 @@ public class GameManager : Singleton<GameManager>
            Collider2D hit = Physics2D.OverlapPoint(newPos);
             if (hit == null)
             {
-                Debug.Log(newPos);
-                Time.timeScale = 0f;
                 break;
             }
             else
             {
                 tmpPos = newPos;
-                Debug.LogError(hit.gameObject.name);
             }
             yield return null;
         }

@@ -19,7 +19,7 @@ MonoBehaviour:
     listMap:
     - {fileID: 2648137685406440967, guid: 54054d44e5796d9448359d5e72cceb23, type: 3}
   - levelCountPass: 1
-    listObstacleInMap:
-    - {fileID: 2750889349835855311, guid: 954fdbf4d941c1a41b73ab0177e6cef3, type: 3}
+    listObstacleInMap: []
     listMap:
-    - {fileID: 8604745704248362612, guid: 81483b74f3ee9204a99b0db475ff267e, type: 3}
+    - {fileID: 7139640757180211701, guid: 62e0e5d51bd3b2949be58b12cc800223, type: 3}
+    - {fileID: 4919794650852631008, guid: 0b24a7eec61be4842a87a69bbb6f88e3, type: 3}

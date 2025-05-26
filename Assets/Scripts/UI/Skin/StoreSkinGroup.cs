@@ -10,6 +10,7 @@ public class StoreSkinGroup : MonoBehaviour
     public Button selectBtn;
     public TextMeshProUGUI txtStatusSelect;
     public Button unlockBtn;
+    public TextMeshProUGUI txtStatusUnlock;
     public Image visualSkin;
     [SerializeField] StoreSkin[] arrSkins;
     private int indexPreview;
@@ -52,7 +53,21 @@ public class StoreSkinGroup : MonoBehaviour
         }
         else
         {
-            unlockBtn.gameObject.SetActive(true);
+            if (arrSkins[indexPreview].CanBuy)
+            {
+                unlockBtn.gameObject.SetActive(true);
+                unlockBtn.interactable = true;
+                txtStatusUnlock.text = arrSkins[indexPreview].Price.ToString();
+            }
+            else
+            {
+                unlockBtn.interactable = false;
+                unlockBtn.gameObject.SetActive(true);
+
+                txtStatusUnlock.text = "Lock";
+            }
+
+            
             selectBtn.gameObject.SetActive(false);
         }
     }
@@ -91,10 +106,34 @@ public class StoreSkinGroup : MonoBehaviour
         UpdateUI();
     }
     public void UnlockBtnOnClick() {
-        arrSkins[indexPreview].Status = true;
-        UpdateUI();
-        SaveCharacterUnlock();
-        UpdateUI();
+        //Validate Coins
+        StoreSkin ss = arrSkins[indexPreview];
+        if (GameManager.Instance.WithdrawCoins(ss.Price))
+        {
+
+            UnlockSkin(arrSkins[indexPreview].skinData.id);
+        }
+        else
+        {
+            Debug.LogError("Not enough coins");
+        }
+
+
+    }
+    public void UnlockSkin(int skinId)
+    {
+        for (int i = 0; i < arrSkins.Length; i++)
+        {
+            if (skinId == arrSkins[i].skinData.id)
+            {
+                arrSkins[i].Status = true;
+                SaveCharacterUnlock();
+                UpdateUI();
+                return;
+
+            }
+        }
+
     }
     private void OnDestroy()
     {
@@ -109,7 +148,7 @@ public class StoreSkinGroup : MonoBehaviour
         List<int> idUnlocks = new();
         for(int i = 0; i < arrSkins.Length; i++)
         {
-            if (arrSkins[i].Status) idUnlocks.Add(i);
+            if (arrSkins[i].Status) idUnlocks.Add(arrSkins[i].skinData.id);
         }
         SAVE.SaveUnlockCharacter(idUnlocks);
     }
@@ -153,6 +192,7 @@ public class StoreSkinGroup : MonoBehaviour
         }
         idSelectingSkin = arrSkins[indexPreview].skinData.id;
         GameManager.Instance.IdSkinSelected = idSelectingSkin;
+        Debug.Log(idSelectingSkin);
 
     }
     #endregion

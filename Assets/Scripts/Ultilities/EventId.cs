@@ -25,4 +25,9 @@ public enum EventId
     //Skin
     OnSelectedSkin,
 
+
+    //Currency,
+    OnUpdateCoins,
+    OnUpdateHearts,
+
 }

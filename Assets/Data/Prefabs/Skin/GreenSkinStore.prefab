@@ -44,5 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76611a0a1f83df41968f980fc3761b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanBuy: 0
+  Price: 0
   skinData: {fileID: 11400000, guid: bfe59d86111f8774b92f195baaadae7e, type: 2}
   <Status>k__BackingField: 0

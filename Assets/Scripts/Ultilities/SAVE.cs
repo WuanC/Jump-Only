@@ -1,7 +1,6 @@
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
-using Newtonsoft;
-using Newtonsoft.Json;
 
 public static class SAVE
 {
@@ -10,6 +9,8 @@ public static class SAVE
     public const string HIGH_SCORE_KEY = "K_HighScore";
     public const string CHARACTER_UNLOCK_KEY = "K_CUnlock";
     public const string CHARACTER_SELECTED_ID = "K_CSelectedId";
+    public const string COINS = "K_Coins";
+    public const string HEARTS = "K_Hearts";
 
     #region Levle
     public static void SaveLevel(string level)
@@ -65,7 +66,7 @@ public static class SAVE
     {
         List<int> ids = null;
         string json = PlayerPrefs.GetString(CHARACTER_UNLOCK_KEY, null);
-        if(json != null)
+        if (json != null)
         {
             ids = JsonConvert.DeserializeObject<List<int>>(json);
         }
@@ -81,4 +82,24 @@ public static class SAVE
         return PlayerPrefs.GetInt(CHARACTER_SELECTED_ID, -1);
     }
     #endregion
+
+    #region Currency
+    public static void SaveCoins(int coins)
+    {
+        PlayerPrefs.SetInt(COINS, coins);
+    }
+    public static int GetCoins()
+    {
+        return PlayerPrefs.GetInt(COINS, 0);
+    }
+    public static void SaveHearts(int hearts)
+    {
+        PlayerPrefs.SetInt(HEARTS, hearts);
+    }
+    public static int GetHearts()
+    {
+        return PlayerPrefs.GetInt(HEARTS, 0);
+    }
+    #endregion
+
 }

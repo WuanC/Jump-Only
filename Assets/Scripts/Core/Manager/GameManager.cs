@@ -32,26 +32,30 @@ public class GameManager : Singleton<GameManager>
     private const string endlessPath = "LevelEndless";
     public GameObject levelEndlessPrefabs;
 
-    //Event
-    public event Action<string, int> OnLevelChanged;
-    public event Action OnClearLevel;
+
 
     [Header("Player Spawn Endless")]
     [SerializeField] float radiusCheckObstacle;
-    //[SerializeField] LayerMask obstacle;
     Player player;
 
-    
+
+    [Header("Currency")]
+    [SerializeField] int coins;
+    [SerializeField] int hearts;
+    public int Coins => coins;
+    public int Hearts => hearts;
+
+
+    //Event
+    public event Action<string, int> OnLevelChanged;
+    public event Action OnClearLevel;
     public int IdSkinSelected { get; set; }
     protected override void Awake()
     {
         base.Awake();
         LoadData();
-    }
-    private void Start()
-    {
-        //LoadEndlessLevel();
-        
+        //coins = SAVE.GetCoins();
+        //hearts = SAVE.GetHearts();
     }
     public void LoadData()
     {
@@ -61,6 +65,8 @@ public class GameManager : Singleton<GameManager>
         List<GameObject> list = Resources.LoadAll<GameObject>(endlessPath).ToList();
         levelEndlessPrefabs = list.First();
     }
+
+    #region level manager
 
     public void PlayerWin()
     {
@@ -79,7 +85,8 @@ public class GameManager : Singleton<GameManager>
             Destroy(currentLevelObj.gameObject);
             yield break; //do sth
         }
-            currentLevel++;
+        currentLevel++;
+
         Observer.Instance.Broadcast(EventId.OnTransitionScreen, (Action)(() => LoadNewLevel(currentLevel.ToString())));
 
         
@@ -93,11 +100,21 @@ public class GameManager : Singleton<GameManager>
     }
     public void LoadNewLevel(string level = "1")
     {
-        gameMode = EGameMode.Adventure;
-        if (currentLevelObj != null) Destroy(currentLevelObj);
-        SAVE.SaveLevel(level);
-        currentLevelObj = Instantiate(levelDatas[level].levelPrefabs);
-        OnLevelChanged?.Invoke(level, levelDatas.Count);
+        if (WithdrawHearts(1))
+        {
+            gameMode = EGameMode.Adventure;
+            if (currentLevelObj != null) Destroy(currentLevelObj);
+            SAVE.SaveLevel(level);
+            currentLevelObj = Instantiate(levelDatas[level].levelPrefabs);
+            OnLevelChanged?.Invoke(level, levelDatas.Count);
+        }
+        else
+        {
+            Debug.LogError("Not enough hearts");
+            DeleteCurrentLevel();
+            Observer.Instance.Broadcast(EventId.OnBackToMenu, null);
+        }
+
     }
     public void LoadEndlessLevel()
     {
@@ -105,6 +122,7 @@ public class GameManager : Singleton<GameManager>
         if (currentLevelObj != null) Destroy(currentLevelObj);
         currentLevelObj = Instantiate(levelEndlessPrefabs);
     }
+    #endregion
 
     #region spawn endless
 
@@ -152,6 +170,33 @@ public class GameManager : Singleton<GameManager>
         Gizmos.DrawWireSphere((Vector2)Camera.main.transform.position, radiusCheckObstacle);
     }
 
+
+    #endregion
+
+    #region currency
+
+    public bool WithdrawCoins(int coinsWithdraw)
+    {
+        if(coins - coinsWithdraw >= 0)
+        {
+            coins = coins - coinsWithdraw;
+            Observer.Instance.Broadcast(EventId.OnUpdateCoins, coins);
+            SAVE.SaveCoins(coins);
+            return true;
+        }
+        return false;
+    }
+    public bool WithdrawHearts(int heartsWithdraw)
+    {
+        if (hearts - heartsWithdraw >= 0)
+        {
+            hearts = hearts - heartsWithdraw;
+            Observer.Instance.Broadcast(EventId.OnUpdateHearts, hearts);
+            SAVE.SaveHearts(hearts);
+            return true;
+        }
+        return false;
+    }
 
     #endregion
 }

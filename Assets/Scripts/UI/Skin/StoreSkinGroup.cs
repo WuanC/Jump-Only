@@ -192,7 +192,6 @@ public class StoreSkinGroup : MonoBehaviour
         }
         idSelectingSkin = arrSkins[indexPreview].skinData.id;
         GameManager.Instance.IdSkinSelected = idSelectingSkin;
-        Debug.Log(idSelectingSkin);
 
     }
     #endregion

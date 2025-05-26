@@ -186,6 +186,12 @@ public class GameManager : Singleton<GameManager>
         }
         return false;
     }
+    public void DepositeCoins(int coinsDeposite)
+    {
+        coins += coinsDeposite;
+        Observer.Instance.Broadcast(EventId.OnUpdateCoins, coins);
+        SAVE.SaveCoins(coins);
+    }
     public bool WithdrawHearts(int heartsWithdraw)
     {
         if (hearts - heartsWithdraw >= 0)

@@ -3,7 +3,7 @@ public enum EventId
     OnPlayerDied,
     OnPlayerRespawn,
     OnPlayerColliding,
-    OnPlayerJump,
+    OnPlayerJump,                   // Quest Jump
     OnPlayerWin,
 
     OnTransitionScreen,

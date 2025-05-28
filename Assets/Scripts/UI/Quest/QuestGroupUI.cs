@@ -1,42 +1,56 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class QuestGroupUI : MonoBehaviour
 {
     [SerializeField] QuestUI questUIPrefab;
-    Dictionary<QuestType, Dictionary<int , QuestUI>> quests;
+
+
+    public Dictionary<int, QuestUI> achievementQuestDict = new();
+    public Dictionary<int, QuestUI> dailyQuestDict = new();
+
     [SerializeField] Transform dailyQuestParent;
     [SerializeField] Transform achievementParent;
-
+    
     private void Start()
     {
+        QuestManager.Instance.OnInitializedData += Instance_OnInitializedData;
         QuestManager.Instance.OnUpdateQuest += Instance_OnUpdateQuest;
-        foreach(QuestType key in QuestManager.Instance.quests.Keys)
-        {
-            foreach(int id in QuestManager.Instance.quests[key].Keys)
-            {
-                if (QuestManager.Instance.quests[key][id].questData.type == QuestType.DailyQuest)
-                {
-                    QuestUI questUI = Instantiate(questUIPrefab, dailyQuestParent);
-                    quests[key][id] = questUI;
-                }
-                else if(QuestManager.Instance.quests[key][id].questData.type == QuestType.DailyQuest)
-                {
-                    QuestUI questUI = Instantiate(questUIPrefab, achievementParent);
-                    quests[key][id] = questUI;
-                }
+        Instance_OnInitializedData();
 
-            }
+    }
+
+    private void Instance_OnInitializedData()
+    {
+        foreach (var id in QuestManager.Instance.dailyQuestDict.Keys)
+        {
+            QuestUI questUI = Instantiate(questUIPrefab, dailyQuestParent);
+            dailyQuestDict[id] = questUI;
+            questUI.SetData(QuestManager.Instance.dailyQuestDict[id].questData);
+        }
+        foreach (var id in QuestManager.Instance.achievementQuestDict.Keys)
+        {
+            QuestUI questUI = Instantiate(questUIPrefab, dailyQuestParent);
+            dailyQuestDict[id] = questUI;
+            questUI.SetData(QuestManager.Instance.achievementQuestDict[id].questData);
         }
     }
 
-    private void Instance_OnUpdateQuest(int id, int currentAmount, int targetAmount)
+    private void Instance_OnUpdateQuest(QuestType type,int id, int currentAmount, int targetAmount)
     {
-        
+        if(type == QuestType.DailyQuest)
+        {
+            if (!dailyQuestDict.ContainsKey(id)) return;
+            dailyQuestDict[id].UpdateProgress(currentAmount, targetAmount);
+        }
+        else if(type == QuestType.Achievement) {
+            if (!achievementQuestDict.ContainsKey(id)) return;
+            achievementQuestDict[id].UpdateProgress(currentAmount, targetAmount);
+        }
     }
     private void OnDestroy()
     {
         QuestManager.Instance.OnUpdateQuest -= Instance_OnUpdateQuest;
+        QuestManager.Instance.OnInitializedData -= Instance_OnInitializedData;
     }
 }

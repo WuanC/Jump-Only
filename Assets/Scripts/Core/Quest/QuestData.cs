@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "New Quest", fileName = "SO/Quest")]
-public class QuestData : MonoBehaviour
+[CreateAssetMenu(menuName = "SO/Quest", fileName = "New Quest")]
+public class QuestData : ScriptableObject
 {
     public int id;
     public string questName;

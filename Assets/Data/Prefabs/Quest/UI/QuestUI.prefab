@@ -767,6 +767,7 @@ GameObject:
   - component: {fileID: 462088100702333337}
   - component: {fileID: 8832131851350979891}
   - component: {fileID: 4581406980496582072}
+  - component: {fileID: 9169449519058522868}
   m_Layer: 5
   m_Name: QuestUI
   m_TagString: Untagged
@@ -847,6 +848,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fafee1c46430345a821932a084df1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  questIcon: {fileID: 9171751890717040660}
+  questTitle: {fileID: 7717975111231631133}
+  slider: {fileID: 4350441999481479646}
+  questProgress: {fileID: 3450133336738810672}
+  iconGift: {fileID: 187845698449737705}
+  quantityGift: {fileID: 4510752775201554718}
+  claimBtn: {fileID: 7620366407806205455}
+  iconClaimSuccess: {fileID: 5118609604491852453}
+  canvasGroup: {fileID: 0}
+--- !u!225 &9169449519058522868
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4170989033931135264}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4522947556758717854
 GameObject:
   m_ObjectHideFlags: 0
@@ -1266,7 +1288,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.584
+  m_Value: 0.251
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

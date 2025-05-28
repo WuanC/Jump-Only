@@ -1,6 +1,3 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -21,6 +18,12 @@ public class QuestUI : MonoBehaviour
     public Button claimBtn;
     public Image iconClaimSuccess;
 
+    public CanvasGroup canvasGroup;
+    private void Awake()
+    {
+        canvasGroup = GetComponent<CanvasGroup>();
+    }
+
     public void SetData(QuestData data)
     {
         this.data = data;
@@ -31,11 +34,27 @@ public class QuestUI : MonoBehaviour
         claimBtn.interactable = false;
         iconClaimSuccess.gameObject.SetActive(false);
 
+        claimBtn.onClick.AddListener(() =>
+        {
+            claimBtn.gameObject.SetActive(false);
+            iconClaimSuccess.gameObject.SetActive(true);
+            canvasGroup.alpha = 0.7f;
+        });
+
     }
     public void UpdateProgress(int currentAmount, int targetAmount)
     {
         if (data == null) return;
         questProgress.text = $"{currentAmount}/{targetAmount}";
-        slider.value = currentAmount / targetAmount;
+        slider.value = (float)currentAmount / targetAmount;
+        if (currentAmount == targetAmount) QuestCompleted();
+    }
+    public void QuestCompleted()
+    {
+        claimBtn.interactable = true;
+    }
+    private void OnDestroy()
+    {
+        claimBtn.onClick.RemoveAllListeners();   
     }
 }

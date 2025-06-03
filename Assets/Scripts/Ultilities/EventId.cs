@@ -30,4 +30,12 @@ public enum EventId
     OnUpdateCoins,
     OnUpdateHearts,
 
+    //Collect Gift
+    OnCollectGift,
+
+
+    //Quest
+    OnPickupBoost,
+    OnSpendCoins,
+
 }

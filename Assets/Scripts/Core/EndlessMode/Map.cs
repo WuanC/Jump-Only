@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class Map : MonoBehaviour
 {
+
     Tilemap tilemap;
     float speed;
 
@@ -24,7 +25,18 @@ public class Map : MonoBehaviour
     [Header("Boost")]
     [SerializeField] Transform boostPos;
     [SerializeField] float radius;
+
+    [Header("Line")]
+    [SerializeField] GameObject[] lineTransform;
+    [SerializeField] float distanceSpawnCoins;
+    [SerializeField] Transform posEndSpawn;
+    [SerializeField] GameObject coinsPrefabs;
+    [SerializeField] LayerMask obstacleLayer;
+
     bool isReady = false;
+
+
+
     private void Awake()
     {
         tilemap = GetComponent<Tilemap>();
@@ -38,6 +50,11 @@ public class Map : MonoBehaviour
     {
         isReady = false;
         ClearDataWhenDisable();
+        for(int i = 0; i < coinsSpawn.Count; i++)
+        {
+            Destroy(coinsSpawn[i]); 
+        }
+        coinsSpawn.Clear();
     }
     private void OnDestroy()
     {
@@ -51,8 +68,9 @@ public class Map : MonoBehaviour
         this.speed = speed;
         checkCallback = false;
         SpawnObstacle();
-        if(boostPos != null)
-        SpawnBoost(100f, transform, boostPos.position, radius);
+        if (boostPos != null)
+            SpawnBoost(100f, transform, boostPos.position, radius);
+        SpawnCoinsPattern();
         isReady = true;
     }
 
@@ -96,7 +114,7 @@ public class Map : MonoBehaviour
     {
         if (mapController.listObstacleInMaps == null || mapController.listObstacleInMaps.Length == 0 ||
              _obstaclePosition == null || _obstaclePosition.Length == 0 || goInMap.Count != 0) return;
-        int randomPosCount = UnityEngine.Random.Range(0, _obstaclePosition.Length + 1);
+        int randomPosCount = UnityEngine.Random.Range(0, _obstaclePosition.Length);
 
         // log 1, 2, 3
 
@@ -134,10 +152,60 @@ public class Map : MonoBehaviour
             bw.OnDisable += OnBoostDisable;
         }
     }
-    public void OnBoostDisable(BoostWorld bw ,GameObject obj)
+
+    public void SpawnCoinsPattern()
     {
-       goInMap.Remove(obj);
-       bw.OnDisable -= OnBoostDisable;
+        if (lineTransform.Length <= 0) return;
+        //Random 1 line
+        int lineSelectedIndex = UnityEngine.Random.Range(0, lineTransform.Length);
+        SpawnCoins(lineSelectedIndex, posEndSpawn.localPosition.y);
+
+    }
+    List<GameObject> coinsSpawn = new();
+    public void SpawnCoins(int lineIndex, float posEndSpawnY)
+    {
+        Transform line = lineTransform[lineIndex].transform;
+        int indexCoins = 0;
+        float lastSpawnY = line.localPosition.y;
+        while (true)
+        {
+            if (lastSpawnY >= posEndSpawnY)
+            {
+                return;
+            }
+            float yPos = line.localPosition.y + distanceSpawnCoins * indexCoins;
+            Vector2 posSpawnLocal = new Vector2(line.localPosition.x, yPos);
+            Collider2D[] collider = Physics2D.OverlapCircleAll (transform.TransformPoint(posSpawnLocal), radius, obstacleLayer);
+            Debug.Log(collider.Length);
+            if (collider == null)
+            {
+                GameObject coins = Instantiate(coinsPrefabs, this.transform);
+                coins.transform.localPosition = posSpawnLocal;
+                coinsSpawn.Add(coins);
+
+
+            }
+            else
+            {
+                if(lineIndex + 1 < lineTransform.Length)
+                {
+                    line = lineTransform[lineIndex + 1].transform;
+                }
+                else if(lineIndex -  1 >= 0)
+                {
+                    line  = lineTransform[lineIndex - 1].transform;
+                }
+
+
+            }
+            lastSpawnY = posSpawnLocal.y;
+            indexCoins++;
+        }
+    }
+    public void OnBoostDisable(BoostWorld bw, GameObject obj)
+    {
+        goInMap.Remove(obj);
+        bw.OnDisable -= OnBoostDisable;
 
     }
     public void ClearDataWhenDisable()
@@ -154,6 +222,6 @@ public class Map : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(boostPos.position, radius);
     }
-
+   
     #endregion
 }

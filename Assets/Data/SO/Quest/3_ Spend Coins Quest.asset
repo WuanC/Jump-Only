@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d2cec3dcbdc5ba4aa54715a47a74002, type: 3}
-  m_Name: Jump Quest
+  m_Name: 3_ Spend Coins Quest
   m_EditorClassIdentifier: 
-  id: 1
-  questName: Jump master
-  icon: {fileID: 8784796110683535280, guid: fc834c17a763e0141b0fec5d598e279b, type: 3}
-  targetAmount: 10
+  id: 3
+  questName: Richkid
+  icon: {fileID: 21300000, guid: 9ac777636a62c604d959dadd52fe73f4, type: 3}
+  targetAmount: 200
   type: 0

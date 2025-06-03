@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class QuestJumpTarget : QuestBase
 {
     public override void Initial()
@@ -16,7 +18,6 @@ public class QuestJumpTarget : QuestBase
 
     public override void OnCompletedQuest()
     {
-        OnTrackingQuest = null;
         Observer.Instance.Unregister(EventId.OnPlayerJump, QuestJumpTarget_OnPlayerJump);
     }
 }

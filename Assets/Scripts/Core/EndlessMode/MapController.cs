@@ -30,7 +30,7 @@ public class MapController : MonoBehaviour
     {
         Observer.Instance.Register(EventId.OnPlayerDied, MapController_OnPlayerDie);
         Observer.Instance.Register(EventId.OnPlayerRespawn, MapController_OnPlayerRespawn);
-        endlessSettings = Resources.Load<EndlessSO>($"LevelEndless/{test}");
+        endlessSettings = Resources.Load<EndlessSO>($"LevelEndless/{real}");
         StartCoroutine(UpdateSpeed());
         StartCoroutine(BroadcastSpeed());
         SpawnMap(true);

@@ -27,7 +27,7 @@ public class BoostWorld : MonoBehaviour
                 BoostBase tmp = Instantiate(boost);
                 tmp.Active();
             }
-            Debug.Log("player collect");
+            Observer.Instance.Broadcast(EventId.OnPickupBoost, boost.boostData);
             gameObject.SetActive(false);
             OnDisable?.Invoke(this, gameObject);
         }

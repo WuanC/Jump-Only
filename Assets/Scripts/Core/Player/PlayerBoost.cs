@@ -39,6 +39,7 @@ public class PlayerBoost : MonoBehaviour
             {
                 BoostBase tmp = boostDic[boost.boostData.name];
                 boostDic.Remove(boost.boostData.name);
+                
                 Destroy(tmp.gameObject);
             }
         //Update UI

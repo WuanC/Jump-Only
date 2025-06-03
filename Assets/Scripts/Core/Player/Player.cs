@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
             isFristEnable = false;
             return;
         }
-        Observer.Instance.Broadcast(EventId.OnPlayerRespawn, null);
+        Observer.Instance.Broadcast(EventId.OnPlayerRespawn, GameManager.Instance.gameMode);
 
     }
     private void Start()

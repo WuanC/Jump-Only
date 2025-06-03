@@ -15,20 +15,25 @@ public class StoreSkinGroup : MonoBehaviour
     [SerializeField] StoreSkin[] arrSkins;
     private int indexPreview;
     private int idSelectingSkin;
-    public void Start()
+    private void OnEnable()
     {
         indexPreview = 0;
-        leftBtn.onClick.AddListener(() => ChangePreviewSkin(false));
-        rightBtn.onClick.AddListener(() => ChangePreviewSkin(true));
-        selectBtn.onClick.AddListener(() => SelecSkin());
-        unlockBtn.onClick.AddListener(UnlockBtnOnClick);
-
 
         LoadCharacterUnlock();
         LoadIdCharacterSelected();
 
 
         UpdateUI();
+
+    }
+    public void Start()
+    {
+
+        leftBtn.onClick.AddListener(() => ChangePreviewSkin(false));
+        rightBtn.onClick.AddListener(() => ChangePreviewSkin(true));
+        selectBtn.onClick.AddListener(() => SelecSkin());
+        unlockBtn.onClick.AddListener(UnlockBtnOnClick);
+
 
     }
     public void UpdateUI()

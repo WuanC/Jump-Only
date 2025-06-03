@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
@@ -40,10 +41,18 @@ public class GameManager : Singleton<GameManager>
 
 
     [Header("Currency")]
-    [SerializeField] int coins;
-    [SerializeField] int hearts;
-    public int Coins => coins;
-    public int Hearts => hearts;
+
+    [SerializeField] ItemDataSO coinsData;
+    [SerializeField] ItemDataSO heartsData;
+
+    Item coins;
+    Item hearts;
+    
+
+    //[SerializeField] int coins;
+    //[SerializeField] int hearts;
+    public int Coins => coins.quantity;
+    public int Hearts => hearts.quantity;
 
 
     //Event
@@ -54,8 +63,26 @@ public class GameManager : Singleton<GameManager>
     {
         base.Awake();
         LoadData();
+        InitializeData();
+    }
+
+    public void InitializeData()
+    {
+        coins = new Item(coinsData, 1000);
+        hearts = new Item(heartsData, 5);
         //coins = SAVE.GetCoins();
         //hearts = SAVE.GetHearts();
+    }
+    public void CollectGift(string giftId, int quantity)
+    {
+        if(coins.itemData.Id == giftId)
+        {
+            DepositeCoins(quantity);
+        }
+        else if(hearts.itemData.Id == giftId)
+        {
+            
+        }
     }
     public void LoadData()
     {
@@ -177,28 +204,29 @@ public class GameManager : Singleton<GameManager>
 
     public bool WithdrawCoins(int coinsWithdraw)
     {
-        if(coins - coinsWithdraw >= 0)
-        {
-            coins = coins - coinsWithdraw;
-            Observer.Instance.Broadcast(EventId.OnUpdateCoins, coins);
-            SAVE.SaveCoins(coins);
+        if(coins.quantity - coinsWithdraw >= 0)
+        {   
+            Observer.Instance.Broadcast(EventId.OnSpendCoins, coinsWithdraw);
+            coins.quantity = coins.quantity - coinsWithdraw;
+            Observer.Instance.Broadcast(EventId.OnUpdateCoins, coins.quantity);
+            SAVE.SaveCoins(coins.quantity);
             return true;
         }
         return false;
     }
     public void DepositeCoins(int coinsDeposite)
     {
-        coins += coinsDeposite;
-        Observer.Instance.Broadcast(EventId.OnUpdateCoins, coins);
-        SAVE.SaveCoins(coins);
+        coins.quantity += coinsDeposite;
+        Observer.Instance.Broadcast(EventId.OnUpdateCoins, coins.quantity);
+        SAVE.SaveCoins(coins.quantity);
     }
     public bool WithdrawHearts(int heartsWithdraw)
     {
-        if (hearts - heartsWithdraw >= 0)
+        if (hearts.quantity - heartsWithdraw >= 0)
         {
-            hearts = hearts - heartsWithdraw;
-            Observer.Instance.Broadcast(EventId.OnUpdateHearts, hearts);
-            SAVE.SaveHearts(hearts);
+            hearts.quantity = hearts.quantity - heartsWithdraw;
+            Observer.Instance.Broadcast(EventId.OnUpdateHearts, hearts.quantity);
+            SAVE.SaveHearts(hearts.quantity);
             return true;
         }
         return false;

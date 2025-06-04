@@ -84,7 +84,6 @@ public class MapController : MonoBehaviour
         }
         else
         {
-            int randomIndex = UnityEngine.Random.Range(0, maps.Length);
             GameObject map = maps[UnityEngine.Random.Range(0, maps.Length)];
             keyObject.Add(map);
             tmpGO = MyPoolManager.Instance.GetFromPool(map, transform);

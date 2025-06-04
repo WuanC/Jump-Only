@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -50,11 +50,6 @@ public class Map : MonoBehaviour
     {
         isReady = false;
         ClearDataWhenDisable();
-        for(int i = 0; i < coinsSpawn.Count; i++)
-        {
-            Destroy(coinsSpawn[i]); 
-        }
-        coinsSpawn.Clear();
     }
     private void OnDestroy()
     {
@@ -70,10 +65,15 @@ public class Map : MonoBehaviour
         SpawnObstacle();
         if (boostPos != null)
             SpawnBoost(100f, transform, boostPos.position, radius);
-        SpawnCoinsPattern();
+        StartCoroutine(InitCoins());
         isReady = true;
-    }
 
+    }
+    public IEnumerator InitCoins()
+    {
+        yield return new WaitForSeconds(0.1f);
+        SpawnCoinsPattern();
+    }
     public void Map_OnUpdateSpeed(object obj)
     {
         float newSpeed = (float)obj;
@@ -159,9 +159,12 @@ public class Map : MonoBehaviour
         //Random 1 line
         int lineSelectedIndex = UnityEngine.Random.Range(0, lineTransform.Length);
         SpawnCoins(lineSelectedIndex, posEndSpawn.localPosition.y);
-
     }
-    List<GameObject> coinsSpawn = new();
+    public void CoinsBeCollected(GameObject coins)
+    {
+        if (!goInMap.Contains(coins)) return;
+        goInMap.Remove(coins);
+    }
     public void SpawnCoins(int lineIndex, float posEndSpawnY)
     {
         Transform line = lineTransform[lineIndex].transform;
@@ -169,31 +172,32 @@ public class Map : MonoBehaviour
         float lastSpawnY = line.localPosition.y;
         while (true)
         {
-            if (lastSpawnY >= posEndSpawnY)
+            if (lastSpawnY + distanceSpawnCoins >= posEndSpawnY)
             {
                 return;
             }
             float yPos = line.localPosition.y + distanceSpawnCoins * indexCoins;
             Vector2 posSpawnLocal = new Vector2(line.localPosition.x, yPos);
-            Collider2D[] collider = Physics2D.OverlapCircleAll (transform.TransformPoint(posSpawnLocal), radius, obstacleLayer);
-            Debug.Log(collider.Length);
+            Collider2D collider = Physics2D.OverlapCircle(transform.TransformPoint(posSpawnLocal), radius, obstacleLayer);
+
             if (collider == null)
             {
-                GameObject coins = Instantiate(coinsPrefabs, this.transform);
+                GameObject coins = MyPoolManager.Instance.GetFromPool(coinsPrefabs, this.transform);
                 coins.transform.localPosition = posSpawnLocal;
-                coinsSpawn.Add(coins);
+                goInMap.Add(coins);
+                coins.GetComponent<ItemWorld>().Setup(CoinsBeCollected);
 
 
             }
             else
             {
-                if(lineIndex + 1 < lineTransform.Length)
+                if (lineIndex + 1 < lineTransform.Length)
                 {
                     line = lineTransform[lineIndex + 1].transform;
                 }
-                else if(lineIndex -  1 >= 0)
+                else if (lineIndex - 1 >= 0)
                 {
-                    line  = lineTransform[lineIndex - 1].transform;
+                    line = lineTransform[lineIndex - 1].transform;
                 }
 
 
@@ -222,6 +226,6 @@ public class Map : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(boostPos.position, radius);
     }
-   
+
     #endregion
 }

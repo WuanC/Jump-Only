@@ -21,6 +21,7 @@ public enum EventId
     OnAddBoost,
     OnRemoveBoost,
     OnUpdateBoost,
+    OnPickupMagnetCoins,
 
     //Skin
     OnSelectedSkin,

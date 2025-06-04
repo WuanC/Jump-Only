@@ -44,11 +44,6 @@ public class PlayerBoost : MonoBehaviour
             }
         //Update UI
     }
-
-    private void Update()
-    {
-        UpdateTimeScale();
-    }
     public bool HasKey(string key)
     {
         if(boostDic.ContainsKey(key))
@@ -71,18 +66,14 @@ public class PlayerBoost : MonoBehaviour
     #endregion
 
     #region Slow motion
-    private float timeScaleLeft;
-    public void StartSlowMotion(float timeScale)
+
+    #endregion
+
+    #region Magnet Coins 
+
+    public void CollectMagnetCoins()
     {
-        timeScaleLeft = timeScale;
-    }
-    public void UpdateTimeScale()
-    {
-        timeScaleLeft -= Time.deltaTime;
-        if (timeScaleLeft < 0f)
-        {
-            OnEndSlowMotion?.Invoke();
-        }
+
     }
     #endregion
 

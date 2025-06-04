@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.VFX;
 
 public class FallingBlock : TrapBase
 {
@@ -10,7 +9,7 @@ public class FallingBlock : TrapBase
     private Vector2 startPos;
     [SerializeField] float distanceSpawnTele;
     [SerializeField] float distanceDisable;
-    [SerializeField] float warningDuration; 
+    [SerializeField] float warningDuration;
     public void NotifyWhenTelegrapEnd()
     {
         canMove = true;
@@ -21,7 +20,7 @@ public class FallingBlock : TrapBase
     }
     private void Update()
     {
-        if(!isSpawned && transform.position.y - Camera.main.transform.position.y < distanceSpawnTele)
+        if (!isSpawned && transform.position.y - Camera.main.transform.position.y < distanceSpawnTele)
         {
             Spawn();
             isSpawned = true;

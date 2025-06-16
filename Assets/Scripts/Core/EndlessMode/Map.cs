@@ -27,12 +27,12 @@ public class Map : MonoBehaviour
     [SerializeField] float radius;
 
     [Header("Line")]
-    [SerializeField] GameObject[] lineTransform;
+    [SerializeField] Transform[] lineTransform;
     [SerializeField] float distanceSpawnCoins;
     [SerializeField] Transform posEndSpawn;
     [SerializeField] GameObject coinsPrefabs;
     [SerializeField] LayerMask obstacleLayer;
-
+    [SerializeField] Transform mapCenter;
     bool isReady = false;
 
 
@@ -63,14 +63,16 @@ public class Map : MonoBehaviour
         this.speed = speed;
         checkCallback = false;
         SpawnObstacle();
-        if (boostPos != null)
-            SpawnBoost(100f, transform, boostPos.position, radius);
+
         StartCoroutine(InitCoins());
         isReady = true;
 
     }
     public IEnumerator InitCoins()
     {
+        yield return new WaitForSeconds(0.1f);
+        if (mapCenter != null)
+            SpawnBoost3Line(10f, transform, mapCenter.position, radius);
         yield return new WaitForSeconds(0.1f);
         SpawnCoinsPattern();
     }
@@ -152,11 +154,30 @@ public class Map : MonoBehaviour
             bw.OnDisable += OnBoostDisable;
         }
     }
+    public void SpawnBoost3Line(float rate, Transform mapParent, Vector2 posititon, float radiusCheckSpawn)
+    {
+        if (lineTransform == null || lineTransform.Length <= 0)
+        {
+
+            return;
+        }
+        float randomNumber = UnityEngine.Random.Range(0, 100);
+        if (randomNumber > rate) return;
+        GameObject boostWorldGO = MyPoolManager.Instance.GetFromPool(mapController.boostWorldPrefab, mapParent);
+        mapController.keyObject.Add(mapController.boostWorldPrefab);
+        goInMap.Add(boostWorldGO);
+        StartCoroutine(GameManager.Instance.SetPosGOInRange(posititon, radiusCheckSpawn, boostWorldGO.transform, lineTransform));
+
+        if (boostWorldGO.TryGetComponent<BoostWorld>(out BoostWorld bw))
+        {
+            bw.SetData(mapController.boostBasePrefabs[Random.Range(0, mapController.boostBasePrefabs.Count)]);
+            bw.OnDisable += OnBoostDisable;
+        }
+    }
 
     public void SpawnCoinsPattern()
     {
         if (lineTransform.Length <= 0) return;
-        //Random 1 line
         int lineSelectedIndex = UnityEngine.Random.Range(0, lineTransform.Length);
         SpawnCoins(lineSelectedIndex, posEndSpawn.localPosition.y);
     }
@@ -167,7 +188,8 @@ public class Map : MonoBehaviour
     }
     public void SpawnCoins(int lineIndex, float posEndSpawnY)
     {
-        Transform line = lineTransform[lineIndex].transform;
+
+        Transform line = lineTransform[lineIndex];
         int indexCoins = 0;
         float lastSpawnY = line.localPosition.y;
         while (true)
@@ -178,27 +200,28 @@ public class Map : MonoBehaviour
             }
             float yPos = line.localPosition.y + distanceSpawnCoins * indexCoins;
             Vector2 posSpawnLocal = new Vector2(line.localPosition.x, yPos);
-            Collider2D collider = Physics2D.OverlapCircle(transform.TransformPoint(posSpawnLocal), radius, obstacleLayer);
+            Collider2D collider = Physics2D.OverlapCircle(transform.TransformPoint(posSpawnLocal), 1f, obstacleLayer);
 
             if (collider == null)
             {
                 GameObject coins = MyPoolManager.Instance.GetFromPool(coinsPrefabs, this.transform);
                 coins.transform.localPosition = posSpawnLocal;
                 goInMap.Add(coins);
+                mapController.keyObject.Add(coinsPrefabs);
                 coins.GetComponent<ItemWorld>().Setup(CoinsBeCollected);
-
 
             }
             else
             {
                 if (lineIndex + 1 < lineTransform.Length)
                 {
-                    line = lineTransform[lineIndex + 1].transform;
+                    line = lineTransform[lineIndex + 1];
                 }
                 else if (lineIndex - 1 >= 0)
                 {
-                    line = lineTransform[lineIndex - 1].transform;
+                    line = lineTransform[lineIndex - 1];
                 }
+
 
 
             }
@@ -220,11 +243,9 @@ public class Map : MonoBehaviour
         }
         goInMap.Clear();
     }
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        if (boostPos == null) return;
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(boostPos.position, radius);
     }
 
     #endregion

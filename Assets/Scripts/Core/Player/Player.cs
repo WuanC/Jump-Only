@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -13,6 +12,9 @@ public class Player : MonoBehaviour
     bool isDead;
     bool isFristEnable = true;
 
+    Coroutine swapLane;
+
+
 
     private PlayerBoost playerBoost;
     private PlayerVisual visual;
@@ -20,11 +22,15 @@ public class Player : MonoBehaviour
     [SerializeField] float durationIgnore;
 
     public event Action<Vector2> OnPlayerStartFall;
+
+    [Header("Test new input")]
+    public bool isNewInput = false;
+    [SerializeField] Vector2[] line = new Vector2[3];
+    [SerializeField] int currentLine = 1;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         playerBoost = GetComponent<PlayerBoost>();
-        visual = GetComponentInChildren<PlayerVisual>();
     }
     private void OnEnable()
     {
@@ -33,40 +39,99 @@ public class Player : MonoBehaviour
             isFristEnable = false;
             return;
         }
+        currentLine = 1;
         Observer.Instance.Broadcast(EventId.OnPlayerRespawn, GameManager.Instance.gameMode);
 
     }
     private void Start()
     {
-        startPosition = transform.position;
-        Observer.Instance.Register(EventId.OnUserInput, Player_OnUserInput);
 
+        Observer.Instance.Register(EventId.OnUserInput, Player_OnUserInput);
+        if (isNewInput) transform.position = line[1];
+        startPosition = transform.position;
     }
     private void OnDisable()
     {
-
         rb.velocity = Vector3.zero;
     }
     private void OnDestroy()
     {
         Observer.Instance.Unregister(EventId.OnUserInput, Player_OnUserInput);
 
+        int trapLayerIndex = Mathf.RoundToInt(Mathf.Log(trapLayer.value, 2));
+        Physics2D.IgnoreLayerCollision(gameObject.layer, trapLayerIndex, false);
     }
-
+    public void SetVisual(PlayerVisual visual)
+    {
+        this.visual = visual;
+    }
     public void Player_OnUserInput(object obj)
     {
+        if (isDead) return;
         InputDirection dir = (InputDirection)obj;
-        if (dir == InputDirection.Left)
+        if (!isNewInput)
         {
-            Observer.Instance.Broadcast(EventId.OnPlayerJump, new Vector2(-jumpForceX, jumpForceY).normalized);
-            AddForceToPlayer(-jumpForceX, jumpForceY);
+            if (dir == InputDirection.Left)
+            {
+                Observer.Instance.Broadcast(EventId.OnPlayerJump, new Vector2(-jumpForceX, jumpForceY).normalized);
+                AddForceToPlayer(-jumpForceX, jumpForceY);
+            }
+            else if (dir == InputDirection.Right)
+            {
+                Observer.Instance.Broadcast(EventId.OnPlayerJump, new Vector2(jumpForceX, jumpForceY).normalized);
+                AddForceToPlayer(jumpForceX, jumpForceY);
+            }
         }
-        else if (dir == InputDirection.Right)
+        else
         {
-            Observer.Instance.Broadcast(EventId.OnPlayerJump, new Vector2(jumpForceX, jumpForceY).normalized);
-            AddForceToPlayer(jumpForceX, jumpForceY);
+            int height = 3;
+            if (dir == InputDirection.Left && currentLine > 0)
+            {
+                currentLine = currentLine - 1;
+                
+                if(swapLane != null)
+                {
+                    StopCoroutine(swapLane);
+                }
+                if(gameObject.activeSelf)
+                swapLane = StartCoroutine(SwapLane(0.25f, transform.position, line[currentLine], height));
+            }
+            else if (dir == InputDirection.Right && currentLine < line.Length - 1)
+            {
+                currentLine = currentLine + 1;
+                if (swapLane != null)
+                {
+                    StopCoroutine(swapLane);
+
+                }
+                if(gameObject.activeSelf)
+                swapLane = StartCoroutine(SwapLane(0.25f, transform.position, line[currentLine], height));
+            }
+
         }
 
+    }
+    IEnumerator SwapLane(float timeToSwapLane, Vector3 pos1, Vector3 pos2, float height)
+    {
+
+        float t = 0;
+        while (t < timeToSwapLane)
+        {
+            Vector3 targetPos = BezierCurve(pos1,new Vector3((pos1.x + pos2.x) / 2, pos1.y + height, 0), pos2, t / timeToSwapLane);
+            Vector3 dir = targetPos - transform.position;
+            transform.position = targetPos;
+            t += Time.deltaTime;
+            Observer.Instance.Broadcast(EventId.OnPlayerJump, new Vector2(dir.x, dir.y).normalized);
+
+
+
+            yield return null;
+        }
+        visual.ResetVisual();
+    }
+    protected Vector3 BezierCurve(Vector3 p0, Vector3 p1, Vector3 p2, float t)
+    {
+        return (1 - t) * (1 - t) * p0 + 2 * t * (1 - t) * p1 + t * t * p2;
     }
 
 
@@ -88,14 +153,15 @@ public class Player : MonoBehaviour
             return;
         }
         isDead = true;
+
         rb.velocity = Vector3.zero;
         gameObject.SetActive(false);
         Observer.Instance.Broadcast(EventId.OnPlayerDied, transform.position);
-        if(GameManager.Instance.gameMode == EGameMode.Endless)
+        if (GameManager.Instance.gameMode == EGameMode.Endless)
         {
             GameManager.Instance.RespawnEndless(this);
         }
-        else if(GameManager.Instance.gameMode == EGameMode.Adventure)
+        else if (GameManager.Instance.gameMode == EGameMode.Adventure)
         {
             Invoke(nameof(RespawnPlayer), timeRespawn);
         }
@@ -138,5 +204,5 @@ public class Player : MonoBehaviour
             Observer.Instance.Broadcast(EventId.OnPlayerColliding, null);
         }
     }
-   
+
 }

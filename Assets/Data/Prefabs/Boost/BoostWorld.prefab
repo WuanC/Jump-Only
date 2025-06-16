@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 450335395917743809}
   - component: {fileID: 354059914101823451}
   - component: {fileID: 7307114636348074065}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BoostWorld
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 8995293407218330038}
   - component: {fileID: 7253025982093627938}
   - component: {fileID: 3234248526288445460}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}

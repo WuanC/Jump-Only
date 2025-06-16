@@ -5,11 +5,31 @@ using UnityEngine.UI;
 
 public class StoreSkinGroup : MonoBehaviour
 {
+    public Image skinBG;
+    public Sprite notSkinOwnerBG;
+
+    public TextMeshProUGUI textName;
+    public TextMeshProUGUI textCoins;
+    public Image coinsIcons;
+
+    public Sprite coinsEnable;
+    public Sprite coinsDisable;
+
+    public Button selectBtn;
+    public Button unlockBtn;
+
+    public Button watchAdsBtn;
+
     public Button leftBtn;
     public Button rightBtn;
-    public Button selectBtn;
+
+    const string CHOOSING = "Choosing";
+    const string CHOOSE_THIS_SKIN = "Choose this skin";
+    const string UNLOCK = "Unlock";
+
+
+
     public TextMeshProUGUI txtStatusSelect;
-    public Button unlockBtn;
     public TextMeshProUGUI txtStatusUnlock;
     public Image visualSkin;
     [SerializeField] StoreSkin[] arrSkins;
@@ -39,37 +59,41 @@ public class StoreSkinGroup : MonoBehaviour
     public void UpdateUI()
     {
         visualSkin.sprite = arrSkins[indexPreview].skinData.icon;
-        if (arrSkins[indexPreview].Status)
+        textCoins.text = arrSkins[indexPreview].Price.ToString();
+        textName.text = arrSkins[indexPreview].skinData.skinName;
+        if (arrSkins[indexPreview].Owner)
         {
             unlockBtn.gameObject.SetActive(false);
             selectBtn.gameObject.SetActive(true);
+            coinsIcons.sprite = coinsDisable;
             //Unlock
             if (idSelectingSkin == arrSkins[indexPreview].skinData.id)
             {
-                txtStatusSelect.text = "Selected";
+                txtStatusSelect.text = CHOOSING;
                 selectBtn.interactable = false;
             }
             else
             {
-                txtStatusSelect.text = "Select";
+                txtStatusSelect.text = CHOOSE_THIS_SKIN;
                 selectBtn.interactable = true;
             }
 
         }
         else
         {
+            coinsIcons.sprite = coinsEnable;
             if (arrSkins[indexPreview].CanBuy)
             {
                 unlockBtn.gameObject.SetActive(true);
                 unlockBtn.interactable = true;
-                txtStatusUnlock.text = arrSkins[indexPreview].Price.ToString();
+                txtStatusUnlock.text = UNLOCK;
             }
             else
             {
                 unlockBtn.interactable = false;
                 unlockBtn.gameObject.SetActive(true);
 
-                txtStatusUnlock.text = "Lock";
+                txtStatusUnlock.text = arrSkins[indexPreview].HowToUnlock.ToString();
             }
 
             
@@ -131,7 +155,7 @@ public class StoreSkinGroup : MonoBehaviour
         {
             if (skinId == arrSkins[i].skinData.id)
             {
-                arrSkins[i].Status = true;
+                arrSkins[i].Owner = true;
                 SaveCharacterUnlock();
                 UpdateUI();
                 return;
@@ -153,13 +177,13 @@ public class StoreSkinGroup : MonoBehaviour
         List<int> idUnlocks = new();
         for(int i = 0; i < arrSkins.Length; i++)
         {
-            if (arrSkins[i].Status) idUnlocks.Add(arrSkins[i].skinData.id);
+            if (arrSkins[i].Owner) idUnlocks.Add(arrSkins[i].skinData.id);
         }
         SAVE.SaveUnlockCharacter(idUnlocks);
     }
     public void LoadCharacterUnlock()
     {
-        arrSkins[0].Status = true;
+        arrSkins[0].Owner = true;
         List<int> idUnlocks = SAVE.LoadUnlockCharacterIds();
         if (idUnlocks == null || idUnlocks.Count == 0) return;
         for(int i = 0; i < idUnlocks.Count; i++)
@@ -168,7 +192,7 @@ public class StoreSkinGroup : MonoBehaviour
             {
                 if (arrSkins[j].skinData.id == idUnlocks[i])
                 {
-                    arrSkins[j].Status = true;
+                    arrSkins[j].Owner = true;
                     break;
                 }
             }
@@ -181,7 +205,7 @@ public class StoreSkinGroup : MonoBehaviour
         {
             for(int i = 0; i < arrSkins.Length;i++)
             {
-                if (arrSkins[i].Status) indexPreview = i;
+                if (arrSkins[i].Owner) indexPreview = i;
             }
         }
         else

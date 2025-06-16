@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
@@ -32,7 +31,7 @@ public class GameManager : Singleton<GameManager>
     [Header("Endless mode")]
     private const string endlessPath = "LevelEndless";
     public GameObject levelEndlessPrefabs;
-
+    public GameObject levelEndlessPrefabs3;
 
 
     [Header("Player Spawn Endless")]
@@ -91,15 +90,16 @@ public class GameManager : Singleton<GameManager>
 
         List<GameObject> list = Resources.LoadAll<GameObject>(endlessPath).ToList();
         levelEndlessPrefabs = list.First();
+        levelEndlessPrefabs3 = list[7];
     }
 
     #region level manager
 
     public void PlayerWin()
     {
-        StartCoroutine(PlayerWinCouroutine());
+        StartCoroutine(PlayerAdventureWinCouroutine());
     }
-    public IEnumerator PlayerWinCouroutine()
+    public IEnumerator PlayerAdventureWinCouroutine()
     {
         Time.timeScale = 0.3f;
         OnClearLevel?.Invoke();
@@ -143,11 +143,14 @@ public class GameManager : Singleton<GameManager>
         }
 
     }
-    public void LoadEndlessLevel()
+    public void LoadEndlessLevel(bool basic = true)
     {
         gameMode = EGameMode.Endless;
         if (currentLevelObj != null) Destroy(currentLevelObj);
-        currentLevelObj = Instantiate(levelEndlessPrefabs);
+        if (basic)
+            currentLevelObj = Instantiate(levelEndlessPrefabs);
+        else
+            currentLevelObj = Instantiate(levelEndlessPrefabs3);
     }
     #endregion
 
@@ -164,10 +167,7 @@ public class GameManager : Singleton<GameManager>
         Vector2 newPos = gameObj.position;
         while (true)
         {
-            newPos = pointOrigin + UnityEngine.Random.insideUnitCircle * radiusCheck;
-
-            //RaycastHit hit;
-            //Physics.Raycast(Camera.main.transform.position, new Vector3(newPos.x, newPos.y, 0) - Camera.main.transform.position,out hit, Mathf.Infinity);
+           newPos = pointOrigin + UnityEngine.Random.insideUnitCircle * radiusCheck;
            Collider2D hit = Physics2D.OverlapPoint(newPos);
             if (hit == null)
             {
@@ -181,6 +181,25 @@ public class GameManager : Singleton<GameManager>
         }
         gameObj.position = newPos;
     }
+    public IEnumerator SetPosGOInRange(Vector2 pointOrigin, float radiusCheck, Transform gameObj, Transform[] lockXArr)
+    {
+        Vector2 newPos = gameObj.position;
+        while (true)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, lockXArr.Length);
+            float xPos = lockXArr[randomIndex].position.x;
+            float yPos = (pointOrigin + UnityEngine.Random.insideUnitCircle * radiusCheck).y;
+            newPos = new Vector2(xPos, yPos);
+            Collider2D hit = Physics2D.OverlapPoint(newPos);
+            if (hit == null)
+            {
+                break;
+            }
+            yield return null;
+        }
+        gameObj.position = newPos;
+        
+    }
 
     public void ContinueEndlessMode()
     {
@@ -188,7 +207,8 @@ public class GameManager : Singleton<GameManager>
     }
     public void RestartEndlessMode()
     {
-        LoadEndlessLevel();
+        bool mode = !player.isNewInput ;
+        LoadEndlessLevel(mode);
     }
     private void OnDrawGizmos()
     {

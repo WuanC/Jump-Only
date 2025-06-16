@@ -35,5 +35,6 @@ public class GameUI : MonoBehaviour
     {
         GameManager.Instance.OnLevelChanged -= GameManager_OnLevelChanged;
 
+
     }
 }

@@ -43,7 +43,7 @@ public class GameEndlessUI : MonoBehaviour
     {
         distance = (float)obj;
         float tmpDistance = Mathf.Round(distance);
-        textDistance.text = (tmpDistance).ToString();
+        textDistance.text = $"{tmpDistance}m";
     }
     public void GameOverEndless_OnPlayerDied(object obj)
     {

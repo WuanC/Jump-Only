@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class SAVE
 {
-    public const string LEVEL_KEY = "K_Level";
+    public const string LEVEL_UNLOCK_KEY = "K_Level_Unlock";
     public const string AUDIO_KEY = "K_Audio";
     public const string HIGH_SCORE_KEY = "K_HighScore";
     public const string CHARACTER_UNLOCK_KEY = "K_CUnlock";
@@ -17,16 +17,18 @@ public static class SAVE
     {
         if (int.TryParse(level, out var levelValue))
         {
-            int currenLevel = PlayerPrefs.GetInt(LEVEL_KEY, 1);
+            int currenLevel = PlayerPrefs.GetInt(LEVEL_UNLOCK_KEY, 1);
             if (levelValue > currenLevel)
             {
-                PlayerPrefs.SetInt(LEVEL_KEY, levelValue);
+
+                PlayerPrefs.SetInt(LEVEL_UNLOCK_KEY, levelValue);
+                Observer.Instance.Broadcast(EventId.OnUnlockNewLevel, currenLevel);
             }
         }
     }
-    public static int GetCurrentLevel()
+    public static int GetUnlockLevel()
     {
-        return PlayerPrefs.GetInt(LEVEL_KEY, 1);
+        return PlayerPrefs.GetInt(LEVEL_UNLOCK_KEY, 1);
     }
     #endregion
 

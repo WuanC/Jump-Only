@@ -16,7 +16,11 @@ public class PlayerSkin : MonoBehaviour
         int idSkin = GameManager.Instance.IdSkinSelected;
         for (int i = 0; i < skins.Length; i++)
         {
-            if (skins[i].skinData.id == idSkin) skins[i].gameObject.SetActive(true);
+            if (skins[i].skinData.id == idSkin)
+            {
+                skins[i].gameObject.SetActive(true);
+                GetComponent<Player>().SetVisual(skins[i].GetComponent<PlayerVisual>());
+            }
             else skins[i].gameObject.SetActive(false);
         }
     }

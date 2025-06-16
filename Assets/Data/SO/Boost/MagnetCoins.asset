@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08bbec6a4e275fc4ca56789d474119ec, type: 3}
   m_Name: MagnetCoins
   m_EditorClassIdentifier: 
-  boostName: 
-  icon: {fileID: 0}
+  boostName: Magnet Coins
+  icon: {fileID: 21300000, guid: 1af084b75a51f48428f114558669e55a, type: 3}

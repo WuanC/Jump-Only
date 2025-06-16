@@ -366,7 +366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToUpdateSpeed: 30
-  speed: 3
+  speed: 15
   boostWorldPrefab: {fileID: 908756412989159256, guid: 9321aae8680e73844ba264d8ae6173e8, type: 3}
   boostBasePrefabs:
   - {fileID: 6476964789228643938, guid: 0f3d5fdf9eba12444803a172d53ad178, type: 3}

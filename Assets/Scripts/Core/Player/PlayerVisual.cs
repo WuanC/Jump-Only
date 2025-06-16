@@ -1,4 +1,4 @@
-using DG.Tweening;
+﻿using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 
@@ -6,6 +6,8 @@ public class PlayerVisual : MonoBehaviour
 {
     private Animator anim;
     private SpriteRenderer sr;
+    private WorldSkin ws;
+
     private Tween rotateTween;
     private Tween fadeTween;
     private Quaternion startRotation;
@@ -15,10 +17,13 @@ public class PlayerVisual : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
+        ws = GetComponent<WorldSkin>();
     }
     private void Start()
     {
+        sr.sprite = ws.skinData.icon;
         startRotation = transform.rotation;
+
         player.OnPlayerStartFall += Player_OnPlayerStartFall;
         Observer.Instance.Register(EventId.OnPlayerJump, Player_OnPlayerStartJump);
         Observer.Instance.Register(EventId.OnPlayerDied, OnPlayerDied);
@@ -31,14 +36,16 @@ public class PlayerVisual : MonoBehaviour
             rotateTween.Kill();
         rotateTween = transform.DORotate(new Vector3(0, 0, angleZ + 90), 0.5f);
     }
-
     private void Player_OnPlayerStartJump(object obj)
     {
         Vector2 dir = (Vector2)obj;
-        anim.SetTrigger(ANIM_JUMP);
+        //anim.SetTrigger(ANIM_JUMP);
         float angleZ = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        if (rotateTween != null && rotateTween.IsActive())
+        if (rotateTween != null && rotateTween.IsActive() && rotateTween.IsPlaying())
+        {
             rotateTween.Kill();
+        }
+
         rotateTween = transform.DORotate(new Vector3(0, 0, angleZ - 90), 0.1f);
     }
     private void OnPlayerDied(object obj)
@@ -47,6 +54,7 @@ public class PlayerVisual : MonoBehaviour
             rotateTween.Kill();
         transform.rotation = startRotation;
     }
+    
     public void Immortal(bool isImortal)
     {
         if (isImortal)
@@ -62,6 +70,16 @@ public class PlayerVisual : MonoBehaviour
             sr.DOKill();
         }
     }
+    public void ResetVisual()
+    {
+        if (rotateTween != null && rotateTween.IsActive())
+        {
+            rotateTween.Kill();
+
+        }
+        rotateTween = transform.DORotate(startRotation.eulerAngles, 0.1f);
+    }
+
     private void OnDestroy()
     {
         player.OnPlayerStartFall -= Player_OnPlayerStartFall;

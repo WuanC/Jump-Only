@@ -6,6 +6,10 @@ public enum EventId
     OnPlayerJump,                   // Quest Jump
     OnPlayerWin,
 
+    //SaveLoad
+    OnUnlockNewLevel,
+
+
     OnTransitionScreen,
     OnPlayerCompletedGame,
     OnBackToMenu,

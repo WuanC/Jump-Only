@@ -6,9 +6,8 @@ public class MenuUI : MonoBehaviour
 {
     [Header("Start")]
     public GameObject startPanel;
-    public Button startBtn;
-    public Button continueBtn;
     public Button endlessBtn;
+    public Button endless3LineBtn;
     [SerializeField] GameObject endlessGO;
     [SerializeField] GameObject adventureGO;
 
@@ -20,21 +19,19 @@ public class MenuUI : MonoBehaviour
     public void Start()
     {
         startPanel.SetActive(true);
-        startBtn.onClick.AddListener(StartBtnOnClick);
-        continueBtn.onClick.AddListener(ContinueBtnOnClick);
         restartBtn.onClick.AddListener(StartBtnOnClick);
         exitBtn.onClick.AddListener(ExitBtnOnClick);
         endlessBtn.onClick.AddListener(EndlessBtnOnClick);
+        endless3LineBtn.onClick.AddListener(Endless3LineBtnOnClick);
         Observer.Instance.Register(EventId.OnPlayerCompletedGame, MenuUI_OnPlayerCompletedGame);
         Observer.Instance.Register(EventId.OnBackToMenu, MenuUI_OnBackToMenu);
     }
     private void OnDestroy()
     {
-        startBtn.onClick.RemoveListener(StartBtnOnClick);
-        continueBtn.onClick.RemoveListener(ContinueBtnOnClick);
         restartBtn.onClick.RemoveListener(StartBtnOnClick);
         exitBtn.onClick.RemoveListener(ExitBtnOnClick);
         endlessBtn.onClick.RemoveListener(EndlessBtnOnClick);
+        endless3LineBtn.onClick.RemoveListener(Endless3LineBtnOnClick);
         Observer.Instance.Unregister(EventId.OnPlayerCompletedGame, MenuUI_OnPlayerCompletedGame);
         Observer.Instance.Unregister(EventId.OnBackToMenu, MenuUI_OnBackToMenu);
     }
@@ -54,17 +51,6 @@ public class MenuUI : MonoBehaviour
             GameManager.Instance.LoadNewLevel();
         }));
     }
-    void ContinueBtnOnClick()
-    {
-        adventureGO.SetActive(true);
-        Observer.Instance.Broadcast(EventId.OnTransitionScreen, (Action)(() =>
-        {
-            startPanel.SetActive(false);
-            endPanel.SetActive(false);
-            GameManager.Instance.CurrentLevel = SAVE.GetCurrentLevel();
-            GameManager.Instance.LoadNewLevel(GameManager.Instance.CurrentLevel.ToString());
-        }));
-    }
     void EndlessBtnOnClick()
     {
         endlessGO.SetActive(true);
@@ -73,6 +59,16 @@ public class MenuUI : MonoBehaviour
             startPanel.SetActive(false);
             endPanel.SetActive(false);
             GameManager.Instance.LoadEndlessLevel();
+        }));
+    }
+    void Endless3LineBtnOnClick()
+    {
+        endlessGO.SetActive(true);
+        Observer.Instance.Broadcast(EventId.OnTransitionScreen, (Action)(() =>
+        {
+            startPanel.SetActive(false);
+            endPanel.SetActive(false);
+            GameManager.Instance.LoadEndlessLevel(false);
         }));
     }
     void MenuUI_OnBackToMenu(object obj)

@@ -11,7 +11,6 @@ public class AdventureMenu : MonoBehaviour, IPointerDownHandler
     public TextMeshProUGUI levelTxt;
     int selectedLevel;
 
-
     [Header("Spawn Button")]
     [SerializeField] GameObject levelBtn;
     float[] xPosArr = { -400, 0, 400 };
@@ -19,20 +18,20 @@ public class AdventureMenu : MonoBehaviour, IPointerDownHandler
     [SerializeField] RectTransform contentRect;
     [SerializeField] private int totalBtn;
     [SerializeField] private float startYPos;
-
+    [SerializeField] MenuUI menuUI;
     List<ButtonLevel> buttons = new();
 
 
     public void OnPointerDown(PointerEventData eventData)
     {
         selectedLevel = SAVE.GetUnlockLevel();
-        SetText(selectedLevel);
+        SetLevel(selectedLevel);
     }
 
     private void Start()
     {
         selectedLevel = SAVE.GetUnlockLevel();
-        SetText(selectedLevel);
+        SetLevel(selectedLevel);
 
         playBtn.onClick.AddListener(OnPlayBtnClicked);
         Observer.Instance.Register(EventId.OnUnlockNewLevel, LevelGenerator_OnUnlockNewLevel);
@@ -67,10 +66,7 @@ public class AdventureMenu : MonoBehaviour, IPointerDownHandler
     }
     public void OnPlayBtnClicked()
     {
-        Observer.Instance.Broadcast(EventId.OnTransitionScreen, (Action)(() =>
-        {
-            GameManager.Instance.LoadNewLevel(selectedLevel.ToString());
-        }));
+        menuUI.StartBtnOnClick(selectedLevel);
     }
     public void UpdateButton()
     {
@@ -88,7 +84,7 @@ public class AdventureMenu : MonoBehaviour, IPointerDownHandler
             }
         }
     }
-    public void SetText(int level)
+    public void SetLevel(int level)
     {
         selectedLevel = level;
         levelTxt.text = level.ToString();

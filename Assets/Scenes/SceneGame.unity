@@ -209,7 +209,6 @@ GameObject:
   - component: {fileID: 12928091}
   - component: {fileID: 12928090}
   - component: {fileID: 12928089}
-  - component: {fileID: 12928092}
   - component: {fileID: 12928093}
   - component: {fileID: 12928094}
   m_Layer: 5
@@ -307,25 +306,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 12928087}
   m_CullTransparentMesh: 1
---- !u!114 &12928092
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 12928087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da71585412e5d9643bb17605ea18b3fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playBtn: {fileID: 1284722506}
-  levelTxt: {fileID: 1329002288}
-  levelBtn: {fileID: 1705753570303686307, guid: 6925b76add093d84c8f37ffc5a7b081c, type: 3}
-  spaceY: 200
-  contentRect: {fileID: 174524066}
-  totalBtn: 100
-  startYPos: -400
 --- !u!225 &12928093
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1694,7 +1674,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 997.1293}
+  m_AnchoredPosition: {x: 0, y: 818.0325}
   m_SizeDelta: {x: 1080, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &177770651
@@ -1708,6 +1688,7 @@ GameObject:
   - component: {fileID: 177770652}
   - component: {fileID: 177770654}
   - component: {fileID: 177770653}
+  - component: {fileID: 177770655}
   m_Layer: 5
   m_Name: AdventurePanel
   m_TagString: Untagged
@@ -1774,6 +1755,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 177770651}
   m_CullTransparentMesh: 1
+--- !u!114 &177770655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177770651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da71585412e5d9643bb17605ea18b3fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playBtn: {fileID: 1284722506}
+  levelTxt: {fileID: 1329002288}
+  levelBtn: {fileID: 1705753570303686307, guid: 6925b76add093d84c8f37ffc5a7b081c, type: 3}
+  spaceY: 200
+  contentRect: {fileID: 174524066}
+  totalBtn: 100
+  startYPos: -400
+  menuUI: {fileID: 1756180723}
 --- !u!1 &199560822
 GameObject:
   m_ObjectHideFlags: 0
@@ -5137,7 +5138,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 803386814}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 107004519}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &803386814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7456,7 +7469,6 @@ GameObject:
   - component: {fileID: 1122469926}
   - component: {fileID: 1122469925}
   - component: {fileID: 1122469924}
-  - component: {fileID: 1122469928}
   m_Layer: 5
   m_Name: GamePlayCanvasUI
   m_TagString: Untagged
@@ -7525,7 +7537,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 9
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!224 &1122469927
 RectTransform:
@@ -7549,21 +7561,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1122469928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1122469923}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 052b37a5e0904c843b833b0ff5577d02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textLevel: {fileID: 391584929}
-  menuBtn: {fileID: 1587595674}
-  musicBtn: {fileID: 1899549719}
 --- !u!1 &1133988690
 GameObject:
   m_ObjectHideFlags: 0
@@ -10220,7 +10217,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1500725610}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 107004519}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1500725610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10635,8 +10644,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2041446220}
   m_HandleRect: {fileID: 2041446219}
   m_Direction: 0
-  m_Value: -0.00000005651404
-  m_Size: 0.33333337
+  m_Value: 0
+  m_Size: 0.33333334
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -12273,6 +12282,7 @@ GameObject:
   - component: {fileID: 1753616404}
   - component: {fileID: 1753616406}
   - component: {fileID: 1753616405}
+  - component: {fileID: 1753616407}
   m_Layer: 5
   m_Name: GlobalUI
   m_TagString: Untagged
@@ -12340,6 +12350,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1753616403}
   m_CullTransparentMesh: 1
+--- !u!114 &1753616407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1753616403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 052b37a5e0904c843b833b0ff5577d02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textLevel: {fileID: 391584929}
+  settingsPanel: {fileID: 107004519}
+  settingsBtn: {fileID: 803386813}
+  closeBtn: {fileID: 1500725609}
+  againBtn: {fileID: 891839223}
+  menuBtn: {fileID: 1587595674}
+  musicBtn: {fileID: 1899549719}
 --- !u!1 &1756180718
 GameObject:
   m_ObjectHideFlags: 0
@@ -12462,7 +12491,6 @@ MonoBehaviour:
   endlessGO: {fileID: 1980878834}
   adventureGO: {fileID: 1583054726}
   endPanel: {fileID: 1457172375}
-  restartBtn: {fileID: 1141826452}
   exitBtn: {fileID: 847449238}
 --- !u!1001 &1768021210
 PrefabInstance:

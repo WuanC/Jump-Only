@@ -43,4 +43,7 @@ public enum EventId
     OnPickupBoost,
     OnSpendCoins,
 
+    //Effect
+    OnSpawnEffect,
+
 }

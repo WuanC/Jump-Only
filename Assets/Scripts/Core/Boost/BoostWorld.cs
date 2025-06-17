@@ -7,7 +7,7 @@ public class BoostWorld : MonoBehaviour
 {
     [SerializeField] BoostBase boost;
     [SerializeField] SpriteRenderer sr;
-    public event Action<BoostWorld ,GameObject> OnDisable;
+    public event Action<GameObject> OnDisable;
     private void OnEnable()
     {
         if (boost != null) sr.sprite = boost.boostData.icon;
@@ -29,7 +29,8 @@ public class BoostWorld : MonoBehaviour
             }
             Observer.Instance.Broadcast(EventId.OnPickupBoost, boost.boostData);
             gameObject.SetActive(false);
-            OnDisable?.Invoke(this, gameObject);
+            OnDisable?.Invoke(gameObject);
+            OnDisable = null;
         }
     }
 }

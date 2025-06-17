@@ -13,13 +13,11 @@ public class MenuUI : MonoBehaviour
 
     [Header("End")]
     public GameObject endPanel;
-    public Button restartBtn;
     public Button exitBtn;
 
     public void Start()
     {
         startPanel.SetActive(true);
-        restartBtn.onClick.AddListener(StartBtnOnClick);
         exitBtn.onClick.AddListener(ExitBtnOnClick);
         endlessBtn.onClick.AddListener(EndlessBtnOnClick);
         endless3LineBtn.onClick.AddListener(Endless3LineBtnOnClick);
@@ -28,7 +26,6 @@ public class MenuUI : MonoBehaviour
     }
     private void OnDestroy()
     {
-        restartBtn.onClick.RemoveListener(StartBtnOnClick);
         exitBtn.onClick.RemoveListener(ExitBtnOnClick);
         endlessBtn.onClick.RemoveListener(EndlessBtnOnClick);
         endless3LineBtn.onClick.RemoveListener(Endless3LineBtnOnClick);
@@ -40,15 +37,15 @@ public class MenuUI : MonoBehaviour
         adventureGO.SetActive(false);
         endlessGO.SetActive(false);
     }
-    void StartBtnOnClick()
+    public void StartBtnOnClick(int level)
     {
         adventureGO.SetActive(true);
         Observer.Instance.Broadcast(EventId.OnTransitionScreen, (Action)(() =>
         {
-            GameManager.Instance.CurrentLevel = 1;
+            GameManager.Instance.CurrentLevel = level;
             startPanel.SetActive(false);
             endPanel.SetActive(false);
-            GameManager.Instance.LoadNewLevel();
+            GameManager.Instance.LoadNewLevel(level.ToString());
         }));
     }
     void EndlessBtnOnClick()
@@ -73,9 +70,15 @@ public class MenuUI : MonoBehaviour
     }
     void MenuUI_OnBackToMenu(object obj)
     {
-        adventureGO.SetActive(false);
-        endlessGO.SetActive(false);
-        EnableStartMenu();
+
+        Observer.Instance.Broadcast(EventId.OnTransitionScreen, (Action)(() =>
+        {
+            GameManager.Instance.DeleteCurrentLevel();
+            adventureGO.SetActive(false);
+            endlessGO.SetActive(false);
+            EnableStartMenu();
+        }));
+
     }
     void MenuUI_OnPlayerCompletedGame(object obj)
     {

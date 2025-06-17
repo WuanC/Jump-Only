@@ -38,9 +38,31 @@ public class MapController : MonoBehaviour
         SpawnMap();
         isPlayerAlive = true;
     }
+    [SerializeField] LayerMask trapLayer;
+    [SerializeField] float distanceDestroy;
     private void Update()
     {
         distance += speed * Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Collider2D[] hit = Physics2D.OverlapCircleAll(transform.position, distanceDestroy, trapLayer);
+            foreach (var item in hit)
+            {
+                Debug.Log(item.gameObject.name);
+                if (item.TryGetComponent<TrapBase>(out TrapBase trap))
+                {
+
+                    trap.DestroySelf();
+                }
+            }
+        }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, distanceDestroy);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, distanceDestroy);
     }
     public void OnDestroy()
     {

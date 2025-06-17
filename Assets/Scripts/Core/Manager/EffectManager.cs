@@ -6,9 +6,10 @@ public class EffectManager : MonoBehaviour
 
     public void Start()
     {
-        Observer.Instance.Register(EventId.OnPlayerDied, EffectManager_OnPlayerDied);
+        Observer.Instance.Register(EventId.OnPlayerDied, EffectManager_SpawnEffectDestroy);
+        Observer.Instance.Register(EventId.OnSpawnEffect, EffectManager_SpawnEffectDestroy);
     }
-    public void EffectManager_OnPlayerDied(object obj)
+    public void EffectManager_SpawnEffectDestroy(object obj)
     {
         Vector3 postition = (Vector3)obj;
         if (playerDeathEffect != null)
@@ -19,6 +20,7 @@ public class EffectManager : MonoBehaviour
     }
     public void OnDestroy()
     {
-        Observer.Instance.Unregister(EventId.OnPlayerDied, EffectManager_OnPlayerDied);
+        Observer.Instance.Unregister(EventId.OnPlayerDied, EffectManager_SpawnEffectDestroy);
+        Observer.Instance.Unregister(EventId.OnSpawnEffect, EffectManager_SpawnEffectDestroy);
     }
 }

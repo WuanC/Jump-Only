@@ -14,7 +14,7 @@ public class ButtonLevel : MonoBehaviour
     }
     private void Start()
     {
-        btn.onClick.AddListener(() => EnterLevel(levelTarget));
+        btn.onClick.AddListener(() => SelectLevel(levelTarget));
     }
     public void Setup(int levelTarget, AdventureMenu menu)
     {
@@ -22,10 +22,9 @@ public class ButtonLevel : MonoBehaviour
         this.levelTarget = levelTarget;
         txtLevel.text = levelTarget.ToString();
     }
-    public void EnterLevel(int level)
+    public void SelectLevel(int level)
     {
-        GameManager.Instance.CurrentLevel = level;
-        menu.SetText(level);
+        menu.SetLevel(level);
     }
     private void OnDestroy()
     {

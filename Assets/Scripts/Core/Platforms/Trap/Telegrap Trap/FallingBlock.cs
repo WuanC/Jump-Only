@@ -33,7 +33,7 @@ public class FallingBlock : TrapBase
         transform.position += Vector3.down * speed * Time.deltaTime;
         if (Camera.main.transform.position.y - transform.position.y > distanceDisable)
         {
-            gameObject.SetActive(false);
+            DestroySelf(false);
         }
     }
     void Spawn()

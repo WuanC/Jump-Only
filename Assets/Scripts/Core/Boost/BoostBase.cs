@@ -17,4 +17,5 @@ public abstract class BoostBase : MonoBehaviour, IBoost
             playerBoost.OnPlayerBoostDestroy += Deactive;
         }
     }
+    
 }

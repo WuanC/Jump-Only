@@ -20,7 +20,7 @@ public class Map : MonoBehaviour
     [SerializeField] Transform[] _obstaclePosition;
     List<int> visitedPos = new();
     [SerializeField] List<GameObject> goInMap = new();
-
+    
 
     [Header("Boost")]
     [SerializeField] Transform boostPos;
@@ -33,6 +33,8 @@ public class Map : MonoBehaviour
     [SerializeField] GameObject coinsPrefabs;
     [SerializeField] LayerMask obstacleLayer;
     [SerializeField] Transform mapCenter;
+
+
     bool isReady = false;
 
 
@@ -96,6 +98,8 @@ public class Map : MonoBehaviour
             gameObject.SetActive(false);
         }
 
+
+
     }
 
     public float GetTopPos()
@@ -112,6 +116,7 @@ public class Map : MonoBehaviour
     }
 
     #region Spawn GameObject
+    #region Obstacle
     public void SpawnObstacle()
     {
         if (mapController.listObstacleInMaps == null || mapController.listObstacleInMaps.Length == 0 ||
@@ -129,14 +134,18 @@ public class Map : MonoBehaviour
             int ramdomPosIndex = UnityEngine.Random.Range(0, visitedPos.Count);
 
             int randomObstacle = UnityEngine.Random.Range(0, mapController.listObstacleInMaps.Length);
-            GameObject mapPrefab = mapController.listObstacleInMaps[randomObstacle];
-            mapController.keyObject.Add(mapPrefab);
-            GameObject tmpObject = MyPoolManager.Instance.GetFromPool(mapPrefab, transform);
+            GameObject obstaclePrefab = mapController.listObstacleInMaps[randomObstacle];
+            mapController.keyObject.Add(obstaclePrefab);
+            GameObject tmpObject = MyPoolManager.Instance.GetFromPool(obstaclePrefab, transform);
             tmpObject.transform.position = _obstaclePosition[visitedPos[ramdomPosIndex]].transform.position;
+            if(tmpObject.TryGetComponent<TrapBase>(out TrapBase trapBase)){
+                trapBase.OnTrapDisable += OnGameObjectBeDisable;
+            }
             goInMap.Add(tmpObject);
             visitedPos.RemoveAt(ramdomPosIndex);
         }
     }
+    #endregion 
     public void SpawnBoost(float rate, Transform mapParent, Vector2 posititon, float radiusCheckSpawn)
     {
 
@@ -151,7 +160,7 @@ public class Map : MonoBehaviour
         if (boostWorldGO.TryGetComponent<BoostWorld>(out BoostWorld bw))
         {
             bw.SetData(mapController.boostBasePrefabs[Random.Range(0, mapController.boostBasePrefabs.Count)]);
-            bw.OnDisable += OnBoostDisable;
+            bw.OnDisable += OnGameObjectBeDisable;
         }
     }
     public void SpawnBoost3Line(float rate, Transform mapParent, Vector2 posititon, float radiusCheckSpawn)
@@ -171,7 +180,7 @@ public class Map : MonoBehaviour
         if (boostWorldGO.TryGetComponent<BoostWorld>(out BoostWorld bw))
         {
             bw.SetData(mapController.boostBasePrefabs[Random.Range(0, mapController.boostBasePrefabs.Count)]);
-            bw.OnDisable += OnBoostDisable;
+            bw.OnDisable += OnGameObjectBeDisable;
         }
     }
 
@@ -180,11 +189,6 @@ public class Map : MonoBehaviour
         if (lineTransform.Length <= 0) return;
         int lineSelectedIndex = UnityEngine.Random.Range(0, lineTransform.Length);
         SpawnCoins(lineSelectedIndex, posEndSpawn.localPosition.y);
-    }
-    public void CoinsBeCollected(GameObject coins)
-    {
-        if (!goInMap.Contains(coins)) return;
-        goInMap.Remove(coins);
     }
     public void SpawnCoins(int lineIndex, float posEndSpawnY)
     {
@@ -208,7 +212,7 @@ public class Map : MonoBehaviour
                 coins.transform.localPosition = posSpawnLocal;
                 goInMap.Add(coins);
                 mapController.keyObject.Add(coinsPrefabs);
-                coins.GetComponent<ItemWorld>().Setup(CoinsBeCollected);
+                coins.GetComponent<ItemWorld>().OnBeCollected += OnGameObjectBeDisable;
 
             }
             else
@@ -229,12 +233,6 @@ public class Map : MonoBehaviour
             indexCoins++;
         }
     }
-    public void OnBoostDisable(BoostWorld bw, GameObject obj)
-    {
-        goInMap.Remove(obj);
-        bw.OnDisable -= OnBoostDisable;
-
-    }
     public void ClearDataWhenDisable()
     {
         foreach (var go in goInMap)
@@ -249,4 +247,11 @@ public class Map : MonoBehaviour
     }
 
     #endregion
+    public void OnGameObjectBeDisable(GameObject obj)
+    {
+        if (goInMap.Contains(obj))
+        {
+            goInMap.Remove(obj);
+        }
+    }
 }

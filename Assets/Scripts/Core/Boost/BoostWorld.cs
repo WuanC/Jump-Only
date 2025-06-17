@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,7 @@ public class BoostWorld : MonoBehaviour
 {
     [SerializeField] BoostBase boost;
     [SerializeField] SpriteRenderer sr;
+    public event Action<GameObject> OnDisable;
     private void OnEnable()
     {
         if (boost != null) sr.sprite = boost.boostData.icon;
@@ -25,7 +27,10 @@ public class BoostWorld : MonoBehaviour
                 BoostBase tmp = Instantiate(boost);
                 tmp.Active();
             }
+            Observer.Instance.Broadcast(EventId.OnPickupBoost, boost.boostData);
             gameObject.SetActive(false);
+            OnDisable?.Invoke(gameObject);
+            OnDisable = null;
         }
     }
 }

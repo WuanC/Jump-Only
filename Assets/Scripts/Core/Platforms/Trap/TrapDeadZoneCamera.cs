@@ -26,18 +26,18 @@ public class TrapDeadZoneCamera : TrapBase
 
         if(position == PositionByCamera.Down)
         {
-            transform.localPosition = new Vector3(0, -virtualCamera.m_Lens.OrthographicSize, transform.localPosition.z);
+            transform.localPosition = new Vector3(0, -virtualCamera.m_Lens.OrthographicSize + 0.3f, transform.localPosition.z);
         }
         else
         {
             Vector3 newLocalAngle = new Vector3(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z + 180);
             transform.localEulerAngles = newLocalAngle;
-            transform.localPosition = new Vector3(0, +virtualCamera.m_Lens.OrthographicSize, transform.localPosition.z);
+            transform.localPosition = new Vector3(0, +virtualCamera.m_Lens.OrthographicSize - 0.3f, transform.localPosition.z);
         }
 
         float width = virtualCamera.m_Lens.OrthographicSize * 2 * virtualCamera.m_Lens.Aspect;
-        sr.size = new Vector2(width, 1);
-        boxCol.size = new Vector2(width, 1);
+        sr.size = new Vector2(width, sr.size.y);
+        boxCol.size = new Vector2(width, sr.size.y);
  
 
     }

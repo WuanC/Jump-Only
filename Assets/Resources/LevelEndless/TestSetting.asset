@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 941b97b36b7292e49b4d9fef79f6e23b, type: 3}
+  m_Name: TestSetting
+  m_EditorClassIdentifier: 
+  data:
+  - levelCountPass: 0
+    listObstacleInMap:
+    - {fileID: 1249366916383135920, guid: 97fdad1a2dbe08e449862db805218e5a, type: 3}
+    listMap:
+    - {fileID: 2648137685406440967, guid: 54054d44e5796d9448359d5e72cceb23, type: 3}
+  - levelCountPass: 1
+    listObstacleInMap: []
+    listMap:
+    - {fileID: 7139640757180211701, guid: 62e0e5d51bd3b2949be58b12cc800223, type: 3}
+    - {fileID: 4919794650852631008, guid: 0b24a7eec61be4842a87a69bbb6f88e3, type: 3}

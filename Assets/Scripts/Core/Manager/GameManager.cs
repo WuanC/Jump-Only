@@ -31,26 +31,57 @@ public class GameManager : Singleton<GameManager>
     [Header("Endless mode")]
     private const string endlessPath = "LevelEndless";
     public GameObject levelEndlessPrefabs;
+    public GameObject levelEndlessPrefabs3;
+
+
+    [Header("Player Spawn Endless")]
+    [SerializeField] float radiusCheckObstacle;
+    Player player;
+
+
+    [Header("Currency")]
+
+    [SerializeField] ItemDataSO coinsData;
+    [SerializeField] ItemDataSO heartsData;
+
+    Item coins;
+    Item hearts;
+    
+
+    //[SerializeField] int coins;
+    //[SerializeField] int hearts;
+    public int Coins => coins.quantity;
+    public int Hearts => hearts.quantity;
+
 
     //Event
     public event Action<string, int> OnLevelChanged;
     public event Action OnClearLevel;
-
-    [Header("Player Spawn Endless")]
-    [SerializeField] float radiusCheckObstacle;
-    //[SerializeField] LayerMask obstacle;
-    Player player;
-
-    [Header("Player skin")]
-    public int idSkinSelected;
+    public int IdSkinSelected { get; set; }
     protected override void Awake()
     {
         base.Awake();
         LoadData();
+        InitializeData();
     }
-    private void Start()
+
+    public void InitializeData()
     {
-        //LoadEndlessLevel();
+        coins = new Item(coinsData, 1000);
+        hearts = new Item(heartsData, 5);
+        //coins = SAVE.GetCoins();
+        //hearts = SAVE.GetHearts();
+    }
+    public void CollectGift(string giftId, int quantity)
+    {
+        if(coins.itemData.Id == giftId)
+        {
+            DepositeCoins(quantity);
+        }
+        else if(hearts.itemData.Id == giftId)
+        {
+            
+        }
     }
     public void LoadData()
     {
@@ -59,13 +90,16 @@ public class GameManager : Singleton<GameManager>
 
         List<GameObject> list = Resources.LoadAll<GameObject>(endlessPath).ToList();
         levelEndlessPrefabs = list.First();
+        levelEndlessPrefabs3 = list[7];
     }
+
+    #region level manager
 
     public void PlayerWin()
     {
-        StartCoroutine(PlayerWinCouroutine());
+        StartCoroutine(PlayerAdventureWinCouroutine());
     }
-    public IEnumerator PlayerWinCouroutine()
+    public IEnumerator PlayerAdventureWinCouroutine()
     {
         Time.timeScale = 0.3f;
         OnClearLevel?.Invoke();
@@ -78,7 +112,8 @@ public class GameManager : Singleton<GameManager>
             Destroy(currentLevelObj.gameObject);
             yield break; //do sth
         }
-            currentLevel++;
+        currentLevel++;
+
         Observer.Instance.Broadcast(EventId.OnTransitionScreen, (Action)(() => LoadNewLevel(currentLevel.ToString())));
 
         
@@ -92,18 +127,32 @@ public class GameManager : Singleton<GameManager>
     }
     public void LoadNewLevel(string level = "1")
     {
-        gameMode = EGameMode.Adventure;
-        if (currentLevelObj != null) Destroy(currentLevelObj);
-        CONSTANT.SaveLevel(level);
-        currentLevelObj = Instantiate(levelDatas[level].levelPrefabs);
-        OnLevelChanged?.Invoke(level, levelDatas.Count);
+        if (WithdrawHearts(1))
+        {
+            gameMode = EGameMode.Adventure;
+            if (currentLevelObj != null) Destroy(currentLevelObj);
+            SAVE.SaveLevel(level);
+            currentLevelObj = Instantiate(levelDatas[level].levelPrefabs);
+            OnLevelChanged?.Invoke(level, levelDatas.Count);
+        }
+        else
+        {
+            Debug.LogError("Not enough hearts");
+            DeleteCurrentLevel();
+            Observer.Instance.Broadcast(EventId.OnBackToMenu, null);
+        }
+
     }
-    public void LoadEndlessLevel()
+    public void LoadEndlessLevel(bool basic = true)
     {
         gameMode = EGameMode.Endless;
         if (currentLevelObj != null) Destroy(currentLevelObj);
-        currentLevelObj = Instantiate(levelEndlessPrefabs);
+        if (basic)
+            currentLevelObj = Instantiate(levelEndlessPrefabs);
+        else
+            currentLevelObj = Instantiate(levelEndlessPrefabs3);
     }
+    #endregion
 
     #region spawn endless
 
@@ -118,23 +167,38 @@ public class GameManager : Singleton<GameManager>
         Vector2 newPos = gameObj.position;
         while (true)
         {
-            newPos = pointOrigin + UnityEngine.Random.insideUnitCircle * radiusCheck;
-
-            RaycastHit hit;
-            Physics.Raycast(Camera.main.transform.position, new Vector3(newPos.x, newPos.y, 0) - Camera.main.transform.position,out hit, Mathf.Infinity);
-           //Collider2D hit = Physics2D.OverlapPoint(newPos, obstacle);
-            if (hit.collider == null)
+           newPos = pointOrigin + UnityEngine.Random.insideUnitCircle * radiusCheck;
+           Collider2D hit = Physics2D.OverlapPoint(newPos);
+            if (hit == null)
             {
                 break;
             }
             else
             {
                 tmpPos = newPos;
-                Debug.LogError(hit.collider.gameObject.name);
             }
             yield return null;
         }
         gameObj.position = newPos;
+    }
+    public IEnumerator SetPosGOInRange(Vector2 pointOrigin, float radiusCheck, Transform gameObj, Transform[] lockXArr)
+    {
+        Vector2 newPos = gameObj.position;
+        while (true)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, lockXArr.Length);
+            float xPos = lockXArr[randomIndex].position.x;
+            float yPos = (pointOrigin + UnityEngine.Random.insideUnitCircle * radiusCheck).y;
+            newPos = new Vector2(xPos, yPos);
+            Collider2D hit = Physics2D.OverlapPoint(newPos);
+            if (hit == null)
+            {
+                break;
+            }
+            yield return null;
+        }
+        gameObj.position = newPos;
+        
     }
 
     public void ContinueEndlessMode()
@@ -143,7 +207,8 @@ public class GameManager : Singleton<GameManager>
     }
     public void RestartEndlessMode()
     {
-        LoadEndlessLevel();
+        bool mode = !player.isNewInput ;
+        LoadEndlessLevel(mode);
     }
     private void OnDrawGizmos()
     {
@@ -152,6 +217,40 @@ public class GameManager : Singleton<GameManager>
         Gizmos.DrawWireSphere((Vector2)Camera.main.transform.position, radiusCheckObstacle);
     }
 
+
+    #endregion
+
+    #region currency
+
+    public bool WithdrawCoins(int coinsWithdraw)
+    {
+        if(coins.quantity - coinsWithdraw >= 0)
+        {   
+            Observer.Instance.Broadcast(EventId.OnSpendCoins, coinsWithdraw);
+            coins.quantity = coins.quantity - coinsWithdraw;
+            Observer.Instance.Broadcast(EventId.OnUpdateCoins, coins.quantity);
+            SAVE.SaveCoins(coins.quantity);
+            return true;
+        }
+        return false;
+    }
+    public void DepositeCoins(int coinsDeposite)
+    {
+        coins.quantity += coinsDeposite;
+        Observer.Instance.Broadcast(EventId.OnUpdateCoins, coins.quantity);
+        SAVE.SaveCoins(coins.quantity);
+    }
+    public bool WithdrawHearts(int heartsWithdraw)
+    {
+        if (hearts.quantity - heartsWithdraw >= 0)
+        {
+            hearts.quantity = hearts.quantity - heartsWithdraw;
+            Observer.Instance.Broadcast(EventId.OnUpdateHearts, hearts.quantity);
+            SAVE.SaveHearts(hearts.quantity);
+            return true;
+        }
+        return false;
+    }
 
     #endregion
 }

@@ -3,6 +3,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Linq;
 
+
 public class PlatformMoveContainer : MonoBehaviour
 {
     [SerializeField] private Transform[] arrayPoints;
@@ -12,6 +13,13 @@ public class PlatformMoveContainer : MonoBehaviour
     [SerializeField] float timeMove;
 
     [SerializeField] bool randomModePath;
+    private void OnEnable()
+    {
+        foreach (var platform in platforms)
+        {
+            platform.gameObject.SetActive(true);
+        }
+    }
     private void Start()
     {
         Vector3[] pathPoints = arrayPoints.Select(t => t.localPosition).ToArray();

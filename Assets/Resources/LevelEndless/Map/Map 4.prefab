@@ -18301,7 +18301,7 @@ CompositeCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
+  m_GeometryType: 1
   m_GenerationType: 0
   m_EdgeRadius: 0
   m_ColliderPaths:
@@ -18439,11 +18439,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1166166bf9b0eea42b130794495d92cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceDisable: 50
+  distanceDisable: 45
   _obstaclePosition:
   - {fileID: 8060926734439921618}
   - {fileID: 2842442611562267237}
   - {fileID: 8323125296200307492}
+  goInMap: []
+  boostPos: {fileID: 0}
+  radius: 0.5
 --- !u!1 &2207689932547820159
 GameObject:
   m_ObjectHideFlags: 0

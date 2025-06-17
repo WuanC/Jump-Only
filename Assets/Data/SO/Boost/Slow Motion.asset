@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Slow Motion
   m_EditorClassIdentifier: 
   boostName: Slow Motion
-  icon: {fileID: 21300000, guid: 1fbea6c602be588419d94356a7aa00fc, type: 3}
+  icon: {fileID: 21300000, guid: 3f82b315f46286e4b83e1e9eb58b9d61, type: 3}

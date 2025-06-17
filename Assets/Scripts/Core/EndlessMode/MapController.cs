@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MapController : MonoBehaviour
 {
-    private const int distanceSpawn = 10;
+    private const int distanceSpawn = 7;
     private int mapPassCount = 0;
     private int indexCurrentMap = 0;
     public GameObject[] listObstacleInMaps => endlessSettings.data[indexCurrentMap].listObstacleInMap;
@@ -23,20 +23,46 @@ public class MapController : MonoBehaviour
     public GameObject boostWorldPrefab;
     public List<BoostBase> boostBasePrefabs;
 
+
+    string real = "Endless Setting";
+    string test = "TestSetting";
     private void Start()
     {
         Observer.Instance.Register(EventId.OnPlayerDied, MapController_OnPlayerDie);
         Observer.Instance.Register(EventId.OnPlayerRespawn, MapController_OnPlayerRespawn);
-        endlessSettings = Resources.Load<EndlessSO>("LevelEndless/Endess Setting");
+        endlessSettings = Resources.Load<EndlessSO>($"LevelEndless/{real}");
         StartCoroutine(UpdateSpeed());
         StartCoroutine(BroadcastSpeed());
         SpawnMap(true);
         SpawnMap();
+        SpawnMap();
         isPlayerAlive = true;
     }
+    [SerializeField] LayerMask trapLayer;
+    [SerializeField] float distanceDestroy;
     private void Update()
     {
         distance += speed * Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Collider2D[] hit = Physics2D.OverlapCircleAll(transform.position, distanceDestroy, trapLayer);
+            foreach (var item in hit)
+            {
+                Debug.Log(item.gameObject.name);
+                if (item.TryGetComponent<TrapBase>(out TrapBase trap))
+                {
+
+                    trap.DestroySelf();
+                }
+            }
+        }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, distanceDestroy);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, distanceDestroy);
     }
     public void OnDestroy()
     {
@@ -80,7 +106,6 @@ public class MapController : MonoBehaviour
         }
         else
         {
-            int randomIndex = UnityEngine.Random.Range(0, maps.Length);
             GameObject map = maps[UnityEngine.Random.Range(0, maps.Length)];
             keyObject.Add(map);
             tmpGO = MyPoolManager.Instance.GetFromPool(map, transform);

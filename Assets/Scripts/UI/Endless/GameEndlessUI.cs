@@ -43,14 +43,14 @@ public class GameEndlessUI : MonoBehaviour
     {
         distance = (float)obj;
         float tmpDistance = Mathf.Round(distance);
-        textDistance.text = (tmpDistance).ToString();
+        textDistance.text = $"{tmpDistance}m";
     }
     public void GameOverEndless_OnPlayerDied(object obj)
     {
         float tmpDistance = Mathf.Round(distance);
-        CONSTANT.SaveHighScore(tmpDistance);
+        SAVE.SaveHighScore(tmpDistance);
         curScoreTxt.text = $"YOUR DISTANCE: {tmpDistance}m";
-        highScoreTxt.text = $"HIGH SCORE: {CONSTANT.GetHighScore()}m";
+        highScoreTxt.text = $"HIGH SCORE: {SAVE.GetHighScore()}m";
 
         gameOverPanel.SetActive(true);
     }

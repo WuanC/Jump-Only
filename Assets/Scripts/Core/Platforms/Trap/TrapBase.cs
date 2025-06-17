@@ -1,15 +1,15 @@
+using System;
 using UnityEngine;
 
 public abstract class TrapBase : MonoBehaviour, IInteractWithPlayer
 {
+    public event Action<GameObject> OnTrapDisable;
     public void Interact(Player player)
     {
         player.Died();
     }
-
-
-
-    public virtual void Ready() { }
+    
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.TryGetComponent<Player>(out Player player))
@@ -17,4 +17,12 @@ public abstract class TrapBase : MonoBehaviour, IInteractWithPlayer
             Interact(player);
         }
     }
+    public void DestroySelf(bool spawnEffect = true)
+    {
+        OnTrapDisable?.Invoke(this.gameObject);
+        OnTrapDisable = null;
+        if(spawnEffect) Observer.Instance.Broadcast(EventId.OnSpawnEffect, transform.position);
+        gameObject.SetActive(false);
+    }
+    
 }

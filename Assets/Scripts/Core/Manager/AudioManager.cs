@@ -21,7 +21,7 @@ public class AudioManager : MonoBehaviour
         Observer.Instance.Register(EventId.OnPlayerJump, AudioSource_OnPlayerJump);
         Observer.Instance.Register(EventId.OnPlayerWin, AudioSource_OnPlayerWin);
         Observer.Instance.Register(EventId.OnMuteAudio, AudioSource_OnMuteAudio);
-        audioSource.volume = CONSTANT.GetCurrentVolume();
+        audioSource.volume = SAVE.GetCurrentVolume();
         if (audioSource.volume > 0) muteAudio = false;
         else muteAudio = true;
     }
@@ -46,7 +46,7 @@ public class AudioManager : MonoBehaviour
         {
             audioSource.volume = 0.5f;
         }
-        CONSTANT.SaveAudio(audioSource.volume);
+        SAVE.SaveAudio(audioSource.volume);
     }
 
     void AudioSource_OnPlayerDied(object obj)

@@ -3,8 +3,12 @@ public enum EventId
     OnPlayerDied,
     OnPlayerRespawn,
     OnPlayerColliding,
-    OnPlayerJump,
+    OnPlayerJump,                   // Quest Jump
     OnPlayerWin,
+
+    //SaveLoad
+    OnUnlockNewLevel,
+
 
     OnTransitionScreen,
     OnPlayerCompletedGame,
@@ -20,6 +24,26 @@ public enum EventId
     //Boost
     OnAddBoost,
     OnRemoveBoost,
-    OnUpdateBoost
+    OnUpdateBoost,
+    OnPickupMagnetCoins,
+
+    //Skin
+    OnSelectedSkin,
+
+
+    //Currency,
+    OnUpdateCoins,
+    OnUpdateHearts,
+
+    //Collect Gift
+    OnCollectGift,
+
+
+    //Quest
+    OnPickupBoost,
+    OnSpendCoins,
+
+    //Effect
+    OnSpawnEffect,
 
 }

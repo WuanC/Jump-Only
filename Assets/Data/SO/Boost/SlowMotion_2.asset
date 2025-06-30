@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08bbec6a4e275fc4ca56789d474119ec, type: 3}
-  m_Name: Invincibility Shield
+  m_Script: {fileID: 11500000, guid: 530d51306d8307b45afd1c87ffdbfc7f, type: 3}
+  m_Name: SlowMotion_2
   m_EditorClassIdentifier: 
-  boostName: InvicibilityShield
-  icon: {fileID: 21300000, guid: 95a792bccbc881c42863109db0d32413, type: 3}
+  id: B_2
+  name: Slow
+  icon: {fileID: 21300000, guid: 3f82b315f46286e4b83e1e9eb58b9d61, type: 3}

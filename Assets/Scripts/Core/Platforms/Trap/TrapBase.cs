@@ -4,6 +4,7 @@ using UnityEngine;
 public abstract class TrapBase : MonoBehaviour, IInteractWithPlayer
 {
     public event Action<GameObject> OnTrapDisable;
+    public bool isIndividual;
     public void Interact(Player player)
     {
         player.Died();
@@ -15,6 +16,10 @@ public abstract class TrapBase : MonoBehaviour, IInteractWithPlayer
         if (collision.gameObject.TryGetComponent<Player>(out Player player))
         {
             Interact(player);
+        }
+        else if(collision.gameObject.TryGetComponent<Rocket>(out Rocket trapBase))
+        {
+            Debug.Log("roclet");
         }
     }
     public void DestroySelf(bool spawnEffect = true)

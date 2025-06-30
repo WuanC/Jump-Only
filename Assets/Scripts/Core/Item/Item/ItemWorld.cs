@@ -3,17 +3,16 @@ using UnityEngine;
 
 public class ItemWorld : MonoBehaviour
 {
-    public ItemDataSO item;
+    public ItemDataSO itemData;
     public Action<GameObject> OnBeCollected;
-
-    protected void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent<Player>(out Player player))
         {
-
             OnBeCollected?.Invoke(this.gameObject);
             OnBeCollected = null;
-            GameManager.Instance.CollectGift(item.Id, 1);
+            Item item = new Item(itemData, 1);
+            Inventory.Instance.AddItem(item);
             gameObject.SetActive(false);
         }
 

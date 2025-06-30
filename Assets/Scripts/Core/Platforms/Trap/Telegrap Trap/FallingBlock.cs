@@ -6,28 +6,38 @@ public class FallingBlock : TrapBase
     [SerializeField] float speed;
     bool canMove;
     bool isSpawned;
-    private Vector2 startPos;
+    private Vector2 lockPosition;
     [SerializeField] float distanceSpawnTele;
     [SerializeField] float distanceDisable;
     [SerializeField] float warningDuration;
+    private void OnEnable()
+    {
+        canMove = true;
+        Observer.Instance.Register(EventId.OnChangeMap, FallingBlock_OnChangeMap);
+    }
     public void NotifyWhenTelegrapEnd()
     {
         canMove = true;
-    }
-    private void OnEnable()
-    {
-        startPos = transform.position;
     }
     private void Update()
     {
         if (!isSpawned && transform.position.y - Camera.main.transform.position.y < distanceSpawnTele)
         {
+            //Debug.Log(transform.position);
             Spawn();
+            lockPosition = transform.position;
+            //Debug.LogError(lockPosition);
+            canMove = false;
             isSpawned = true;
         }
         if (!canMove)
         {
-            //transform.position = startPos;
+
+            if (isSpawned)
+            {
+                transform.position = lockPosition;
+            }
+
             return;
         }
         transform.position += Vector3.down * speed * Time.deltaTime;
@@ -50,6 +60,10 @@ public class FallingBlock : TrapBase
     {
         canMove = false;
         isSpawned = false;
+        Observer.Instance.Unregister(EventId.OnChangeMap, FallingBlock_OnChangeMap);
+    }
+    void FallingBlock_OnChangeMap(object obj) {
+        if (!canMove) gameObject.SetActive(false);
     }
 
 }

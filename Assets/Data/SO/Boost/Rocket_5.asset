@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08bbec6a4e275fc4ca56789d474119ec, type: 3}
-  m_Name: Slow Motion
+  m_Script: {fileID: 11500000, guid: 530d51306d8307b45afd1c87ffdbfc7f, type: 3}
+  m_Name: Rocket_5
   m_EditorClassIdentifier: 
-  boostName: Slow Motion
-  icon: {fileID: 21300000, guid: 3f82b315f46286e4b83e1e9eb58b9d61, type: 3}
+  id: B_5
+  name: Rocket
+  icon: {fileID: 21300000, guid: d2d7c6b740cd94442b51fd5d6f9a7e6c, type: 3}

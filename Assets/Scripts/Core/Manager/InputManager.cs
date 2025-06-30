@@ -8,10 +8,10 @@ public class InputManager : MonoBehaviour
     void Update()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE
-        HandleMouseInput(); // Dành cho chuột
+        HandleMouseInput(); 
         HandleKeyboardInput();
 #else
-        HandleTouchInput(); // Dành cho điện thoại
+        HandleTouchInput(); 
 #endif
     }
     public GraphicRaycaster raycaster;
@@ -44,6 +44,14 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             Observer.Instance.Broadcast(EventId.OnUserInput, InputDirection.Right);
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            Observer.Instance.Broadcast(EventId.OnUserInput, InputDirection.E);
+        }
+        else if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Observer.Instance.Broadcast(EventId.OnUserInput, InputDirection.Q);
         }
     }
 
@@ -79,4 +87,6 @@ public enum InputDirection
 {
     Left,
     Right,
+    E,
+    Q,
 }

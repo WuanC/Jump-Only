@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4675686734377453299
+--- !u!1 &4390396263918612951
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6985020960551527782}
-  - component: {fileID: 8497758112960294187}
+  - component: {fileID: 1633177541419256188}
+  - component: {fileID: 63349087594530021}
   m_Layer: 0
-  m_Name: Slow Motion
+  m_Name: 4_Destroy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6985020960551527782
+  m_IsActive: 0
+--- !u!4 &1633177541419256188
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4675686734377453299}
+  m_GameObject: {fileID: 4390396263918612951}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,20 +32,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8497758112960294187
+--- !u!114 &63349087594530021
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4675686734377453299}
+  m_GameObject: {fileID: 4390396263918612951}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 312255050bc90fa41871813174285093, type: 3}
+  m_Script: {fileID: 11500000, guid: 52ac73286c3420e428a572a693b4cd7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boostData: {fileID: 11400000, guid: 689a76694a50c2343bf8b6c5d4881d8b, type: 2}
+  boostData: {fileID: 11400000, guid: 73e174c62144bd04f815b13c893291c4, type: 2}
   playerBoost: {fileID: 0}
-  duration: 5
-  timeLeft: 0
-  timeScale: 0.5
+  maxUse: 1
+  useLeft: 0
+  trapLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  distanceDestroy: 20.7

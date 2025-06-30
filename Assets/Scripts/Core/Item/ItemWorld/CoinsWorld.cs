@@ -1,17 +1,14 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CoinsWorld : ItemWorld
 {
-    bool canMove;
     private Vector2 startPos;
     [SerializeField] float speed;
     public void CoinsWorld_OnPickupMagnetCoins(Transform playerTrans)
     {
         if (playerTrans != null)
         {
-            canMove = true;
             startPos = transform.position;
             StartCoroutine(ComeClosePlayer(playerTrans));
         }
@@ -22,7 +19,7 @@ public class CoinsWorld : ItemWorld
 
         float timeMove = Vector2.Distance(playerTransform.position, transform.position) / speed;
         float t = 0;
-        while(t < timeMove)
+        while (t < timeMove)
         {
             if (playerTransform == null || !playerTransform.gameObject.activeSelf)
             {
@@ -33,7 +30,6 @@ public class CoinsWorld : ItemWorld
             t += Time.deltaTime;
             yield return null;
         }
-        canMove = false;
     }
     private void OnDrawGizmos()
     {

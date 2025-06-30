@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public abstract class TimedBoost : BoostBase, IBoost
+public abstract class TimedBoost : BoostBase
 {
     [SerializeField] protected float duration;
     [SerializeField] protected float timeLeft;
@@ -14,11 +14,18 @@ public abstract class TimedBoost : BoostBase, IBoost
     {
         if (playerBoost == null) return;
         if (!playerBoost.CanAddBoost(this)) return;
+        if(this is IActivationBoost)
+        {
 
-        IsActived = true;
-        timeLeft = duration;
-        Excute();
-        StartCoroutine(StartBroadCast());
+        }
+        else
+        {
+            IsActived = true;
+            timeLeft = duration;
+            Excute();
+            StartCoroutine(StartBroadCast());
+        }
+
     }
     protected virtual void Update()
     {

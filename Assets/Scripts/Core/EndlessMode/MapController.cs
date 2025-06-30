@@ -9,8 +9,15 @@ public class MapController : MonoBehaviour
     private int indexCurrentMap = 0;
     public GameObject[] listObstacleInMaps => endlessSettings.data[indexCurrentMap].listObstacleInMap;
     public GameObject[] maps => endlessSettings.data[indexCurrentMap].listMap;
-
+    [SerializeField] Transform mapParent;
     private EndlessSO endlessSettings;
+
+    [Header("Map Settings")]
+    [SerializeField] private EndlessSO zigzagSettings;
+    [SerializeField] private EndlessSO threeLineSettings;
+    [SerializeField] EMoveMode curMoveMode;
+    [SerializeField] EMoveMode targetMoveMode;
+
     [SerializeField] private float timeToUpdateSpeed;
     [SerializeField] private float speed;
     private float tempSpeed;
@@ -24,50 +31,36 @@ public class MapController : MonoBehaviour
     public List<BoostBase> boostBasePrefabs;
 
 
-    string real = "Endless Setting";
-    string test = "TestSetting";
+    string threeLine = "Endless Setting";
+    string zigzag = "ZigzagSettings";
     private void Start()
     {
         Observer.Instance.Register(EventId.OnPlayerDied, MapController_OnPlayerDie);
         Observer.Instance.Register(EventId.OnPlayerRespawn, MapController_OnPlayerRespawn);
-        endlessSettings = Resources.Load<EndlessSO>($"LevelEndless/{real}");
+        Observer.Instance.Register(EventId.OnChangeMap, MapController_OnChangeMap);
+        Observer.Instance.Register(EventId.OnChangePlayerMovement, MapController_OnChangePlayerMovement);
+        threeLineSettings = Resources.Load<EndlessSO>($"LevelEndless/{threeLine}");
+        zigzagSettings = Resources.Load<EndlessSO>($"LevelEndless/{zigzag}");
+        endlessSettings = threeLineSettings;
+        curMoveMode = EMoveMode.ThreeLine;
+        targetMoveMode = EMoveMode.ThreeLine;
         StartCoroutine(UpdateSpeed());
         StartCoroutine(BroadcastSpeed());
         SpawnMap(true);
         SpawnMap();
-        SpawnMap();
         isPlayerAlive = true;
     }
-    [SerializeField] LayerMask trapLayer;
-    [SerializeField] float distanceDestroy;
+
     private void Update()
     {
         distance += speed * Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Collider2D[] hit = Physics2D.OverlapCircleAll(transform.position, distanceDestroy, trapLayer);
-            foreach (var item in hit)
-            {
-                Debug.Log(item.gameObject.name);
-                if (item.TryGetComponent<TrapBase>(out TrapBase trap))
-                {
-
-                    trap.DestroySelf();
-                }
-            }
-        }
-    }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, distanceDestroy);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, distanceDestroy);
     }
     public void OnDestroy()
     {
         Observer.Instance.Unregister(EventId.OnPlayerRespawn, MapController_OnPlayerRespawn);
         Observer.Instance.Unregister(EventId.OnPlayerDied, MapController_OnPlayerDie);
+        Observer.Instance.Unregister(EventId.OnChangeMap, MapController_OnChangeMap);
+        Observer.Instance.Unregister(EventId.OnChangePlayerMovement, MapController_OnChangePlayerMovement);
         foreach (GameObject obj in keyObject)
         {
             MyPoolManager.Instance.DeleteKey(obj);
@@ -100,15 +93,16 @@ public class MapController : MonoBehaviour
         GameObject tmpGO = null;
         if (isFirst)
         {
-            tmpGO = MyPoolManager.Instance.GetFromPool(maps[0], transform);
+            tmpGO = MyPoolManager.Instance.GetFromPool(maps[0], mapParent);
             keyObject.Add(maps[0]);
             tmpGO.transform.position = Vector3.zero;
         }
         else
         {
             GameObject map = maps[UnityEngine.Random.Range(0, maps.Length)];
+
             keyObject.Add(map);
-            tmpGO = MyPoolManager.Instance.GetFromPool(map, transform);
+            tmpGO = MyPoolManager.Instance.GetFromPool(map, mapParent);
             tmpGO.transform.position = new Vector3(lastTileMap.transform.position.x, lastTileMap.GetValidPosNextPlace(tmpGO.GetComponent<Map>()), lastTileMap.transform.position.z);
         }
 
@@ -125,6 +119,39 @@ public class MapController : MonoBehaviour
         indexCurrentMap++;
     }
 
+    public void ChangeEndlessMode(EMoveMode targetMoveMode)
+    {
+        if(targetMoveMode == EMoveMode.ThreeLine)
+        {
+            endlessSettings = threeLineSettings;
+        }
+        else if(targetMoveMode == EMoveMode.Zigzag)
+        {
+            endlessSettings = zigzagSettings;
+            indexCurrentMap = 0;
+            mapPassCount = 0;
+        }
+    }
+
+    public void MapController_OnChangeMap(object obj)
+    {
+        if(curMoveMode == EMoveMode.ThreeLine && targetMoveMode == curMoveMode)
+        {
+            ChangeEndlessMode(EMoveMode.Zigzag);
+            targetMoveMode = EMoveMode.Zigzag;
+        }
+        else if (curMoveMode == EMoveMode.Zigzag && targetMoveMode == curMoveMode)
+        {
+            ChangeEndlessMode(EMoveMode.ThreeLine);
+            targetMoveMode = EMoveMode.ThreeLine;
+        }
+
+    }
+    public void MapController_OnChangePlayerMovement(object obj)
+    {
+        EMoveMode eMoveMode = (EMoveMode)obj;
+        curMoveMode = eMoveMode;
+    }
     #endregion
 
     private void UpdateSpeed(float newSpeed)

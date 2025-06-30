@@ -1,4 +1,4 @@
-public class InvincibilityShield : UsageBoost
+public class ShieldBoost : UsageBoost
 {
     public override void Excute()
     {

@@ -11,7 +11,15 @@ public class PlayerBoost : MonoBehaviour
     public event Action OnEndSlowMotion;
     public event Action OnPlayerBoostDestroy;
 
-    Dictionary<string, BoostBase> boostDic = new();
+    Dictionary<string, BoostBase> boostDic = new(); //key = name
+
+
+    public ItemDataSO boostE;
+    public ItemDataSO boostQ;
+    public void Start()
+    {
+        Observer.Instance.Register(EventId.OnUserInput, OnUserInput);
+    }
     public bool CanAddBoost(BoostBase boost)
     {
         if (!boostDic.ContainsKey(boost.boostData.name))
@@ -24,7 +32,6 @@ public class PlayerBoost : MonoBehaviour
         {
             boost.ResetBoost();
             Observer.Instance.Broadcast(EventId.OnUpdateBoost, Tuple.Create(boost.boostData.name, 1f));
-            Debug.Log("update");
             return false;
         }
         return true;
@@ -64,19 +71,47 @@ public class PlayerBoost : MonoBehaviour
     #endregion
 
     #region Slow motion
-
     #endregion
 
     #region Magnet Coins 
-
-    public void CollectMagnetCoins()
-    {
-
-    }
     #endregion
+
+    public void OnUserInput(object obj)
+    {
+        InputDirection dir = (InputDirection)obj;
+        if(dir == InputDirection.E) {
+            Debug.Log(boostE.Id);
+            var boostPrefabs = ItemDatabase.Instance.Get(boostE.Id);
+            if (boostPrefabs != null)
+            {
+ 
+                if (!HasKey(boostPrefabs.boostData.name))
+                {
+                    BoostBase boost = Instantiate(boostPrefabs);
+                    boost.playerBoost = this;
+                    boost.Active();
+                }
+            }
+        }
+        else if(dir == InputDirection.Q)
+        {
+            Debug.Log("Q");
+            var boostPrefabs = ItemDatabase.Instance.Get(boostQ.Id);
+            if (boostPrefabs != null)
+            {
+                if (!HasKey(boostPrefabs.boostData.name))
+                {
+                    BoostBase boost = Instantiate(boostPrefabs);
+                    boost.playerBoost = this;
+                    boost.Active();
+                }
+            }
+        }
+    }
 
     private void OnDestroy()
     {
         OnPlayerBoostDestroy?.Invoke();
+        Observer.Instance.Unregister(EventId.OnUserInput, OnUserInput);
     }
 }

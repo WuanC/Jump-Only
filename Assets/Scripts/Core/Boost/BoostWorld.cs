@@ -1,36 +1,45 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BoostWorld : MonoBehaviour
+public class BoostWorld : ItemWorld
 {
     [SerializeField] BoostBase boost;
     [SerializeField] SpriteRenderer sr;
     public event Action<GameObject> OnDisable;
     private void OnEnable()
     {
-        if (boost != null) sr.sprite = boost.boostData.icon;
+        if (boost != null) sr.sprite = boost.boostData.Icon;
     }
     public void SetData(BoostBase boostBase)
     {
         boost = boostBase;
-        sr.sprite = boostBase.boostData.icon;
+        sr.sprite = boostBase.boostData.Icon;
     }
-    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.TryGetComponent<PlayerBoost>(out PlayerBoost playerBoost))
         {
             boost.playerBoost = playerBoost;
-            if (!playerBoost.HasKey(boost.boostData.name))
-            {
-                BoostBase tmp = Instantiate(boost);
-                tmp.Active();
-            }
-            Observer.Instance.Broadcast(EventId.OnPickupBoost, boost.boostData);
-            gameObject.SetActive(false);
+            Observer.Instance.Broadcast(EventId.OnPickupBoost, boost.boostData);//Quest
             OnDisable?.Invoke(gameObject);
             OnDisable = null;
+            if (boost is IActivationBoost)
+            {
+                itemData = boost.boostData;
+                base.OnTriggerEnter2D(collision);
+                return;
+            }
+            else
+            {
+                if (!playerBoost.HasKey(boost.boostData.name))
+                {
+                    BoostBase tmp = Instantiate(boost);
+                    tmp.Active();
+
+                }
+                gameObject.SetActive(false);
+            }
+
         }
     }
 }

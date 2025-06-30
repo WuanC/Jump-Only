@@ -23,10 +23,14 @@ public class Player : MonoBehaviour
 
     public event Action<Vector2> OnPlayerStartFall;
 
-    [Header("Test new input")]
-    public bool isNewInput = false;
+    [Header("Input")]
+    public EMoveMode moveMode;
     [SerializeField] Vector2[] line = new Vector2[3];
     [SerializeField] int currentLine = 1;
+
+    public bool zigzagMode = false;
+    bool moveUp = true;
+    [SerializeField] float speedZigzag;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -47,7 +51,8 @@ public class Player : MonoBehaviour
     {
 
         Observer.Instance.Register(EventId.OnUserInput, Player_OnUserInput);
-        if (isNewInput) transform.position = line[1];
+        Observer.Instance.Register(EventId.OnChangePlayerMovement, Player_OnChangePlayerMoveMode);
+        if (moveMode == EMoveMode.ThreeLine) transform.position = line[1];
         startPosition = transform.position;
     }
     private void OnDisable()
@@ -57,7 +62,7 @@ public class Player : MonoBehaviour
     private void OnDestroy()
     {
         Observer.Instance.Unregister(EventId.OnUserInput, Player_OnUserInput);
-
+        Observer.Instance.Unregister(EventId.OnChangePlayerMovement, Player_OnChangePlayerMoveMode);
         int trapLayerIndex = Mathf.RoundToInt(Mathf.Log(trapLayer.value, 2));
         Physics2D.IgnoreLayerCollision(gameObject.layer, trapLayerIndex, false);
     }
@@ -69,7 +74,7 @@ public class Player : MonoBehaviour
     {
         if (isDead) return;
         InputDirection dir = (InputDirection)obj;
-        if (!isNewInput)
+        if (moveMode == EMoveMode.Default)
         {
             if (dir == InputDirection.Left)
             {
@@ -82,7 +87,7 @@ public class Player : MonoBehaviour
                 AddForceToPlayer(jumpForceX, jumpForceY);
             }
         }
-        else
+        else if(moveMode ==  EMoveMode.ThreeLine)
         {
             int height = 3;
             if (dir == InputDirection.Left && currentLine > 0)
@@ -109,6 +114,10 @@ public class Player : MonoBehaviour
             }
 
         }
+        else if(moveMode == EMoveMode.Zigzag)
+        {
+            moveUp = !moveUp;
+        }
 
     }
     IEnumerator SwapLane(float timeToSwapLane, Vector3 pos1, Vector3 pos2, float height)
@@ -122,9 +131,6 @@ public class Player : MonoBehaviour
             transform.position = targetPos;
             t += Time.deltaTime;
             Observer.Instance.Broadcast(EventId.OnPlayerJump, new Vector2(dir.x, dir.y).normalized);
-
-
-
             yield return null;
         }
         visual.ResetVisual();
@@ -133,17 +139,11 @@ public class Player : MonoBehaviour
     {
         return (1 - t) * (1 - t) * p0 + 2 * t * (1 - t) * p1 + t * t * p2;
     }
-
-
-
-
     public void AddForceToPlayer(float xValue, float yValue)
     {
         rb.velocity = Vector3.zero;
         rb.AddForce(new Vector2(xValue, yValue), ForceMode2D.Impulse);
     }
-
-
     public void Died()
     {
         if (isDead) return;
@@ -195,6 +195,25 @@ public class Player : MonoBehaviour
         {
             OnPlayerStartFall?.Invoke(rb.velocity.normalized);
         }
+        if(moveMode == EMoveMode.Zigzag)
+        {
+            if (moveUp)
+            {
+                visual.Rotate(45);
+                rb.velocity = new Vector2(speedZigzag, 0);
+            }
+            else
+            {
+                visual.Rotate(135);
+                rb.velocity = new Vector2(-speedZigzag, 0);
+            }
+        }
+    }
+
+    void Player_OnChangePlayerMoveMode(object obj)
+    {
+        EMoveMode moveMode = (EMoveMode)obj;
+        this.moveMode = moveMode;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -204,5 +223,4 @@ public class Player : MonoBehaviour
             Observer.Instance.Broadcast(EventId.OnPlayerColliding, null);
         }
     }
-
 }

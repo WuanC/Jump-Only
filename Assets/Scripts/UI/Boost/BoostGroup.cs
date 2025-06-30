@@ -23,7 +23,7 @@ public class BoostGroup : MonoBehaviour
         if (!boostIcons.ContainsKey(boostBase.boostData.name))
         {
             BoostIcon newIcon = Instantiate(iconPrefab, parent);
-            newIcon.Initial(boostBase.boostData.icon);
+            newIcon.Initial(boostBase.boostData.Icon);
             boostIcons[boostBase.boostData.name] = newIcon;
         }
     }

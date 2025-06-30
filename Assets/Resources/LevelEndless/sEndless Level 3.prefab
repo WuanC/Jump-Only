@@ -93,6 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4786757787456218958}
+  - component: {fileID: 5192186254025723630}
   m_Layer: 0
   m_Name: sEndless Level 3
   m_TagString: Untagged
@@ -120,6 +121,31 @@ Transform:
   - {fileID: 1341421019077820802}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5192186254025723630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540821571055803251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435a5d8729d57b742bd75172dfb27302, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapParent: {fileID: 7078088360377418295}
+  zigzagSettings: {fileID: 0}
+  threeLineSettings: {fileID: 0}
+  timeToUpdateSpeed: 30
+  speed: 15
+  boostWorldPrefab: {fileID: 908756412989159256, guid: 9321aae8680e73844ba264d8ae6173e8, type: 3}
+  boostBasePrefabs:
+  - {fileID: 6476964789228643938, guid: 0f3d5fdf9eba12444803a172d53ad178, type: 3}
+  - {fileID: 8497758112960294187, guid: dec849be3fc1c4849a27bf3b63b9c3c1, type: 3}
+  - {fileID: 4452959975317989210, guid: 5afa458f903ec16478a9859d31cb3d5d, type: 3}
+  - {fileID: 63349087594530021, guid: 82be04fb985a8c94d82539ee768debfe, type: 3}
+  - {fileID: 5518752087906776510, guid: be37e9a7d9fedb24ea9ec848b91a6ed7, type: 3}
+  - {fileID: -6672272554338991518, guid: 78947f2272505f746a890a2eab899822, type: 3}
 --- !u!1 &992656384540995313
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,6 +410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf0379a03587aa74299998da629a896c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isIndividual: 0
   position: 0
 --- !u!212 &8137006875871839533
 SpriteRenderer:
@@ -685,7 +712,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7078088360377418295}
   - component: {fileID: 1606231066194273132}
-  - component: {fileID: 9024105416767578726}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -720,29 +746,6 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!114 &9024105416767578726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8796853727323743373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 435a5d8729d57b742bd75172dfb27302, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeToUpdateSpeed: 30
-  speed: 15
-  boostWorldPrefab: {fileID: 908756412989159256, guid: 9321aae8680e73844ba264d8ae6173e8, type: 3}
-  boostBasePrefabs:
-  - {fileID: 6476964789228643938, guid: 0f3d5fdf9eba12444803a172d53ad178, type: 3}
-  - {fileID: 8497758112960294187, guid: dec849be3fc1c4849a27bf3b63b9c3c1, type: 3}
-  - {fileID: 4452959975317989210, guid: 5afa458f903ec16478a9859d31cb3d5d, type: 3}
-  trapLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  distanceDestroy: 20
 --- !u!1001 &1571578028591408333
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -851,8 +854,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 4786757787456218958}
     m_Modifications:
     - target: {fileID: 2960570058501620236, guid: 3adcae2ac48f2bf4a8d71811ce72607c, type: 3}
+      propertyPath: moveMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2960570058501620236, guid: 3adcae2ac48f2bf4a8d71811ce72607c, type: 3}
       propertyPath: isNewInput
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2960570058501620236, guid: 3adcae2ac48f2bf4a8d71811ce72607c, type: 3}
+      propertyPath: zigzagMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2960570058501620236, guid: 3adcae2ac48f2bf4a8d71811ce72607c, type: 3}
+      propertyPath: speedZigzag
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2960570058501620236, guid: 3adcae2ac48f2bf4a8d71811ce72607c, type: 3}
       propertyPath: horizontalSpeed

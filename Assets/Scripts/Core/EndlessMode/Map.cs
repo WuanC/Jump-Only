@@ -66,6 +66,7 @@ public class Map : MonoBehaviour
         checkCallback = false;
         SpawnObstacle();
 
+
         StartCoroutine(InitCoins());
         isReady = true;
 
@@ -74,7 +75,7 @@ public class Map : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         if (mapCenter != null)
-            SpawnBoost3Line(10f, transform, mapCenter.position, radius);
+            SpawnBoost3Line(100f, transform, mapCenter.position, radius);//6883
         yield return new WaitForSeconds(0.1f);
         SpawnCoinsPattern();
     }
@@ -91,28 +92,33 @@ public class Map : MonoBehaviour
         if (Camera.main.transform.position.y - transform.position.y > distanceSpawn && !checkCallback)
         {
             checkCallback = true;
-            mapController.UpdateMap();
+            mapController.
+                UpdateMap();
         }
         if (Camera.main.transform.position.y - transform.position.y > distanceDisable)
         {
             gameObject.SetActive(false);
         }
-
-
-
     }
 
     public float GetTopPos()
     {
-        return GetBottomPos() + tilemap.cellSize.y * tilemap.size.y;
+        return GetBottomPos() + tilemap.layoutGrid.cellSize.y * tilemap.cellBounds.size.y;
     }
     public float GetBottomPos()
     {
-        return tilemap.cellBounds.position.y + transform.position.y;
+        Debug.Log(tilemap.layoutGrid == null);
+        return tilemap.cellBounds.position.y * tilemap.layoutGrid.cellSize.y + transform.position.y;
     }
+    public float GetBottomOffset()
+    {
+        return tilemap.cellBounds.position.y * tilemap.layoutGrid.cellSize.y;
+    }   
     public float GetValidPosNextPlace(Map nextMap)
     {
-        return GetTopPos() + (nextMap.transform.position.y - nextMap.GetBottomPos()) - 1f;
+        float tmp = GetTopPos() - nextMap.GetBottomOffset() - 1;
+        //Debug.Log(gameObject.name + GetBottomPos() +" " + GetTopPos() + " " + nextMap.transform.position.y + " " + nextMap.GetBottomPos() +" "+ GetTopPos()+ " " + " " + tmp);
+        return tmp;
     }
 
     #region Spawn GameObject
@@ -138,10 +144,16 @@ public class Map : MonoBehaviour
             mapController.keyObject.Add(obstaclePrefab);
             GameObject tmpObject = MyPoolManager.Instance.GetFromPool(obstaclePrefab, transform);
             tmpObject.transform.position = _obstaclePosition[visitedPos[ramdomPosIndex]].transform.position;
-            if(tmpObject.TryGetComponent<TrapBase>(out TrapBase trapBase)){
-                trapBase.OnTrapDisable += OnGameObjectBeDisable;
-            }
             goInMap.Add(tmpObject);
+            if (tmpObject.TryGetComponent<TrapBase>(out TrapBase trapBase)) {
+                trapBase.OnTrapDisable += OnGameObjectBeDisable;
+                if (trapBase.isIndividual)
+                {
+                    trapBase.transform.SetParent(transform.parent.parent);
+                    goInMap.Remove(tmpObject);
+                }
+            }
+
             visitedPos.RemoveAt(ramdomPosIndex);
         }
     }
@@ -186,7 +198,7 @@ public class Map : MonoBehaviour
 
     public void SpawnCoinsPattern()
     {
-        if (lineTransform.Length <= 0) return;
+        if (lineTransform.Length <= 0 || lineTransform == null) return;
         int lineSelectedIndex = UnityEngine.Random.Range(0, lineTransform.Length);
         SpawnCoins(lineSelectedIndex, posEndSpawn.localPosition.y);
     }

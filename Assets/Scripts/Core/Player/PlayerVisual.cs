@@ -55,6 +55,15 @@ public class PlayerVisual : MonoBehaviour
         transform.rotation = startRotation;
     }
     
+    public void Rotate(float angleZ)
+    {
+        if (rotateTween != null && rotateTween.IsActive() && rotateTween.IsPlaying())
+        {
+            rotateTween.Kill();
+        }
+
+        rotateTween = transform.DORotate(new Vector3(0, 0, angleZ - 90), 0.1f);
+    }
     public void Immortal(bool isImortal)
     {
         if (isImortal)

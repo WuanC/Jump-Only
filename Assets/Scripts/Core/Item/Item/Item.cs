@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class Item
 {
     public ItemDataSO itemData;
     public int quantity;

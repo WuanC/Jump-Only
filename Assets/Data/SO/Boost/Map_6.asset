@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08bbec6a4e275fc4ca56789d474119ec, type: 3}
-  m_Name: MagnetCoins
+  m_Script: {fileID: 11500000, guid: 530d51306d8307b45afd1c87ffdbfc7f, type: 3}
+  m_Name: Map_6
   m_EditorClassIdentifier: 
-  boostName: Magnet Coins
-  icon: {fileID: 21300000, guid: 1af084b75a51f48428f114558669e55a, type: 3}
+  id: B_6
+  name: ChangeMap
+  icon: {fileID: 21300000, guid: caaaf7f22d15a1846ab3a450e5736297, type: 3}

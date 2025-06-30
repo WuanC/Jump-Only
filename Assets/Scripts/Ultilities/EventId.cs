@@ -25,7 +25,6 @@ public enum EventId
     OnAddBoost,
     OnRemoveBoost,
     OnUpdateBoost,
-    OnPickupMagnetCoins,
 
     //Skin
     OnSelectedSkin,
@@ -45,5 +44,9 @@ public enum EventId
 
     //Effect
     OnSpawnEffect,
+
+    //ChangeMap
+    OnChangeMap,
+    OnChangePlayerMovement,
 
 }

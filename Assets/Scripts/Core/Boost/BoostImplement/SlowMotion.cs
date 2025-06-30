@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public class SlowMotion : TimedBoost
-{
+{ 
     [SerializeField] float timeScale;
     float tempTimeScale;
     public override void Excute()
@@ -18,7 +18,10 @@ public class SlowMotion : TimedBoost
         Time.timeScale = 1;
     }
 
-
+    public bool HasBoost()
+    {
+        return true;
+    }
 
 
 }

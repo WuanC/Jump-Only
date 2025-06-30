@@ -46,8 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20d8f876e9746ea40a1c70524c06c385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isIndividual: 1
   telegraphTrap: {fileID: 3330900986183348402, guid: 5d33dd156108ed54896839324857db17, type: 3}
-  speed: 10
+  speed: 30
   distanceSpawnTele: 30
   distanceDisable: 30
   warningDuration: 1

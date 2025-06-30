@@ -46,7 +46,7 @@ public class GameManager : Singleton<GameManager>
 
     Item coins;
     Item hearts;
-    
+
 
     //[SerializeField] int coins;
     //[SerializeField] int hearts;
@@ -88,9 +88,9 @@ public class GameManager : Singleton<GameManager>
         List<LevelSO> levelSOs = Resources.LoadAll<LevelSO>(levelPath).ToList();
         levelDatas = levelSOs.ToDictionary(level => level.level);
 
-        List<GameObject> list = Resources.LoadAll<GameObject>(endlessPath).ToList();
-        levelEndlessPrefabs = list.First();
-        levelEndlessPrefabs3 = list[7];
+        //List<GameObject> list = Resources.LoadAll<GameObject>(endlessPath).ToList();
+        //levelEndlessPrefabs = list.First();
+        //levelEndlessPrefabs3 = list[6];
     }
 
     #region level manager
@@ -147,6 +147,7 @@ public class GameManager : Singleton<GameManager>
     {
         gameMode = EGameMode.Endless;
         if (currentLevelObj != null) Destroy(currentLevelObj);
+        Debug.Log(basic);
         if (basic)
             currentLevelObj = Instantiate(levelEndlessPrefabs);
         else
@@ -207,7 +208,7 @@ public class GameManager : Singleton<GameManager>
     }
     public void RestartEndlessMode()
     {
-        bool mode = !player.isNewInput ;
+        bool mode = !(player.moveMode != EMoveMode.Default);
         LoadEndlessLevel(mode);
     }
     private void OnDrawGizmos()

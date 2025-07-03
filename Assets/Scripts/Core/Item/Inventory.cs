@@ -26,7 +26,6 @@ public class Inventory : Singleton<Inventory>
             Item changedItem = itemDics[item.itemData.Id];
             if (itemDics[item.itemData.Id].quantity <= 0)
             {
-                Debug.Log(itemDics[item.itemData.Id].quantity + " " + item.quantity);
                 itemDics.Remove(item.itemData.Id);
             }
             OnUpdateItem?.Invoke(item.itemData.Id, changedItem);

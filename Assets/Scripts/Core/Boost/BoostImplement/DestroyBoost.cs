@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestroyBoost : UsageBoost, IActivationBoost
+public class DestroyBoost : UsageBoost//, IActivationBoost
 {
     [SerializeField] LayerMask trapLayer;
     [SerializeField] float distanceDestroy;
@@ -13,25 +13,25 @@ public class DestroyBoost : UsageBoost, IActivationBoost
     public override void Excute()
     {
         base.Excute();
-        if (HasBoost(boostData.Id))
-        {
+        //if (HasBoost(boostData.Id))
+        //{
             Collider2D[] hit = Physics2D.OverlapCircleAll(transform.position, distanceDestroy, trapLayer);
             foreach (var obstacle in hit)
-            {
+            { 
                 if (obstacle.TryGetComponent<TrapBase>(out TrapBase trap))
                 {
-                    
+                    if(!trap.cantDestroy)
                     trap.DestroySelf();
                 }
             }
-            Item item = new Item(boostData, -1);
-            Inventory.Instance.UseItem(item);
+            //Item item = new Item(boostData, -1);
+            //Inventory.Instance.UseItem(item);
             Use();
-        }
-        else
-        {
-            Deactive();
-        }
+        //}
+        //else
+        //{
+        //    Deactive();
+        //}
 
     }
     public override void Deactive()

@@ -53,7 +53,7 @@ public class PlayerBoost : MonoBehaviour
     {
         if (boostDic.ContainsKey(key))
         {
-            boostDic[key].ResetBoost();
+            if(boostDic[key].ResetBoost())
             Observer.Instance.Broadcast(EventId.OnUpdateBoost, Tuple.Create(boostDic[key].boostData.name, 1f));
             return true;
         }
@@ -80,7 +80,6 @@ public class PlayerBoost : MonoBehaviour
     {
         InputDirection dir = (InputDirection)obj;
         if(dir == InputDirection.E) {
-            Debug.Log(boostE.Id);
             var boostPrefabs = ItemDatabase.Instance.Get(boostE.Id);
             if (boostPrefabs != null)
             {
@@ -95,7 +94,6 @@ public class PlayerBoost : MonoBehaviour
         }
         else if(dir == InputDirection.Q)
         {
-            Debug.Log("Q");
             var boostPrefabs = ItemDatabase.Instance.Get(boostQ.Id);
             if (boostPrefabs != null)
             {

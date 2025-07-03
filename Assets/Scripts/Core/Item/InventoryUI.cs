@@ -29,10 +29,9 @@ public class InventoryUI : MonoBehaviour
             dicUIs[id].Upadate(item.quantity, item.itemData.Icon);
         }
 
-        else if(item.quantity < 0 && dicUIs.ContainsKey(id)) 
+        else if(item.quantity <= 0 && dicUIs.ContainsKey(id)) 
         {
             dicUIs[id].Upadate(item.quantity, item.itemData.Icon);
-            Debug.Log("destroy");
             Destroy(dicUIs[id].gameObject);
             dicUIs.Remove(id);
 

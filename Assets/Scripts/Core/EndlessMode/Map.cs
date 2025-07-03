@@ -36,7 +36,7 @@ public class Map : MonoBehaviour
 
 
     bool isReady = false;
-
+    [SerializeField] TriggerTransformModePlay triggerTransform;
 
 
     private void Awake()
@@ -58,7 +58,7 @@ public class Map : MonoBehaviour
         Observer.Instance.Unregister(EventId.OnUpdateSpeed, Map_OnUpdateSpeed);
 
     }
-    public void Initial(int distanceSpawn, float speed, MapController mapController)
+    public void Initial(int distanceSpawn, float speed, MapController mapController, EMoveMode mode)
     {
         this.distanceSpawn = distanceSpawn;
         this.mapController = mapController;
@@ -68,6 +68,7 @@ public class Map : MonoBehaviour
 
 
         StartCoroutine(InitCoins());
+        if (triggerTransform != null) triggerTransform.SetMoveMode(mode);
         isReady = true;
 
     }
@@ -107,7 +108,6 @@ public class Map : MonoBehaviour
     }
     public float GetBottomPos()
     {
-        Debug.Log(tilemap.layoutGrid == null);
         return tilemap.cellBounds.position.y * tilemap.layoutGrid.cellSize.y + transform.position.y;
     }
     public float GetBottomOffset()

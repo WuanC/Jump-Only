@@ -14,17 +14,11 @@ public abstract class TimedBoost : BoostBase
     {
         if (playerBoost == null) return;
         if (!playerBoost.CanAddBoost(this)) return;
-        if(this is IActivationBoost)
-        {
-
-        }
-        else
-        {
             IsActived = true;
             timeLeft = duration;
             Excute();
             StartCoroutine(StartBroadCast());
-        }
+     
 
     }
     protected virtual void Update()
@@ -41,9 +35,10 @@ public abstract class TimedBoost : BoostBase
         }
 
     }
-    public override void ResetBoost()
+    public override bool ResetBoost()
     {
         timeLeft = duration;
+        return true;
     }
     public override void Deactive()
     {

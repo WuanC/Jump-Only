@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -5,11 +6,12 @@ public class CurrencyUI : MonoBehaviour
 {
     public TextMeshProUGUI coinsText;
     public TextMeshProUGUI heartsText;
+    public TextMeshProUGUI heartCountTxt;
 
-    private void Start()
+    private void Awake()
     {
-        coinsText.text = GameManager.Instance.Coins.ToString();
-        heartsText.text = GameManager.Instance.Hearts.ToString();
+        //coinsText.text = GameManager.Instance.Coins.ToString();
+        //heartsText.text = GameManager.Instance.Hearts.ToString();
         Observer.Instance.Register(EventId.OnUpdateCoins, CurrencyUI_OnUpdateCoins);
         Observer.Instance.Register(EventId.OnUpdateHearts, CurrencyUI_OnUpdateHearts);
     }
@@ -21,8 +23,12 @@ public class CurrencyUI : MonoBehaviour
     }
     public void CurrencyUI_OnUpdateHearts(object obj)
     {
-        int currentHearts = (int)obj;
-        heartsText.text = currentHearts.ToString();
+
+        var tuple = obj as Tuple<string, int>;
+        string text = tuple.Item1;
+        int currentHearts = tuple.Item2;
+        heartsText.text = text.ToString();
+        heartCountTxt.text = currentHearts.ToString();
     }
     public void OnDestroy()
     {

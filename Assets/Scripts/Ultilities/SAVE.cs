@@ -11,6 +11,7 @@ public static class SAVE
     public const string CHARACTER_SELECTED_ID = "K_CSelectedId";
     public const string COINS = "K_Coins";
     public const string HEARTS = "K_Hearts";
+    public const string LAST_TIME_ADD_HEART = "K_LastTimeAddHeart";
 
     #region Levle
     public static void SaveLevel(string level)
@@ -98,9 +99,17 @@ public static class SAVE
     {
         PlayerPrefs.SetInt(HEARTS, hearts);
     }
-    public static int GetHearts()
+    public static int GetHearts(int heartDeafault)
     {
-        return PlayerPrefs.GetInt(HEARTS, 0);
+        return PlayerPrefs.GetInt(HEARTS, heartDeafault);
+    }
+    public static void SaveLastTimeAddHeart(string time)
+    {
+        PlayerPrefs.SetString(LAST_TIME_ADD_HEART, time);
+    }
+    public static string GetLastTimeAddHeart()
+    {
+        return PlayerPrefs.GetString(LAST_TIME_ADD_HEART, "");
     }
     #endregion
 

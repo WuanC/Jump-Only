@@ -27,9 +27,10 @@ public abstract class UsageBoost : BoostBase
         base.Deactive();
         playerBoost.RemoveBoost(this);
     }
-    public override void ResetBoost()
+    public override bool ResetBoost()
     {
         useLeft = maxUse;
+        return true;
     }
 
 }

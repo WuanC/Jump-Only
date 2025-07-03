@@ -5,6 +5,7 @@ using UnityEngine;
 public enum EMoveMode 
 {
     Default,
+    Start,
     ThreeLine,
     Zigzag,
 }

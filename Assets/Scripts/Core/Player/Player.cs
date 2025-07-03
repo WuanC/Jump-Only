@@ -29,8 +29,12 @@ public class Player : MonoBehaviour
     [SerializeField] int currentLine = 1;
 
     public bool zigzagMode = false;
-    bool moveUp = true;
     [SerializeField] float speedZigzag;
+    enum ZigzagMove
+    {
+        Up, Left, Right
+    }
+    ZigzagMove zigzagMove = ZigzagMove.Up;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -116,7 +120,15 @@ public class Player : MonoBehaviour
         }
         else if(moveMode == EMoveMode.Zigzag)
         {
-            moveUp = !moveUp;
+            if(dir == InputDirection.Left)
+            {
+                zigzagMove = ZigzagMove.Left;
+
+            }
+            else if( dir == InputDirection.Right)
+            {
+                zigzagMove = ZigzagMove.Right;
+            }
         }
 
     }
@@ -176,9 +188,13 @@ public class Player : MonoBehaviour
     }
     public void RespawnEndless()
     {
-        isDead = false;
+        transform.position = startPosition;
         gameObject.SetActive(true);
         StartCoroutine(IgnoreTrap(durationIgnore));
+
+        isDead = false;
+
+
     }
     public IEnumerator IgnoreTrap(float duration)
     {
@@ -197,12 +213,12 @@ public class Player : MonoBehaviour
         }
         if(moveMode == EMoveMode.Zigzag)
         {
-            if (moveUp)
+            if (zigzagMove == ZigzagMove.Right)
             {
                 visual.Rotate(45);
                 rb.velocity = new Vector2(speedZigzag, 0);
             }
-            else
+            else if(zigzagMove == ZigzagMove.Left)
             {
                 visual.Rotate(135);
                 rb.velocity = new Vector2(-speedZigzag, 0);
@@ -214,6 +230,15 @@ public class Player : MonoBehaviour
     {
         EMoveMode moveMode = (EMoveMode)obj;
         this.moveMode = moveMode;
+        rb.velocity = Vector2.zero;
+        if(moveMode == EMoveMode.Zigzag)
+        {
+            zigzagMove = ZigzagMove.Up;
+        }
+        else if(moveMode == EMoveMode.ThreeLine)
+        {
+            currentLine = 1;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

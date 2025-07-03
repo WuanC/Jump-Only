@@ -10,19 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 941b97b36b7292e49b4d9fef79f6e23b, type: 3}
-  m_Name: ZigzagSettings
+  m_Name: StartSettings
   m_EditorClassIdentifier: 
   data:
   - levelCountPass: 0
     listObstacleInMap: []
     listMap:
-    - {fileID: 8604745704248362612, guid: 07d7fa347151cdb45add7caca029a1c2, type: 3}
+    - {fileID: 2648137685406440967, guid: 54054d44e5796d9448359d5e72cceb23, type: 3}
   - levelCountPass: 1
     listObstacleInMap: []
     listMap:
     - {fileID: 8604745704248362612, guid: 81483b74f3ee9204a99b0db475ff267e, type: 3}
-  - levelCountPass: 3
-    listObstacleInMap: []
-    listMap:
-    - {fileID: 8604745704248362612, guid: 8e15337d06bc4f24ab389918a080b954, type: 3}
-    - {fileID: 8604745704248362612, guid: 15cad3b57d3ba9e49ba07162ef2bfa3f, type: 3}

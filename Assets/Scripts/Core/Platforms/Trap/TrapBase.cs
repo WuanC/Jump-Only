@@ -4,6 +4,7 @@ using UnityEngine;
 public abstract class TrapBase : MonoBehaviour, IInteractWithPlayer
 {
     public event Action<GameObject> OnTrapDisable;
+    public bool cantDestroy;
     public bool isIndividual;
     public void Interact(Player player)
     {

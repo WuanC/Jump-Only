@@ -205,6 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1526dfb83eb82c542bd43c893f569933, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cantDestroy: 1
   isIndividual: 0
 --- !u!1 &1082287401836920513
 GameObject:
@@ -411,6 +412,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1526dfb83eb82c542bd43c893f569933, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cantDestroy: 1
   isIndividual: 0
 --- !u!1 &5749756397845801932
 GameObject:
@@ -555,6 +557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1526dfb83eb82c542bd43c893f569933, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cantDestroy: 0
   isIndividual: 0
 --- !u!1 &6116542134806723822
 GameObject:
@@ -699,6 +702,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1526dfb83eb82c542bd43c893f569933, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cantDestroy: 1
   isIndividual: 0
 --- !u!1 &6785639919955296180
 GameObject:
@@ -874,6 +878,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1526dfb83eb82c542bd43c893f569933, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cantDestroy: 1
   isIndividual: 0
 --- !u!1 &7568164099271102856
 GameObject:
@@ -44402,6 +44407,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 584
   mapCenter: {fileID: 6429861463357869854}
+  triggerTransform: {fileID: 0}
 --- !u!1 &9220521100215467966
 GameObject:
   m_ObjectHideFlags: 0

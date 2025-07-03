@@ -22,8 +22,11 @@ public class Rocket : MonoBehaviour
     {
         if (collision.TryGetComponent<TrapBase>(out TrapBase trapBase))
         {
-            Debug.Log("collid");
-            trapBase.DestroySelf();
+            if(!trapBase.cantDestroy)
+            {
+                trapBase.DestroySelf();
+            }
+
             DestroySelf();
         }
 

@@ -48,8 +48,6 @@ public class GameManager : Singleton<GameManager>
     Item hearts;
 
 
-    //[SerializeField] int coins;
-    //[SerializeField] int hearts;
     public int Coins => coins.quantity;
     public int Hearts => hearts.quantity;
 
@@ -69,8 +67,6 @@ public class GameManager : Singleton<GameManager>
     {
         coins = new Item(coinsData, 1000);
         hearts = new Item(heartsData, 5);
-        //coins = SAVE.GetCoins();
-        //hearts = SAVE.GetHearts();
     }
     public void CollectGift(string giftId, int quantity)
     {
@@ -87,10 +83,6 @@ public class GameManager : Singleton<GameManager>
     {
         List<LevelSO> levelSOs = Resources.LoadAll<LevelSO>(levelPath).ToList();
         levelDatas = levelSOs.ToDictionary(level => level.level);
-
-        //List<GameObject> list = Resources.LoadAll<GameObject>(endlessPath).ToList();
-        //levelEndlessPrefabs = list.First();
-        //levelEndlessPrefabs3 = list[6];
     }
 
     #region level manager
@@ -147,7 +139,6 @@ public class GameManager : Singleton<GameManager>
     {
         gameMode = EGameMode.Endless;
         if (currentLevelObj != null) Destroy(currentLevelObj);
-        Debug.Log(basic);
         if (basic)
             currentLevelObj = Instantiate(levelEndlessPrefabs);
         else
@@ -246,7 +237,7 @@ public class GameManager : Singleton<GameManager>
         if (hearts.quantity - heartsWithdraw >= 0)
         {
             hearts.quantity = hearts.quantity - heartsWithdraw;
-            Observer.Instance.Broadcast(EventId.OnUpdateHearts, hearts.quantity);
+            //Observer.Instance.Broadcast(EventId.OnUpdateHearts, hearts.quantity);
             SAVE.SaveHearts(hearts.quantity);
             return true;
         }

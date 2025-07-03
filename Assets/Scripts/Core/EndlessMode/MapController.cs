@@ -5,7 +5,7 @@ using UnityEngine;
 public class MapController : MonoBehaviour
 {
     private const int distanceSpawn = 7;
-    private int mapPassCount = 0;
+    private int mapPassCount;
     private int indexCurrentMap = 0;
     public GameObject[] listObstacleInMaps => endlessSettings.data[indexCurrentMap].listObstacleInMap;
     public GameObject[] maps => endlessSettings.data[indexCurrentMap].listMap;
@@ -15,6 +15,7 @@ public class MapController : MonoBehaviour
     [Header("Map Settings")]
     [SerializeField] private EndlessSO zigzagSettings;
     [SerializeField] private EndlessSO threeLineSettings;
+    [SerializeField] private EndlessSO startSettings;
     [SerializeField] EMoveMode curMoveMode;
     [SerializeField] EMoveMode targetMoveMode;
 
@@ -41,9 +42,11 @@ public class MapController : MonoBehaviour
         Observer.Instance.Register(EventId.OnChangePlayerMovement, MapController_OnChangePlayerMovement);
         threeLineSettings = Resources.Load<EndlessSO>($"LevelEndless/{threeLine}");
         zigzagSettings = Resources.Load<EndlessSO>($"LevelEndless/{zigzag}");
-        endlessSettings = threeLineSettings;
-        curMoveMode = EMoveMode.ThreeLine;
-        targetMoveMode = EMoveMode.ThreeLine;
+
+        endlessSettings = startSettings;
+        curMoveMode = EMoveMode.Start;
+        targetMoveMode = EMoveMode.Start;
+        mapPassCount = -1;
         StartCoroutine(UpdateSpeed());
         StartCoroutine(BroadcastSpeed());
         SpawnMap(true);
@@ -91,16 +94,18 @@ public class MapController : MonoBehaviour
     public void SpawnMap(bool isFirst = false)
     {
         GameObject tmpGO = null;
+        mapPassCount++;
         if (isFirst)
         {
             tmpGO = MyPoolManager.Instance.GetFromPool(maps[0], mapParent);
             keyObject.Add(maps[0]);
             tmpGO.transform.position = Vector3.zero;
+            targetMoveMode = EMoveMode.ThreeLine;
+            ChangeEndlessMode(EMoveMode.ThreeLine);
         }
         else
         {
             GameObject map = maps[UnityEngine.Random.Range(0, maps.Length)];
-
             keyObject.Add(map);
             tmpGO = MyPoolManager.Instance.GetFromPool(map, mapParent);
             tmpGO.transform.position = new Vector3(lastTileMap.transform.position.x, lastTileMap.GetValidPosNextPlace(tmpGO.GetComponent<Map>()), lastTileMap.transform.position.z);
@@ -108,9 +113,11 @@ public class MapController : MonoBehaviour
 
         var tileMap = tmpGO.GetComponent<Map>();
         lastTileMap = tileMap;
-        mapPassCount++;
+
+
         CheckCanAddNewObjstacle();
-        tileMap.Initial(distanceSpawn, speed, this);
+        tileMap.Initial(distanceSpawn, speed, this, targetMoveMode);
+
     }
     public void CheckCanAddNewObjstacle()
     {
@@ -124,6 +131,8 @@ public class MapController : MonoBehaviour
         if(targetMoveMode == EMoveMode.ThreeLine)
         {
             endlessSettings = threeLineSettings;
+            indexCurrentMap = 0;
+            mapPassCount = 0;
         }
         else if(targetMoveMode == EMoveMode.Zigzag)
         {

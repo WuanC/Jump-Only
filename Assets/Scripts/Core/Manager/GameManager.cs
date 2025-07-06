@@ -39,17 +39,6 @@ public class GameManager : Singleton<GameManager>
     Player player;
 
 
-    [Header("Currency")]
-
-    [SerializeField] ItemDataSO coinsData;
-    [SerializeField] ItemDataSO heartsData;
-
-    Item coins;
-    Item hearts;
-
-
-    public int Coins => coins.quantity;
-    public int Hearts => hearts.quantity;
 
 
     //Event
@@ -60,24 +49,6 @@ public class GameManager : Singleton<GameManager>
     {
         base.Awake();
         LoadData();
-        InitializeData();
-    }
-
-    public void InitializeData()
-    {
-        coins = new Item(coinsData, 1000);
-        hearts = new Item(heartsData, 5);
-    }
-    public void CollectGift(string giftId, int quantity)
-    {
-        if(coins.itemData.Id == giftId)
-        {
-            DepositeCoins(quantity);
-        }
-        else if(hearts.itemData.Id == giftId)
-        {
-            
-        }
     }
     public void LoadData()
     {
@@ -119,7 +90,7 @@ public class GameManager : Singleton<GameManager>
     }
     public void LoadNewLevel(string level = "1")
     {
-        if (WithdrawHearts(1))
+        if (HeartManager.Instance.UseHeart())
         {
             gameMode = EGameMode.Adventure;
             if (currentLevelObj != null) Destroy(currentLevelObj);
@@ -212,39 +183,6 @@ public class GameManager : Singleton<GameManager>
 
     #endregion
 
-    #region currency
-
-    public bool WithdrawCoins(int coinsWithdraw)
-    {
-        if(coins.quantity - coinsWithdraw >= 0)
-        {   
-            Observer.Instance.Broadcast(EventId.OnSpendCoins, coinsWithdraw);
-            coins.quantity = coins.quantity - coinsWithdraw;
-            Observer.Instance.Broadcast(EventId.OnUpdateCoins, coins.quantity);
-            SAVE.SaveCoins(coins.quantity);
-            return true;
-        }
-        return false;
-    }
-    public void DepositeCoins(int coinsDeposite)
-    {
-        coins.quantity += coinsDeposite;
-        Observer.Instance.Broadcast(EventId.OnUpdateCoins, coins.quantity);
-        SAVE.SaveCoins(coins.quantity);
-    }
-    public bool WithdrawHearts(int heartsWithdraw)
-    {
-        if (hearts.quantity - heartsWithdraw >= 0)
-        {
-            hearts.quantity = hearts.quantity - heartsWithdraw;
-            //Observer.Instance.Broadcast(EventId.OnUpdateHearts, hearts.quantity);
-            SAVE.SaveHearts(hearts.quantity);
-            return true;
-        }
-        return false;
-    }
-
-    #endregion
 }
 public enum EGameMode
 {

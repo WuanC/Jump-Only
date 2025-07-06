@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -137,9 +138,10 @@ public class StoreSkinGroup : MonoBehaviour
     public void UnlockBtnOnClick() {
         //Validate Coins
         StoreSkin ss = arrSkins[indexPreview];
-        if (GameManager.Instance.WithdrawCoins(ss.Price))
+        Inventory inv = Inventory.Instance;
+        if (inv.itemDics[inv.coinsData.Id].quantity >= ss.Price)
         {
-
+            Inventory.Instance.UseItem(new Item(inv.coinsData, -ss.Price));
             UnlockSkin(arrSkins[indexPreview].skinData.id);
         }
         else

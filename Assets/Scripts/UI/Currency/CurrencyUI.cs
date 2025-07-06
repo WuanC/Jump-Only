@@ -10,8 +10,6 @@ public class CurrencyUI : MonoBehaviour
 
     private void Awake()
     {
-        //coinsText.text = GameManager.Instance.Coins.ToString();
-        //heartsText.text = GameManager.Instance.Hearts.ToString();
         Observer.Instance.Register(EventId.OnUpdateCoins, CurrencyUI_OnUpdateCoins);
         Observer.Instance.Register(EventId.OnUpdateHearts, CurrencyUI_OnUpdateHearts);
     }

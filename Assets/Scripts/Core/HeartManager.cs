@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
-public class HeartManager : MonoBehaviour
+public class HeartManager : Singleton<HeartManager>
 {
     public float timeToAddHeart = 300f;
     public int maxHearts = 5;
@@ -43,7 +43,7 @@ public class HeartManager : MonoBehaviour
 
         SAVE.SaveHearts(currentHearts);
     }
-    public void UseHeart()
+    public bool UseHeart()
     {
         if (currentHearts > 0)
         {
@@ -54,10 +54,9 @@ public class HeartManager : MonoBehaviour
             }
             currentHearts--;
             SAVE.SaveHearts(currentHearts);
-
-  
-
+            return true;
         }
+        return false;
     }
     IEnumerator UpdateCountdownDisplay()
     {

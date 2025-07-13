@@ -286,7 +286,8 @@ MonoBehaviour:
   curMoveMode: 0
   targetMoveMode: 0
   timeToUpdateSpeed: 30
-  speed: 15
+  speed: 10
+  maxSpeed: 35
   boostWorldPrefab: {fileID: 908756412989159256, guid: 9321aae8680e73844ba264d8ae6173e8, type: 3}
   boostBasePrefabs:
   - {fileID: 6476964789228643938, guid: 0f3d5fdf9eba12444803a172d53ad178, type: 3}
@@ -294,7 +295,6 @@ MonoBehaviour:
   - {fileID: 4452959975317989210, guid: 5afa458f903ec16478a9859d31cb3d5d, type: 3}
   - {fileID: 63349087594530021, guid: 82be04fb985a8c94d82539ee768debfe, type: 3}
   - {fileID: 5518752087906776510, guid: be37e9a7d9fedb24ea9ec848b91a6ed7, type: 3}
-  - {fileID: -6672272554338991518, guid: 78947f2272505f746a890a2eab899822, type: 3}
 --- !u!1 &992656384540995313
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,6 +944,10 @@ PrefabInstance:
     - target: {fileID: 8269452183022509752, guid: 3adcae2ac48f2bf4a8d71811ce72607c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8429678882821006649, guid: 3adcae2ac48f2bf4a8d71811ce72607c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8787437281717031427, guid: 3adcae2ac48f2bf4a8d71811ce72607c, type: 3}
       propertyPath: boostE

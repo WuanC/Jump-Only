@@ -1,3 +1,7 @@
 Save quest
 Save Inventory
-
+Sound
+Limit map speed
+Bug spam slow time
+bug player dont rotate
+PlayAgain button

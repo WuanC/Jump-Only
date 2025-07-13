@@ -11,6 +11,7 @@ public class HeartManager : Singleton<HeartManager>
     {
         LoadHeart();
         StartCoroutine(UpdateCountdownDisplay());
+       // Observer.Instance.Register(EventId.OnPlayerLoseInAdventure, UseHeart);
     }
     void LoadHeart()
     {
@@ -43,20 +44,20 @@ public class HeartManager : Singleton<HeartManager>
 
         SAVE.SaveHearts(currentHearts);
     }
-    public bool UseHeart()
+    public void UseHeart()
     {
-        if (currentHearts > 0)
-        {
-            lastTime = DateTime.UtcNow;
             if (currentHearts == maxHearts)
             {
+                lastTime = DateTime.UtcNow;
                 SAVE.SaveLastTimeAddHeart(lastTime.ToString());
             }
             currentHearts--;
             SAVE.SaveHearts(currentHearts);
-            return true;
-        }
-        return false;
+
+    }
+    public bool IsRemainingHearts()
+    {
+        return currentHearts > 0;
     }
     IEnumerator UpdateCountdownDisplay()
     {

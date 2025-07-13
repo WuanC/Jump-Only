@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class QuestJumpTarget : QuestBase
 {
+    public QuestJumpTarget(QuestData data, Gift gift, int currentAmount, bool isClaimed) : base(data, gift, currentAmount, isClaimed)
+    {
+
+    }
+
     public override void Initial()
     {
         Observer.Instance.Register(EventId.OnPlayerJump, QuestJumpTarget_OnPlayerJump);

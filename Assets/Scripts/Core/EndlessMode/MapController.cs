@@ -21,6 +21,7 @@ public class MapController : MonoBehaviour
 
     [SerializeField] private float timeToUpdateSpeed;
     [SerializeField] private float speed;
+    [SerializeField] private float maxSpeed;
     private float tempSpeed;
     private bool isPlayerAlive;
     Map lastTileMap;
@@ -165,7 +166,7 @@ public class MapController : MonoBehaviour
 
     private void UpdateSpeed(float newSpeed)
     {
-        if (newSpeed < 0) return;
+        if (newSpeed < 0 || newSpeed > maxSpeed) return;
         speed = newSpeed;
         Observer.Instance.Broadcast(EventId.OnUpdateSpeed, speed);
     }

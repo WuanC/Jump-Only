@@ -14,7 +14,11 @@ public class ButtonLevel : MonoBehaviour
     }
     private void Start()
     {
-        btn.onClick.AddListener(() => SelectLevel(levelTarget));
+        btn.onClick.AddListener(() =>
+        {
+            SelectLevel(levelTarget);
+            AudioManager.Instance.OnButtonClicked();
+        });
     }
     public void Setup(int levelTarget, AdventureMenu menu)
     {

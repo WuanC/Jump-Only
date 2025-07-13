@@ -1010,6 +1010,8 @@ MonoBehaviour:
   currentLine: 1
   zigzagMode: 0
   speedZigzag: 0
+  timeSwapLine: 0.25
+  reviveCount: 3
 --- !u!114 &8787437281717031427
 MonoBehaviour:
   m_ObjectHideFlags: 0

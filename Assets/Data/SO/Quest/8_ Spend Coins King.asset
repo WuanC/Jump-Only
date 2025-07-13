@@ -17,3 +17,4 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 74eda7f450a38cb4f8fe51c7366fa2f6, type: 3}
   targetAmount: 10000
   type: 1
+  questNameType: 3

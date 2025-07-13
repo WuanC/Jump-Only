@@ -24,20 +24,41 @@ public class PanelHorizontalProcess : MonoBehaviour, IEndDragHandler, IBeginDrag
         float distanceCheck = 0.1f;
         if (Mathf.Abs(startValue - 0) < 0.001)
         {
-            if (distanceA > distanceCheck) slideCoroutine = StartCoroutine(DoValue(value, 0.5f, duration, EGamePanel.Endless));
+            if (distanceA > distanceCheck)
+            {
+                slideCoroutine = StartCoroutine(DoValue(value, 0.5f, duration, EGamePanel.Endless));
+                AudioManager.Instance.OnButtonClicked();
+            }
+
             else slideCoroutine = StartCoroutine(DoValue(value, 0, duration, EGamePanel.Shop));
+
 
         }
         else if (Mathf.Abs(startValue - 0.5f) < 0.001)
         {
-            if (distanceA > distanceCheck) slideCoroutine = StartCoroutine(DoValue(value, 1f, duration, EGamePanel.Adventure));
-            else if (distanceA < -distanceCheck) slideCoroutine = StartCoroutine(DoValue(value, 0f, duration, EGamePanel.Shop));
+            if (distanceA > distanceCheck)
+            {
+                slideCoroutine = StartCoroutine(DoValue(value, 1f, duration, EGamePanel.Adventure));
+                AudioManager.Instance.OnButtonClicked();
+            }
+            else if (distanceA < -distanceCheck)
+            {
+                slideCoroutine = StartCoroutine(DoValue(value, 0f, duration, EGamePanel.Shop));
+                AudioManager.Instance.OnButtonClicked();
+            }
             else slideCoroutine = StartCoroutine(DoValue(value, 0.5f, duration, EGamePanel.Endless));
+
         }
         else if (Mathf.Abs(startValue - 1f) < 0.001)
         {
-            if (distanceA < -distanceCheck) slideCoroutine = StartCoroutine(DoValue(value, 0.5f, duration, EGamePanel.Endless));
+            if (distanceA < -distanceCheck)
+            {
+                AudioManager.Instance.OnButtonClicked();
+                slideCoroutine = StartCoroutine(DoValue(value, 0.5f, duration, EGamePanel.Endless));
+            }
+
             else slideCoroutine = StartCoroutine(DoValue(value, 1f, duration, EGamePanel.Adventure));
+
         }
     }
 

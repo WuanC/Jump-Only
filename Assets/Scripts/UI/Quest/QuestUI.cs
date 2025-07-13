@@ -25,10 +25,10 @@ public class QuestUI : MonoBehaviour
 
     private void Awake()
     {
-        canvasGroup = GetComponent<CanvasGroup>();
+        //canvasGroup = GetComponent<CanvasGroup>();
     }
 
-    public void SetData(QuestData data, Gift giftdata)
+    public void SetData(QuestData data, Gift giftdata, int currentAmount, bool isClaimed, QuestBase questBase)
     {
         this.data = data;
         this.giftData = giftdata;
@@ -36,7 +36,7 @@ public class QuestUI : MonoBehaviour
         questIcon.sprite = data.icon;
         questTitle.text = data.questName;
 
-        UpdateProgress(0, data.targetAmount);
+        UpdateProgress(currentAmount, data.targetAmount);
 
         if (giftdata != null)
         {
@@ -49,10 +49,29 @@ public class QuestUI : MonoBehaviour
             quantityGift.gameObject.SetActive(false);
         }
 
+        bool canClaim = currentAmount >= data.targetAmount;
 
-        claimBtn.interactable = false;
-        notifyOfBtn.gameObject.SetActive(false);
-        iconClaimSuccess.gameObject.SetActive(false);
+        if(canClaim && !isClaimed)
+        {
+            claimBtn.gameObject.SetActive(true);
+            claimBtn.interactable = true;
+            notifyOfBtn.gameObject.SetActive(true);
+            iconClaimSuccess.gameObject.SetActive(false);
+        }
+        else if(canClaim && isClaimed)
+        {
+            claimBtn.gameObject.SetActive(false);
+            notifyOfBtn.gameObject.SetActive(false);
+            iconClaimSuccess.gameObject.SetActive(true);
+            canvasGroup.alpha = 0.7f;
+        }
+        else if(!canClaim)
+        {
+            claimBtn.gameObject.SetActive(true);
+            claimBtn.interactable = false;
+            notifyOfBtn.gameObject.SetActive(false);
+            iconClaimSuccess.gameObject.SetActive(false);
+        }
 
         claimBtn.onClick.AddListener(() =>
         {
@@ -63,7 +82,8 @@ public class QuestUI : MonoBehaviour
             {
                 giftdata.CollectGift();
             }
-
+            questBase.isClaimed = true;
+            QuestManager.Instance.SaveSingleQuest(questBase.questData.id);
         });
 
     }

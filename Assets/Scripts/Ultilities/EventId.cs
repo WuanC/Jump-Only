@@ -49,4 +49,6 @@ public enum EventId
     OnChangeMap,
     OnChangePlayerMovement,
 
+    OnPlayerLoseInAdventure,
+
 }

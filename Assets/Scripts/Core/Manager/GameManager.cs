@@ -57,30 +57,32 @@ public class GameManager : Singleton<GameManager>
     }
 
     #region level manager
-
-    public void PlayerWin()
+    public void SlowMotionWin()
     {
         StartCoroutine(PlayerAdventureWinCouroutine());
     }
     public IEnumerator PlayerAdventureWinCouroutine()
     {
-        Time.timeScale = 0.3f;
+        Time.timeScale = 0.5f;
         OnClearLevel?.Invoke();
         yield return new WaitForSeconds(timeLoadNewScene);
         Time.timeScale = 1f;
-
+        Observer.Instance.Broadcast(EventId.OnPlayerWin, null);
+    }
+    public void NextLevelAdventure()
+    {
         if (currentLevel == levelDatas.Count)
         {
             Observer.Instance.Broadcast(EventId.OnPlayerCompletedGame, null);
             Destroy(currentLevelObj.gameObject);
-            yield break; //do sth
+            return;
         }
         currentLevel++;
-
         Observer.Instance.Broadcast(EventId.OnTransitionScreen, (Action)(() => LoadNewLevel(currentLevel.ToString())));
-
-        
     }
+
+
+
     public void DeleteCurrentLevel()
     {
         if(currentLevelObj != null)
@@ -88,11 +90,20 @@ public class GameManager : Singleton<GameManager>
             Destroy(currentLevelObj.gameObject);
         }
     }
+    public void RestartCurrentLevel()
+    {
+        DeleteCurrentLevel();
+        if (gameMode == EGameMode.Adventure)
+            Observer.Instance.Broadcast(EventId.OnTransitionScreen, (Action)(() => LoadNewLevel(currentLevel.ToString())));
+        else if (gameMode == EGameMode.Endless)
+            Observer.Instance.Broadcast(EventId.OnTransitionScreen, (Action)(() => LoadEndlessLevel(false)));
+    }
     public void LoadNewLevel(string level = "1")
     {
-        if (HeartManager.Instance.UseHeart())
+        if (HeartManager.Instance.IsRemainingHearts())
         {
             gameMode = EGameMode.Adventure;
+            HeartManager.Instance.UseHeart();
             if (currentLevelObj != null) Destroy(currentLevelObj);
             SAVE.SaveLevel(level);
             currentLevelObj = Instantiate(levelDatas[level].levelPrefabs);

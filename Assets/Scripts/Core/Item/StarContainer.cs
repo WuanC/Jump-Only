@@ -20,8 +20,8 @@ public class StarContainer : MonoBehaviour
         currentStar++;
         if(currentStar == maxStar)
         {
-            Observer.Instance.Broadcast(EventId.OnPlayerWin, null);
-            GameManager.Instance.PlayerWin();
+            AudioManager.Instance.AudioSource_OnPlayerWin();
+            GameManager.Instance.SlowMotionWin();
         }
     }
 }

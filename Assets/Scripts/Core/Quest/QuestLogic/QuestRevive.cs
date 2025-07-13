@@ -1,10 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class QuestRevive : QuestBase
 {
-    [SerializeField] EGameMode gameMode;
+    public QuestRevive(QuestData data, Gift gift, int currentAmount, bool isClaimed) : base(data, gift, currentAmount, isClaimed)
+    {
+
+    }
+
     public override void Initial()
     {
         Observer.Instance.Register(EventId.OnPlayerRespawn, QuestRevive_OnPlayerRespawn);
@@ -12,7 +14,7 @@ public class QuestRevive : QuestBase
     public void QuestRevive_OnPlayerRespawn(object obj)
     {
         EGameMode gameMode = (EGameMode)obj;
-        if (this.gameMode != gameMode) return;
+        if (EGameMode.Endless != gameMode) return;
         if (CurrentAmount < questData.targetAmount)
         {
             CurrentAmount++;

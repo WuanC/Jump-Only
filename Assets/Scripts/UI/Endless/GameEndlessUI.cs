@@ -47,6 +47,7 @@ public class GameEndlessUI : MonoBehaviour
     }
     public void GameOverEndless_OnPlayerDied(object obj)
     {
+        if (GameManager.Instance.gameMode != EGameMode.Endless) return;
         float tmpDistance = Mathf.Round(distance);
         SAVE.SaveHighScore(tmpDistance);
         curScoreTxt.text = $"YOUR DISTANCE: {tmpDistance}m";

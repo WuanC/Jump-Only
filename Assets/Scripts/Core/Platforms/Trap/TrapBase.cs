@@ -18,10 +18,6 @@ public abstract class TrapBase : MonoBehaviour, IInteractWithPlayer
         {
             Interact(player);
         }
-        else if(collision.gameObject.TryGetComponent<Rocket>(out Rocket trapBase))
-        {
-            Debug.Log("roclet");
-        }
     }
     public void DestroySelf(bool spawnEffect = true)
     {

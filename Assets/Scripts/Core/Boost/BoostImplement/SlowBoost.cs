@@ -31,7 +31,9 @@ public class SlowBoost : TimedBoost, IActivationBoost
 
         if(HasBoost(boostData.Id))
         {
-           return base.ResetBoost();
+            Item item = new Item(boostData, -1);
+            Inventory.Instance.UseItem(item);
+            return base.ResetBoost();
         }
         return false;
         

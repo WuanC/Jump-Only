@@ -39,6 +39,7 @@ public class BoostWorld : ItemWorld
                 }
                 gameObject.SetActive(false);
             }
+            AudioManager.Instance.OnCollectBoost();
 
         }
     }

@@ -47,7 +47,6 @@ public class PlayerBoost : MonoBehaviour
 
             Destroy(tmp.gameObject);
         }
-        //Update UI
     }
     public bool HasKey(string key)
     {

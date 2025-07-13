@@ -35,4 +35,12 @@ public class CoinsWorld : ItemWorld
     {
         Gizmos.DrawWireSphere(transform.position, 1f);
     }
+    protected override void OnTriggerEnter2D(Collider2D collision)
+    {
+        base.OnTriggerEnter2D(collision);
+        if (collision.TryGetComponent<Player>(out Player player))
+        {
+            AudioManager.Instance.OnCollectCoins();
+        }
+    }
 }

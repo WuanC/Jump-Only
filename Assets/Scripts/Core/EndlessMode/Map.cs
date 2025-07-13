@@ -34,7 +34,7 @@ public class Map : MonoBehaviour
     [SerializeField] LayerMask obstacleLayer;
     [SerializeField] Transform mapCenter;
 
-
+    [SerializeField] float rateSpawnBoost = 10f;
     bool isReady = false;
     [SerializeField] TriggerTransformModePlay triggerTransform;
 
@@ -76,7 +76,7 @@ public class Map : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         if (mapCenter != null)
-            SpawnBoost3Line(100f, transform, mapCenter.position, radius);//6883
+            SpawnBoost3Line(rateSpawnBoost, transform, mapCenter.position, radius);//6883
         yield return new WaitForSeconds(0.1f);
         SpawnCoinsPattern();
     }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47d243580fd349a4583a5ee24bef5ccd, type: 3}
   m_Name: Gift Jump
   m_EditorClassIdentifier: 
+  <GiftId>k__BackingField: 001
   giftWappers:
   - data: {fileID: 11400000, guid: 91f4038545393c8439b76b080187a769, type: 2}
     quantity: 1000

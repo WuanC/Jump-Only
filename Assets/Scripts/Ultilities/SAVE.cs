@@ -1,19 +1,26 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class SAVE
 {
     public const string LEVEL_UNLOCK_KEY = "K_Level_Unlock";
-    public const string AUDIO_KEY = "K_Audio";
+    public const string MUSIC_KEY = "K_Music";
+    public const string SOUND_KEY = "K_Sound";
     public const string HIGH_SCORE_KEY = "K_HighScore";
     public const string CHARACTER_UNLOCK_KEY = "K_CUnlock";
     public const string CHARACTER_SELECTED_ID = "K_CSelectedId";
     public const string COINS = "K_Coins";
     public const string HEARTS = "K_Hearts";
     public const string LAST_TIME_ADD_HEART = "K_LastTimeAddHeart";
+    public const string DAILY_QUEST_KEY = "K_DailyQuest";
+    public const string ACHIEVEMENT_QUEST_KEY = "K_AchievementQuest";
+    public const string DATE_QUEST = "K_DateQuest";
+    public const string ITEM_KEY = "K_Item";
 
-    #region Levle
+
+    #region Level
     public static void SaveLevel(string level)
     {
         if (int.TryParse(level, out var levelValue))
@@ -34,13 +41,22 @@ public static class SAVE
     #endregion
 
     #region Audio
-    public static void SaveAudio(float volume)
+    public static void SaveMusic(float volume)
     {
-        PlayerPrefs.SetFloat(AUDIO_KEY, volume);
+        PlayerPrefs.SetFloat(MUSIC_KEY, volume);
     }
-    public static float GetCurrentVolume()
+    public static float GetCurrentMusicVolume()
     {
-        return PlayerPrefs.GetFloat(AUDIO_KEY, 0.5f);
+        return PlayerPrefs.GetFloat(MUSIC_KEY, -1);
+    }
+
+    public static void SaveSound(float volume)
+    {
+        PlayerPrefs.SetFloat(SOUND_KEY, volume);
+    }
+    public static float GetCurrentSoundVolume()
+    {
+        return PlayerPrefs.GetFloat(SOUND_KEY, -1);
     }
 
     #endregion
@@ -113,4 +129,69 @@ public static class SAVE
     }
     #endregion
 
+
+    #region Quest
+    public static void SaveDailyQuest(List<QuestSave> dailyQuestSave)
+    {
+        string json = JsonConvert.SerializeObject(dailyQuestSave);
+        PlayerPrefs.SetString(DAILY_QUEST_KEY, json);
+    }
+    public static List<QuestSave> LoadDailyQuest()
+    {
+        List<QuestSave> dailyQuestSave = new();
+        string json = PlayerPrefs.GetString(DAILY_QUEST_KEY, null);
+        if (json != null)
+        {
+            dailyQuestSave = JsonConvert.DeserializeObject<List<QuestSave>>(json);
+        }
+        return dailyQuestSave;
+    }
+    public static void SaveAchievementQuest(List<QuestSave> dailyQuestSave)
+    {
+        string json = JsonConvert.SerializeObject(dailyQuestSave);
+        PlayerPrefs.SetString(ACHIEVEMENT_QUEST_KEY, json);
+    }
+    public static List<QuestSave> LoadAchievementQuest()
+    {
+        List<QuestSave> dailyQuestSave = new();
+        string json = PlayerPrefs.GetString(ACHIEVEMENT_QUEST_KEY, null);
+        if (json != null)
+        {
+            dailyQuestSave = JsonConvert.DeserializeObject<List<QuestSave>>(json);
+        }
+        return dailyQuestSave;
+    }
+
+    public static void SaveDateLastTime(string dateTimeLastStr)
+    {
+        PlayerPrefs.SetString(DATE_QUEST, dateTimeLastStr);
+    }
+    public static string GetDateLastTime()
+    {
+        return PlayerPrefs.GetString(DATE_QUEST, "");
+    }
+
+    #endregion
+
+    #region Item
+    public static void SaveItem(List<ItemSave> itemSaves)
+    {
+        string json = JsonConvert.SerializeObject(itemSaves);
+        PlayerPrefs.SetString(ITEM_KEY, json);
+    }
+
+     public static List<ItemSave> LoadItem()
+    {
+        List<ItemSave> items = new();
+        string json = PlayerPrefs.GetString(ITEM_KEY, null);
+        Debug.Log(json);
+        if(json != null)
+        {
+           items = JsonConvert.DeserializeObject<List<ItemSave>>(json);
+        }
+        
+        return items;
+    }
+
+    #endregion
 }

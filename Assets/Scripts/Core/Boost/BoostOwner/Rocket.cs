@@ -25,6 +25,7 @@ public class Rocket : MonoBehaviour
             if(!trapBase.cantDestroy)
             {
                 trapBase.DestroySelf();
+                AudioManager.Instance.AudioSource_OnPlayerDied();
             }
 
             DestroySelf();

@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New gift", menuName = "SO/Gift")]
 public class Gift : ScriptableObject
 {
+    [field: SerializeField] public string GiftId { get; private set; }
     [SerializeField] GiftWrapper[] giftWappers;
     public GiftWrapper[] GiftWrapper => giftWappers;
 

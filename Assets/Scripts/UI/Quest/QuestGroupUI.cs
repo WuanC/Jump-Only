@@ -8,8 +8,8 @@ public class QuestGroupUI : MonoBehaviour
     [SerializeField] QuestUI questUIPrefab;
     [SerializeField] TextMeshProUGUI textTitle;
 
-    public Dictionary<int, QuestUI> achievementQuestDict = new();
-    public Dictionary<int, QuestUI> dailyQuestDict = new();
+    public Dictionary<string, QuestUI> achievementQuestDict = new();
+    public Dictionary<string, QuestUI> dailyQuestDict = new();
 
     [SerializeField] Transform dailyQuestParent;
     [SerializeField] Transform achievementParent;
@@ -34,7 +34,6 @@ public class QuestGroupUI : MonoBehaviour
     {
 
         QuestManager.Instance.OnUpdateQuest += Instance_OnUpdateQuest;
-        //Instance_OnInitializedData();
         dailyBtn.onClick.AddListener(() =>
         {
             ActiveDailyPanel();
@@ -70,17 +69,19 @@ public class QuestGroupUI : MonoBehaviour
         {
             QuestUI questUI = Instantiate(questUIPrefab, dailyQuestParent);
             dailyQuestDict[id] = questUI;
-            questUI.SetData(QuestManager.Instance.dailyQuestDict[id].questData, QuestManager.Instance.dailyQuestDict[id].gift);
+            QuestBase q = QuestManager.Instance.dailyQuestDict[id];
+            questUI.SetData(q.questData, q.gift, q.CurrentAmount, q.isClaimed, q);
         }
         foreach (var id in QuestManager.Instance.achievementQuestDict.Keys)
         {
             QuestUI questUI = Instantiate(questUIPrefab, achievementParent);
             achievementQuestDict[id] = questUI;
-            questUI.SetData(QuestManager.Instance.achievementQuestDict[id].questData, QuestManager.Instance.achievementQuestDict[id].gift);
+            QuestBase q = QuestManager.Instance.achievementQuestDict[id];
+            questUI.SetData(q.questData, q.gift, q.CurrentAmount, q.isClaimed, q);
         }
     }
 
-    private void Instance_OnUpdateQuest(QuestType type,int id, int currentAmount, int targetAmount)
+    private void Instance_OnUpdateQuest(QuestType type,string id, int currentAmount, int targetAmount)
     {
 
         if(type == QuestType.DailyQuest)

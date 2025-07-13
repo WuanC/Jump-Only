@@ -13,25 +13,23 @@ public class DestroyBoost : UsageBoost//, IActivationBoost
     public override void Excute()
     {
         base.Excute();
-        //if (HasBoost(boostData.Id))
-        //{
             Collider2D[] hit = Physics2D.OverlapCircleAll(transform.position, distanceDestroy, trapLayer);
+        bool isSpawnedMusic = false;
             foreach (var obstacle in hit)
             { 
                 if (obstacle.TryGetComponent<TrapBase>(out TrapBase trap))
                 {
                     if(!trap.cantDestroy)
                     trap.DestroySelf();
+                if (!isSpawnedMusic)
+                {
+                    isSpawnedMusic = true;
+                    AudioManager.Instance.AudioSource_OnPlayerDied();
+                }
                 }
             }
-            //Item item = new Item(boostData, -1);
-            //Inventory.Instance.UseItem(item);
+
             Use();
-        //}
-        //else
-        //{
-        //    Deactive();
-        //}
 
     }
     public override void Deactive()

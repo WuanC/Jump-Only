@@ -857,7 +857,7 @@ MonoBehaviour:
   claimBtn: {fileID: 7620366407806205455}
   notifyOfBtn: {fileID: 3773132257429068721}
   iconClaimSuccess: {fileID: 5118609604491852453}
-  canvasGroup: {fileID: 0}
+  canvasGroup: {fileID: 9169449519058522868}
 --- !u!225 &9169449519058522868
 CanvasGroup:
   m_ObjectHideFlags: 0

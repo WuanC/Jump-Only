@@ -23,10 +23,8 @@ public class FallingBlock : TrapBase
     {
         if (!isSpawned && transform.position.y - Camera.main.transform.position.y < distanceSpawnTele)
         {
-            //Debug.Log(transform.position);
             Spawn();
             lockPosition = transform.position;
-            //Debug.LogError(lockPosition);
             canMove = false;
             isSpawned = true;
         }
@@ -55,6 +53,7 @@ public class FallingBlock : TrapBase
         {
             tmpTele.Initial(NotifyWhenTelegrapEnd, warningDuration);
         }
+
     }
     private void OnDisable()
     {

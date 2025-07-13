@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     bool isFristEnable = true;
 
     Coroutine swapLane;
+    bool canControlPlayer = true;
 
 
 
@@ -30,11 +31,15 @@ public class Player : MonoBehaviour
 
     public bool zigzagMode = false;
     [SerializeField] float speedZigzag;
+    [SerializeField] float timeSwapLine = 0.25f;
     enum ZigzagMove
     {
         Up, Left, Right
     }
     ZigzagMove zigzagMove = ZigzagMove.Up;
+
+    [SerializeField] int reviveCount;
+    bool isWin;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -56,8 +61,11 @@ public class Player : MonoBehaviour
 
         Observer.Instance.Register(EventId.OnUserInput, Player_OnUserInput);
         Observer.Instance.Register(EventId.OnChangePlayerMovement, Player_OnChangePlayerMoveMode);
+        Observer.Instance.Register(EventId.OnUpdateSpeed, Player_OnUpdateSpeed);
+        Observer.Instance.Register(EventId.OnPlayerWin, Player_OnPlayerWin);
         if (moveMode == EMoveMode.ThreeLine) transform.position = line[1];
         startPosition = transform.position;
+        Observer.Instance.Broadcast(EventId.OnPlayerLoseInAdventure, reviveCount);
     }
     private void OnDisable()
     {
@@ -67,6 +75,8 @@ public class Player : MonoBehaviour
     {
         Observer.Instance.Unregister(EventId.OnUserInput, Player_OnUserInput);
         Observer.Instance.Unregister(EventId.OnChangePlayerMovement, Player_OnChangePlayerMoveMode);
+        Observer.Instance.Unregister(EventId.OnUpdateSpeed, Player_OnUpdateSpeed);
+        Observer.Instance.Unregister(EventId.OnPlayerWin, Player_OnPlayerWin);
         int trapLayerIndex = Mathf.RoundToInt(Mathf.Log(trapLayer.value, 2));
         Physics2D.IgnoreLayerCollision(gameObject.layer, trapLayerIndex, false);
     }
@@ -74,19 +84,25 @@ public class Player : MonoBehaviour
     {
         this.visual = visual;
     }
+    void Player_OnPlayerWin(object obj)
+    {
+        isWin = true;
+    }
     public void Player_OnUserInput(object obj)
     {
-        if (isDead) return;
+        if (isDead || !canControlPlayer) return;
         InputDirection dir = (InputDirection)obj;
         if (moveMode == EMoveMode.Default)
         {
             if (dir == InputDirection.Left)
             {
+                AudioManager.Instance.AudioSource_OnPlayerJump();
                 Observer.Instance.Broadcast(EventId.OnPlayerJump, new Vector2(-jumpForceX, jumpForceY).normalized);
                 AddForceToPlayer(-jumpForceX, jumpForceY);
             }
             else if (dir == InputDirection.Right)
             {
+                AudioManager.Instance.AudioSource_OnPlayerJump();
                 Observer.Instance.Broadcast(EventId.OnPlayerJump, new Vector2(jumpForceX, jumpForceY).normalized);
                 AddForceToPlayer(jumpForceX, jumpForceY);
             }
@@ -103,7 +119,8 @@ public class Player : MonoBehaviour
                     StopCoroutine(swapLane);
                 }
                 if(gameObject.activeSelf)
-                swapLane = StartCoroutine(SwapLane(0.25f, transform.position, line[currentLine], height));
+                swapLane = StartCoroutine(SwapLane(timeSwapLine, transform.position, line[currentLine], height));
+                AudioManager.Instance.AudioSource_OnPlayerJump();
             }
             else if (dir == InputDirection.Right && currentLine < line.Length - 1)
             {
@@ -114,7 +131,8 @@ public class Player : MonoBehaviour
 
                 }
                 if(gameObject.activeSelf)
-                swapLane = StartCoroutine(SwapLane(0.25f, transform.position, line[currentLine], height));
+                swapLane = StartCoroutine(SwapLane(timeSwapLine, transform.position, line[currentLine], height));
+                AudioManager.Instance.AudioSource_OnPlayerJump();
             }
 
         }
@@ -123,11 +141,13 @@ public class Player : MonoBehaviour
             if(dir == InputDirection.Left)
             {
                 zigzagMove = ZigzagMove.Left;
+                AudioManager.Instance.AudioSource_OnPlayerJump();
 
             }
             else if( dir == InputDirection.Right)
             {
                 zigzagMove = ZigzagMove.Right;
+                AudioManager.Instance.AudioSource_OnPlayerJump();
             }
         }
 
@@ -145,6 +165,8 @@ public class Player : MonoBehaviour
             Observer.Instance.Broadcast(EventId.OnPlayerJump, new Vector2(dir.x, dir.y).normalized);
             yield return null;
         }
+        transform.position = pos2;
+        canControlPlayer = true;
         visual.ResetVisual();
     }
     protected Vector3 BezierCurve(Vector3 p0, Vector3 p1, Vector3 p2, float t)
@@ -164,6 +186,7 @@ public class Player : MonoBehaviour
             playerBoost.NotifyEventOnPlayerDied();
             return;
         }
+        AudioManager.Instance.AudioSource_OnPlayerDied();
         isDead = true;
 
         rb.velocity = Vector3.zero;
@@ -173,9 +196,14 @@ public class Player : MonoBehaviour
         {
             GameManager.Instance.RespawnEndless(this);
         }
-        else if (GameManager.Instance.gameMode == EGameMode.Adventure)
+        else if (GameManager.Instance.gameMode == EGameMode.Adventure && !isWin)
         {
-            Invoke(nameof(RespawnPlayer), timeRespawn);
+            reviveCount--;
+            if (reviveCount >= 1)
+            {
+                Invoke(nameof(RespawnPlayer), timeRespawn);
+            }
+            Observer.Instance.Broadcast(EventId.OnPlayerLoseInAdventure, reviveCount);
         }
 
 
@@ -238,9 +266,17 @@ public class Player : MonoBehaviour
         else if(moveMode == EMoveMode.ThreeLine)
         {
             currentLine = 1;
+            canControlPlayer = false;
+            swapLane = StartCoroutine(SwapLane(timeSwapLine, transform.position, line[currentLine], -1));
+            AudioManager.Instance.AudioSource_OnPlayerJump();
         }
     }
-
+    void Player_OnUpdateSpeed(object obj)
+    {
+        if (timeSwapLine < 0.1f) return;
+        speedZigzag *= 1.1f;
+        timeSwapLine /= 1.1f;
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Platform"))

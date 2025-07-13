@@ -8,8 +8,8 @@ public class Destination : MonoBehaviour, IInteractWithPlayer
     public void Interact(Player player)
     {
         isBeyond = true;
-        Observer.Instance.Broadcast(EventId.OnPlayerWin, null);
-        GameManager.Instance.PlayerWin();
+        AudioManager.Instance.AudioSource_OnPlayerWin();
+        GameManager.Instance.SlowMotionWin();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

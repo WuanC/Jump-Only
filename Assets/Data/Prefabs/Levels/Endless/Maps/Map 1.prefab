@@ -9353,7 +9353,6 @@ MonoBehaviour:
     m_Bits: 0
   mapCenter: {fileID: 0}
   rateSpawnBoost: 10
-  triggerTransform: {fileID: 0}
 --- !u!19719996 &5357151592683977556
 TilemapCollider2D:
   m_ObjectHideFlags: 0

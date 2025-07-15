@@ -16929,7 +16929,6 @@ MonoBehaviour:
     m_Bits: 584
   mapCenter: {fileID: 6429861463357869854}
   rateSpawnBoost: 10
-  triggerTransform: {fileID: 0}
 --- !u!1 &9220521100215467966
 GameObject:
   m_ObjectHideFlags: 0

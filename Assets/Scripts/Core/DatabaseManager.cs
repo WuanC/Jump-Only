@@ -30,10 +30,6 @@ public class DatabaseManager : Singleton<DatabaseManager>
         LoadAdventureLevels();
         LoadEndlessLevel();
         LoadEndlessSetting();
-        var handle = Addressables.LoadAssetsAsync<GameObject>("test", obj =>
-        {
-            Instantiate(obj);
-        });
     }
     public void LoadBoost()
     {

@@ -948,7 +948,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8269452183022509752}
   - component: {fileID: 2960570058501620236}
-  - component: {fileID: 8787437281717031427}
   - component: {fileID: 151280244689664753}
   - component: {fileID: 7365376571089505484}
   - component: {fileID: 1394851334125326190}
@@ -1002,30 +1001,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   durationIgnore: 3
-  moveMode: 0
+  isDefaultMove: 0
   line:
   - {x: -7, y: -13}
   - {x: -1, y: -13}
   - {x: 5, y: -13}
   currentLine: 1
-  zigzagMode: 0
-  speedZigzag: 0
   timeSwapLine: 0.25
   reviveCount: 3
---- !u!114 &8787437281717031427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6631921307486304612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b16d87255f56d9046bccc51413f7ef96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boostE: {fileID: 11400000, guid: 73e174c62144bd04f815b13c893291c4, type: 2}
-  boostQ: {fileID: 11400000, guid: ea5ae50890ec8ec46b3878789604d790, type: 2}
 --- !u!114 &151280244689664753
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -30,13 +30,23 @@ public class AdventureMenu : MonoBehaviour, IPointerDownHandler
 
     private void Start()
     {
+        DatabaseManager.Instance.OnLoadAdventureLevelsCompleted += InitButton;
+    }
+    private void OnDestroy()
+    {
+        playBtn.onClick.RemoveAllListeners();
+        Observer.Instance.Unregister(EventId.OnUnlockNewLevel, LevelGenerator_OnUnlockNewLevel);
+        DatabaseManager.Instance.OnLoadAdventureLevelsCompleted -= InitButton;
+    }
+    void InitButton()
+    {
         selectedLevel = SAVE.GetUnlockLevel();
         SetLevel(selectedLevel);
 
         playBtn.onClick.AddListener(OnPlayBtnClicked);
         Observer.Instance.Register(EventId.OnUnlockNewLevel, LevelGenerator_OnUnlockNewLevel);
-
-        totalBtn = GameManager.Instance.Levels.Count;
+        Debug.Log(DatabaseManager.Instance.LevelDatas.Count);
+        totalBtn = DatabaseManager.Instance.LevelDatas.Count;
         int j = 1;
         int indexPlus = 1;
         for (int i = 0; i < totalBtn; i++)
@@ -54,11 +64,6 @@ public class AdventureMenu : MonoBehaviour, IPointerDownHandler
         contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, totalBtn * spaceY - 2 * startYPos);
 
         UpdateButton();
-    }
-    private void OnDestroy()
-    {
-        playBtn.onClick.RemoveAllListeners();
-        Observer.Instance.Unregister(EventId.OnUnlockNewLevel, LevelGenerator_OnUnlockNewLevel);
     }
     public void LevelGenerator_OnUnlockNewLevel(object obj)
     {

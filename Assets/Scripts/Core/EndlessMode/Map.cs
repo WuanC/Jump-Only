@@ -36,7 +36,6 @@ public class Map : MonoBehaviour
 
     [SerializeField] float rateSpawnBoost = 10f;
     bool isReady = false;
-    [SerializeField] TriggerTransformModePlay triggerTransform;
 
 
     private void Awake()
@@ -58,7 +57,7 @@ public class Map : MonoBehaviour
         Observer.Instance.Unregister(EventId.OnUpdateSpeed, Map_OnUpdateSpeed);
 
     }
-    public void Initial(int distanceSpawn, float speed, MapController mapController, EMoveMode mode)
+    public void Initial(int distanceSpawn, float speed, MapController mapController)
     {
         this.distanceSpawn = distanceSpawn;
         this.mapController = mapController;
@@ -68,7 +67,6 @@ public class Map : MonoBehaviour
 
 
         StartCoroutine(InitCoins());
-        if (triggerTransform != null) triggerTransform.SetMoveMode(mode);
         isReady = true;
 
     }
@@ -158,28 +156,10 @@ public class Map : MonoBehaviour
         }
     }
     #endregion 
-    public void SpawnBoost(float rate, Transform mapParent, Vector2 posititon, float radiusCheckSpawn)
-    {
-
-        float randomNumber = UnityEngine.Random.Range(0, 100);
-        if (randomNumber > rate) return;
-        if (mapParent == null) Debug.Log("null dung");
-        GameObject boostWorldGO = MyPoolManager.Instance.GetFromPool(mapController.boostWorldPrefab, mapParent);
-        mapController.keyObject.Add(mapController.boostWorldPrefab);
-        goInMap.Add(boostWorldGO);
-        StartCoroutine(GameManager.Instance.SetPosGOInRange(posititon, radiusCheckSpawn, boostWorldGO.transform));
-
-        if (boostWorldGO.TryGetComponent<BoostWorld>(out BoostWorld bw))
-        {
-            bw.SetData(mapController.boostBasePrefabs[Random.Range(0, mapController.boostBasePrefabs.Count)]);
-            bw.OnDisable += OnGameObjectBeDisable;
-        }
-    }
     public void SpawnBoost3Line(float rate, Transform mapParent, Vector2 posititon, float radiusCheckSpawn)
     {
         if (lineTransform == null || lineTransform.Length <= 0)
         {
-
             return;
         }
         float randomNumber = UnityEngine.Random.Range(0, 100);
@@ -191,7 +171,7 @@ public class Map : MonoBehaviour
 
         if (boostWorldGO.TryGetComponent<BoostWorld>(out BoostWorld bw))
         {
-            bw.SetData(mapController.boostBasePrefabs[Random.Range(0, mapController.boostBasePrefabs.Count)]);
+            bw.SetData(DatabaseManager.Instance.DicBootbases.Values.ElementAt(Random.Range(0, DatabaseManager.Instance.DicBootbases.Count))); 
             bw.OnDisable += OnGameObjectBeDisable;
         }
     }

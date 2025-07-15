@@ -46,9 +46,6 @@ public enum EventId
     OnSpawnEffect,
 
     //ChangeMap
-    OnChangeMap,
-    OnChangePlayerMovement,
-
     OnPlayerLoseInAdventure,
 
 }

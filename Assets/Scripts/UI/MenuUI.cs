@@ -65,7 +65,7 @@ public class MenuUI : MonoBehaviour
         {
             startPanel.SetActive(false);
             endPanel.SetActive(false);
-            GameManager.Instance.LoadEndlessLevel(false);
+            GameManager.Instance.LoadEndlessLevel();
         }));
     }
     void MenuUI_OnBackToMenu(object obj)

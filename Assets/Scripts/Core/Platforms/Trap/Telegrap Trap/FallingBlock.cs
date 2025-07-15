@@ -13,7 +13,6 @@ public class FallingBlock : TrapBase
     private void OnEnable()
     {
         canMove = true;
-        Observer.Instance.Register(EventId.OnChangeMap, FallingBlock_OnChangeMap);
     }
     public void NotifyWhenTelegrapEnd()
     {
@@ -59,10 +58,6 @@ public class FallingBlock : TrapBase
     {
         canMove = false;
         isSpawned = false;
-        Observer.Instance.Unregister(EventId.OnChangeMap, FallingBlock_OnChangeMap);
-    }
-    void FallingBlock_OnChangeMap(object obj) {
-        if (!canMove) gameObject.SetActive(false);
     }
 
 }

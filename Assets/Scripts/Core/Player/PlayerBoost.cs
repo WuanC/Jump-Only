@@ -79,7 +79,7 @@ public class PlayerBoost : MonoBehaviour
     {
         InputDirection dir = (InputDirection)obj;
         if(dir == InputDirection.E) {
-            var boostPrefabs = ItemDatabase.Instance.Get(boostE.Id);
+            var boostPrefabs = DatabaseManager.Instance.Get(boostE.Id);
             if (boostPrefabs != null)
             {
  
@@ -93,7 +93,7 @@ public class PlayerBoost : MonoBehaviour
         }
         else if(dir == InputDirection.Q)
         {
-            var boostPrefabs = ItemDatabase.Instance.Get(boostQ.Id);
+            var boostPrefabs = DatabaseManager.Instance.Get(boostQ.Id);
             if (boostPrefabs != null)
             {
                 if (!HasKey(boostPrefabs.boostData.name))

@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Adventure
+  m_EditorClassIdentifier: 
+  m_GroupName: Adventure
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 29b96c5e291757d46a01c9d593b591aa
+  m_SerializeEntries:
+  - m_GUID: 02011252ec1da914e8250bdb43b61368
+    m_Address: Assets/Data/SO/Levels Adventure/Level 9.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - adventure_level
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2e017a5671e3b8441863d7694b41ac99
+    m_Address: Assets/Data/SO/Levels Adventure/Level 13.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - adventure_level
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4407bd5fdebc7d2499c1b867927678ae
+    m_Address: Assets/Data/SO/Levels Adventure/Level 7.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - adventure_level
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f0767dc2cb7a66448d528348a647c3a
+    m_Address: Assets/Data/SO/Levels Adventure/Level 10.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - adventure_level
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6cccd02d344bdec4d9b1ab70c4aa0e6f
+    m_Address: Assets/Data/SO/Levels Adventure/Level 8.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - adventure_level
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6cff7ae6661f19b4baa1bac845d64456
+    m_Address: Assets/Data/SO/Levels Adventure/Level 5.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - adventure_level
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f180bad00e6db045ae2e958eb204cfa
+    m_Address: Assets/Data/SO/Levels Adventure/Level 4.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - adventure_level
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7dbc754969782584dbb5cf0b9715b0fb
+    m_Address: EndlessMap
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f921fcf35916fc459eae0e5fe0e5e9b
+    m_Address: Assets/Data/SO/Levels Adventure/Level 3.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - adventure_level
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 998388081668b3d47b7774ac9d9eec32
+    m_Address: Assets/Data/SO/Levels Adventure/Level 14.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - adventure_level
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4e8124c060a32844b11bdcaa8f5de95
+    m_Address: Assets/Data/SO/Levels Adventure/Level 2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - adventure_level
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac8622d826b180b4db2a50d9af07fa03
+    m_Address: Assets/Data/SO/Levels Adventure/Level 12.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - adventure_level
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbf9883e0fb74b945ae11c30c6317bab
+    m_Address: EndlessSetting
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cf004f7c6d70f694b862393e40c58427
+    m_Address: Assets/Data/SO/Levels Adventure/Level 6.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - adventure_level
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d8dd7d7735dea944f847bffe15756375
+    m_Address: Assets/Data/SO/Levels Adventure/Level 1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - adventure_level
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e231a2470a6490f4ca9247b5117a4038
+    m_Address: Assets/Data/SO/Levels Adventure/Level 15.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - adventure_level
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f454efd592008de44b065737888b7481
+    m_Address: Assets/Data/SO/Levels Adventure/Level 11.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - adventure_level
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 77c14a22d84dca34da9de0ec24d0d6fb, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 44ca9e53cf5b30145b260653eb707b95, type: 2}
+    - {fileID: 11400000, guid: 0fd421d484748dc468b481f8cd671c13, type: 2}

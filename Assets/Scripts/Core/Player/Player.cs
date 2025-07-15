@@ -21,23 +21,13 @@ public class Player : MonoBehaviour
     private PlayerVisual visual;
     [SerializeField] LayerMask trapLayer;
     [SerializeField] float durationIgnore;
+    [SerializeField] bool isDefaultMove;
 
     public event Action<Vector2> OnPlayerStartFall;
 
-    [Header("Input")]
-    public EMoveMode moveMode;
     [SerializeField] Vector2[] line = new Vector2[3];
     [SerializeField] int currentLine = 1;
-
-    public bool zigzagMode = false;
-    [SerializeField] float speedZigzag;
     [SerializeField] float timeSwapLine = 0.25f;
-    enum ZigzagMove
-    {
-        Up, Left, Right
-    }
-    ZigzagMove zigzagMove = ZigzagMove.Up;
-
     [SerializeField] int reviveCount;
     bool isWin;
     private void Awake()
@@ -60,10 +50,9 @@ public class Player : MonoBehaviour
     {
 
         Observer.Instance.Register(EventId.OnUserInput, Player_OnUserInput);
-        Observer.Instance.Register(EventId.OnChangePlayerMovement, Player_OnChangePlayerMoveMode);
         Observer.Instance.Register(EventId.OnUpdateSpeed, Player_OnUpdateSpeed);
         Observer.Instance.Register(EventId.OnPlayerWin, Player_OnPlayerWin);
-        if (moveMode == EMoveMode.ThreeLine) transform.position = line[1];
+        if (!isDefaultMove) transform.position = line[1];
         startPosition = transform.position;
         Observer.Instance.Broadcast(EventId.OnPlayerLoseInAdventure, reviveCount);
     }
@@ -74,7 +63,6 @@ public class Player : MonoBehaviour
     private void OnDestroy()
     {
         Observer.Instance.Unregister(EventId.OnUserInput, Player_OnUserInput);
-        Observer.Instance.Unregister(EventId.OnChangePlayerMovement, Player_OnChangePlayerMoveMode);
         Observer.Instance.Unregister(EventId.OnUpdateSpeed, Player_OnUpdateSpeed);
         Observer.Instance.Unregister(EventId.OnPlayerWin, Player_OnPlayerWin);
         int trapLayerIndex = Mathf.RoundToInt(Mathf.Log(trapLayer.value, 2));
@@ -92,7 +80,7 @@ public class Player : MonoBehaviour
     {
         if (isDead || !canControlPlayer) return;
         InputDirection dir = (InputDirection)obj;
-        if (moveMode == EMoveMode.Default)
+        if (isDefaultMove)
         {
             if (dir == InputDirection.Left)
             {
@@ -107,7 +95,7 @@ public class Player : MonoBehaviour
                 AddForceToPlayer(jumpForceX, jumpForceY);
             }
         }
-        else if(moveMode ==  EMoveMode.ThreeLine)
+        else if(!isDefaultMove)
         {
             int height = 3;
             if (dir == InputDirection.Left && currentLine > 0)
@@ -135,20 +123,6 @@ public class Player : MonoBehaviour
                 AudioManager.Instance.AudioSource_OnPlayerJump();
             }
 
-        }
-        else if(moveMode == EMoveMode.Zigzag)
-        {
-            if(dir == InputDirection.Left)
-            {
-                zigzagMove = ZigzagMove.Left;
-                AudioManager.Instance.AudioSource_OnPlayerJump();
-
-            }
-            else if( dir == InputDirection.Right)
-            {
-                zigzagMove = ZigzagMove.Right;
-                AudioManager.Instance.AudioSource_OnPlayerJump();
-            }
         }
 
     }
@@ -239,42 +213,12 @@ public class Player : MonoBehaviour
         {
             OnPlayerStartFall?.Invoke(rb.velocity.normalized);
         }
-        if(moveMode == EMoveMode.Zigzag)
-        {
-            if (zigzagMove == ZigzagMove.Right)
-            {
-                visual.Rotate(45);
-                rb.velocity = new Vector2(speedZigzag, 0);
-            }
-            else if(zigzagMove == ZigzagMove.Left)
-            {
-                visual.Rotate(135);
-                rb.velocity = new Vector2(-speedZigzag, 0);
-            }
-        }
     }
 
-    void Player_OnChangePlayerMoveMode(object obj)
-    {
-        EMoveMode moveMode = (EMoveMode)obj;
-        this.moveMode = moveMode;
-        rb.velocity = Vector2.zero;
-        if(moveMode == EMoveMode.Zigzag)
-        {
-            zigzagMove = ZigzagMove.Up;
-        }
-        else if(moveMode == EMoveMode.ThreeLine)
-        {
-            currentLine = 1;
-            canControlPlayer = false;
-            swapLane = StartCoroutine(SwapLane(timeSwapLine, transform.position, line[currentLine], -1));
-            AudioManager.Instance.AudioSource_OnPlayerJump();
-        }
-    }
+
     void Player_OnUpdateSpeed(object obj)
     {
         if (timeSwapLine < 0.1f) return;
-        speedZigzag *= 1.1f;
         timeSwapLine /= 1.1f;
     }
     private void OnCollisionEnter2D(Collision2D collision)

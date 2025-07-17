@@ -27,7 +27,6 @@ public class AudioManager : Singleton<AudioManager>
     {
         base.Awake();
         audioSource = GetComponent<AudioSource>();
-        //audioSfx = GetComponentInChildren<AudioSource>();
         
     }
     private void Start()
@@ -73,8 +72,10 @@ public class AudioManager : Singleton<AudioManager>
         {
             audioSource.volume = musicVolume;
         }
-        OnAudioChanged?.Invoke();
-        SAVE.SaveMusic(audioSource.volume);
+
+            OnAudioChanged?.Invoke();
+            SAVE.SaveMusic(audioSource.volume);
+
     }
     public void ToggleSound()
     {
@@ -87,8 +88,22 @@ public class AudioManager : Singleton<AudioManager>
         {
             _sfxVolume = sfxVolume; // Set to your desired sound effect volume
         }
-        OnAudioChanged?.Invoke();
-        SAVE.SaveSound(_sfxVolume);
+            OnAudioChanged?.Invoke();
+            SAVE.SaveSound(_sfxVolume);
+
+
+    }
+    public void ToggleVolumeAll(bool volumeOn)
+    {
+        if (volumeOn)
+        {
+            LoadAudio();
+        }
+        else
+        {
+            audioSource.volume = 0;
+            _sfxVolume = 0;
+        }
     }
 
     public void AudioSource_OnPlayerDied()

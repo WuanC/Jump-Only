@@ -42,7 +42,7 @@ public class DatabaseManager : Singleton<DatabaseManager>
         {
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
-                Debug.Log("Load boosts successfully");
+
             }
             else
             {
@@ -66,7 +66,10 @@ public class DatabaseManager : Singleton<DatabaseManager>
             if (obj.Status == AsyncOperationStatus.Succeeded)
             {
                 OnLoadAdventureLevelsCompleted?.Invoke();
-                Debug.Log("Load levels adventure succesfully");
+            }
+            else
+            {
+                Debug.Log("Failed to load adventure levels: " + obj.Status);
             }
         };
     }
@@ -78,8 +81,6 @@ public class DatabaseManager : Singleton<DatabaseManager>
             if(obj.Status == AsyncOperationStatus.Succeeded)
             {
                 LevelEndlessPrefabs = obj.Result;
-                //Instantiate(obj.Result);
-                Debug.Log("Load endless map successfully");
             }
             else
             {

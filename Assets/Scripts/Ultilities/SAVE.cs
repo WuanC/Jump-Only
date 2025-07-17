@@ -184,7 +184,6 @@ public static class SAVE
     {
         List<ItemSave> items = new();
         string json = PlayerPrefs.GetString(ITEM_KEY, null);
-        Debug.Log(json);
         if(json != null)
         {
            items = JsonConvert.DeserializeObject<List<ItemSave>>(json);

@@ -24,13 +24,8 @@ public class AudioSettingUI : MonoBehaviour
         {
             AudioManager.Instance.ToggleSound();
         });
-        AudioManager.Instance.OnAudioChanged += AudioSetting_OnAudioChanged;
+        AudioManager.Instance.OnAudioChanged += SetUpImgAudio;
 
-    }
-
-    private void AudioSetting_OnAudioChanged()
-    {
-        SetUpImgAudio();
     }
 
     private void OnDestroy()

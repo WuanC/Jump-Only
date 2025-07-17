@@ -17,7 +17,6 @@ public class ItemGamePlay : MonoBehaviour
     }
     private void Start()
     {
-        Debug.Log(Inventory.Instance);
         StartCoroutine(SetInventory());
 
         for (int i = 0; i < lockData.Length; i++)

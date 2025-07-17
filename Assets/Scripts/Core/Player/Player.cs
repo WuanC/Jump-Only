@@ -155,7 +155,7 @@ public class Player : MonoBehaviour
     public void Died()
     {
         if (isDead) return;
-        if (playerBoost.IsInvicibility)
+        if (playerBoost != null && playerBoost.IsInvicibility)
         {
             playerBoost.NotifyEventOnPlayerDied();
             return;

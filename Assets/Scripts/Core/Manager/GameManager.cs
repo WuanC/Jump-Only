@@ -101,6 +101,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (HeartManager.Instance.IsRemainingHearts())
         {
+            AdsManager.Instance.InterstitialAds.ShowAd();
             gameMode = EGameMode.Adventure;
             HeartManager.Instance.UseHeart();
             if (currentLevelObj != null) Destroy(currentLevelObj);
@@ -121,6 +122,7 @@ public class GameManager : Singleton<GameManager>
         gameMode = EGameMode.Endless;
         if (currentLevelObj != null) Destroy(currentLevelObj);
         currentLevelObj = Instantiate(DatabaseManager.Instance.LevelEndlessPrefabs);
+        AdsManager.Instance.InterstitialAds.ShowAd();
     }
     #endregion
 

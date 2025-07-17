@@ -45,7 +45,6 @@ public class AdventureMenu : MonoBehaviour, IPointerDownHandler
 
         playBtn.onClick.AddListener(OnPlayBtnClicked);
         Observer.Instance.Register(EventId.OnUnlockNewLevel, LevelGenerator_OnUnlockNewLevel);
-        Debug.Log(DatabaseManager.Instance.LevelDatas.Count);
         totalBtn = DatabaseManager.Instance.LevelDatas.Count;
         int j = 1;
         int indexPlus = 1;

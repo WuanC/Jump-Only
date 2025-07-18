@@ -2531,10 +2531,10 @@ RectTransform:
   - {fileID: 1284722505}
   m_Father: {fileID: 15733280}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1080, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 2700, y: -951.5}
+  m_SizeDelta: {x: 1080, y: 1903}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &177770653
 MonoBehaviour:
@@ -2665,8 +2665,8 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 8
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
+  m_Spacing: 11.58
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
@@ -3719,10 +3719,10 @@ RectTransform:
   - {fileID: 1257278034}
   m_Father: {fileID: 15733280}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1080, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 1620, y: -951.5}
+  m_SizeDelta: {x: 1080, y: 1903}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &334714138
 MonoBehaviour:
@@ -13070,6 +13070,7 @@ MonoBehaviour:
   canDontDestroyOnLoad: 0
   <AdsInitializer>k__BackingField: {fileID: 1577237803}
   <InterstitialAds>k__BackingField: {fileID: 1577237805}
+  <BannerAds>k__BackingField: {fileID: 0}
 --- !u!4 &1295860365
 Transform:
   m_ObjectHideFlags: 0
@@ -14413,10 +14414,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 15733280}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1080, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 540, y: -951.5}
+  m_SizeDelta: {x: 1080, y: 1903}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1497337856
 MonoBehaviour:
@@ -15485,6 +15486,7 @@ GameObject:
   - component: {fileID: 1577237804}
   - component: {fileID: 1577237803}
   - component: {fileID: 1577237805}
+  - component: {fileID: 1577237806}
   m_Layer: 0
   m_Name: Ads
   m_TagString: Untagged
@@ -15508,6 +15510,7 @@ MonoBehaviour:
   _iOSGameId: 5900228
   _testMode: 1
   interstitialAds: {fileID: 1577237805}
+  bannerAds: {fileID: 1577237806}
 --- !u!4 &1577237804
 Transform:
   m_ObjectHideFlags: 0
@@ -15538,6 +15541,20 @@ MonoBehaviour:
   _androidAdUnitId: Interstitial_Android
   _iOSAdUnitId: Interstitial_iOS
   isReady: 0
+--- !u!114 &1577237806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1577237802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc50d6892858a9940b8c6ae03f1e2bec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  androidAdUnitId: Banner_Android
+  iosAdUnitId: Banner_iOS
 --- !u!1 &1583054726
 GameObject:
   m_ObjectHideFlags: 0

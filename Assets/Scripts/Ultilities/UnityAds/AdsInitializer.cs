@@ -8,6 +8,8 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
     [SerializeField] bool _testMode = true;
 
     [SerializeField] InterstitialAds interstitialAds;
+    [SerializeField] BannerAds bannerAds;
+    [SerializeField] RewardedAds rewardedAds;
     private string _gameId;
 
     void Awake()
@@ -34,6 +36,8 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
     public void OnInitializationComplete()
     {
         interstitialAds.LoadAd();
+        bannerAds.LoadBannerAds();
+        rewardedAds.LoadAd();
     }
 
     public void OnInitializationFailed(UnityAdsInitializationError error, string message)

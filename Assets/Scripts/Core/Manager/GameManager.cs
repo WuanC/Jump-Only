@@ -11,10 +11,6 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField] float timeLoadNewScene;
 
-    //[Header("Level mode")]
-    //private const string levelPath = "Levels";
-   // private Dictionary<string, LevelSO> levelDatas = new();
-   // public Dictionary<string, LevelSO> Levels => levelDatas;
 
     private GameObject currentLevelObj;
     [SerializeField] private int currentLevel = 1;
@@ -28,9 +24,6 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-    [Header("Endless mode")]
-    //private const string endlessPath = "LevelEndless";
-    //public GameObject levelEndlessPrefabs3;
 
 
     [Header("Player Spawn Endless")]
@@ -44,16 +37,16 @@ public class GameManager : Singleton<GameManager>
     public event Action<string, int> OnLevelChanged;
     public event Action OnClearLevel;
     public int IdSkinSelected { get; set; }
-    protected override void Awake()
+
+    private void Start()
     {
-        base.Awake();
-        //LoadData();
+       StartCoroutine(ShowBannerAds());
     }
-    //public void LoadData()
-    //{
-    //    List<LevelSO> levelSOs = Resources.LoadAll<LevelSO>(levelPath).ToList();
-    //    levelDatas = levelSOs.ToDictionary(level => level.level);
-    //}
+    IEnumerator ShowBannerAds()
+    {
+        yield return new WaitForSeconds(1f);
+        AdsManager.Instance.BannerAds.ShowBannerAds();
+    }
 
     #region level manager
     public void SlowMotionWin()

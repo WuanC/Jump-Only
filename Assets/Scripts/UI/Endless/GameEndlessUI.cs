@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.Advertisements;
 
 public class GameEndlessUI : MonoBehaviour
 {
@@ -26,10 +27,12 @@ public class GameEndlessUI : MonoBehaviour
             GameManager.Instance.DeleteCurrentLevel();
             Observer.Instance.Broadcast(EventId.OnBackToMenu, null);
             });
-        continueBtn.onClick.AddListener(() => {
-            GameManager.Instance.ContinueEndlessMode();
-            gameOverPanel.SetActive(false);
-        });
+        continueBtn.onClick.AddListener((UnityEngine.Events.UnityAction)(() => {
+
+            AdsManager.Instance.RewardedAds.ShowAd();
+            AdsManager.Instance.RewardedAds.OnAdCompleted += ProcessContinueBtn;
+
+        }));
         againBtn.onClick.AddListener(() =>
         {
             gameOverPanel.SetActive(false);
@@ -39,6 +42,8 @@ public class GameEndlessUI : MonoBehaviour
             }));
         });
     }
+
+
     public void GameEndlessUI_OnBroadcastSpeed(object obj)
     {
         distance = (float)obj;
@@ -54,6 +59,22 @@ public class GameEndlessUI : MonoBehaviour
         highScoreTxt.text = $"HIGH SCORE: {SAVE.GetHighScore()}m";
 
         gameOverPanel.SetActive(true);
+    }
+    public void ProcessContinueBtn(UnityAdsShowCompletionState state)
+    {
+        if(state == UnityAdsShowCompletionState.COMPLETED)
+        {
+            GameManager.Instance.ContinueEndlessMode();
+            gameOverPanel.SetActive(false);
+        }
+        else if(state == UnityAdsShowCompletionState.SKIPPED)
+        {
+
+        }
+        else if(state == UnityAdsShowCompletionState.UNKNOWN)
+        {
+        }
+        AdsManager.Instance.RewardedAds.OnAdCompleted -= ProcessContinueBtn;
     }
     private void OnDisable()
     {

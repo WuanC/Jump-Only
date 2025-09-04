@@ -61,7 +61,7 @@ public class InterstitialAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
         if (this._adUnitId != _adUnitId) return;
         if(showCompletionState == UnityAdsShowCompletionState.COMPLETED)
         {
-            Debug.Log("completed");
+            //Debug.Log("completed");
         }
         else if(showCompletionState == UnityAdsShowCompletionState.SKIPPED)
         {

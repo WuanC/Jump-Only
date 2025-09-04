@@ -14,7 +14,9 @@ public class DatabaseManager : Singleton<DatabaseManager>
     [Header("Adventure Levels")]
     [SerializeField] AssetLabelReference levelAdventureLabel;
     public event Action OnLoadAdventureLevelsCompleted;
-    public Dictionary<string, LevelSO> LevelDatas { get; private set; } = new Dictionary<string, LevelSO>();
+    //public Dictionary<string, LevelSO> LevelDatas { get; private set; } = new Dictionary<string, LevelSO>();
+
+    public int LevelCount { get; private set; } = 1;
     [Header("Endless Mode")]
     public string ENDLESS_MAP_KEY = "EndlessMap";
     public string ENDLESS_SETTING_KEY = "EndlessSetting";
@@ -27,7 +29,8 @@ public class DatabaseManager : Singleton<DatabaseManager>
     {
         base.Awake();
         LoadBoost();
-        LoadAdventureLevels();
+        LoadLevelAdventureQuantity();
+        //LoadAdventureLevels();
         LoadEndlessLevel();
         LoadEndlessSetting();
     }
@@ -56,22 +59,53 @@ public class DatabaseManager : Singleton<DatabaseManager>
         return DicBootbases[id];
 
     }
-    public void LoadAdventureLevels()
+    //public void LoadAdventureLevels()
+    //{
+    //    var handle = Addressables.LoadAssetsAsync<LevelSO>(levelAdventureLabel, (LevelSO level) => {
+    //        LevelDatas[level.level] = level;
+    //    });
+    //    handle.Completed += obj =>
+    //    {
+    //        if (obj.Status == AsyncOperationStatus.Succeeded)
+    //        {
+    //            OnLoadAdventureLevelsCompleted?.Invoke();
+    //        }
+    //        else
+    //        {
+    //            Debug.Log("Failed to load adventure levels: " + obj.Status);
+    //        }
+    //    };
+    //}
+    public void GetAdventureLevel(string name, Action<GameObject> onLoaded)
     {
-        var handle = Addressables.LoadAssetsAsync<LevelSO>(levelAdventureLabel, (LevelSO level) => {
-            LevelDatas[level.level] = level;
-        });
+        var handle = Addressables.LoadAssetAsync<LevelSO>($"Level {name}");
         handle.Completed += obj =>
         {
             if (obj.Status == AsyncOperationStatus.Succeeded)
             {
-                OnLoadAdventureLevelsCompleted?.Invoke();
+                 GameObject originObj = Instantiate(obj.Result.levelPrefabs);
+                 onLoaded?.Invoke(originObj);
+
             }
             else
             {
-                Debug.Log("Failed to load adventure levels: " + obj.Status);
+                Debug.LogError("Failed to load adventure level: " + obj.Status);
+                onLoaded?.Invoke(null);
             }
+            Addressables.Release(handle);
         };
+    }
+
+
+    public void LoadLevelAdventureQuantity()
+    {
+        var handle = Addressables.LoadResourceLocationsAsync(levelAdventureLabel, typeof(LevelSO));
+        handle.Completed += obj =>
+        {
+            LevelCount = obj.Result.Count;
+                            OnLoadAdventureLevelsCompleted?.Invoke();
+        };
+        Addressables.Release(handle); 
     }
     public void LoadEndlessLevel()
     {

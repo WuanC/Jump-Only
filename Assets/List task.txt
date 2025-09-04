@@ -1,7 +1,14 @@
-Save quest
-Save Inventory
-Sound
-Limit map speed
-Bug spam slow time
-bug player dont rotate
-PlayAgain button
+yêu cầu cờ bản pbl
+3 sản phẩm wweb admin, web user, mobile, 
+bắt buộc api
+dự ản lớn bắt buộc microservice (k lớn thì thôi)
+fe k dung boostrap
+mobile khuyến nghị đa nền tang (đơn cũnợc)
+yêu cầu deploy k local
+dùng git và 1 công cụ quản lý task
+
+nhóm lớn nên phải share nhóm
+di học 2 tuần 1 lần nhóm thầy Phương
+thầy bình thì học chiều t3
+
+

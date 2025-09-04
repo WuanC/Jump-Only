@@ -12,7 +12,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] float timeLoadNewScene;
 
 
-    private GameObject currentLevelObj;
+    [SerializeField] private GameObject currentLevelObj;
     [SerializeField] private int currentLevel = 1;
     public int CurrentLevel
     {
@@ -63,7 +63,7 @@ public class GameManager : Singleton<GameManager>
     }
     public void NextLevelAdventure()
     {
-        if (currentLevel == DatabaseManager.Instance.LevelDatas.Count)
+        if (currentLevel == DatabaseManager.Instance.LevelCount)
         {
             Observer.Instance.Broadcast(EventId.OnPlayerCompletedGame, null);
             Destroy(currentLevelObj.gameObject);
@@ -99,8 +99,12 @@ public class GameManager : Singleton<GameManager>
             HeartManager.Instance.UseHeart();
             if (currentLevelObj != null) Destroy(currentLevelObj);
             SAVE.SaveLevel(level);
-            currentLevelObj = Instantiate(DatabaseManager.Instance.LevelDatas[level].levelPrefabs);
-            OnLevelChanged?.Invoke(level, DatabaseManager.Instance.LevelDatas.Count);
+            // currentLevelObj = Instantiate(DatabaseManager.Instance.LevelDatas[level].levelPrefabs);
+            DatabaseManager.Instance.GetAdventureLevel(level, obj =>
+            {
+                currentLevelObj = obj;
+            });
+            OnLevelChanged?.Invoke(level, DatabaseManager.Instance.LevelCount);
         }
         else
         {

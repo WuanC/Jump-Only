@@ -30,6 +30,7 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
         {
             Advertisement.Initialize(_gameId, _testMode, this);
         }
+        Debug.Log("Init");
     }
 
 

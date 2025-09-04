@@ -18,43 +18,43 @@ MonoBehaviour:
   m_GUID: 29b96c5e291757d46a01c9d593b591aa
   m_SerializeEntries:
   - m_GUID: 02011252ec1da914e8250bdb43b61368
-    m_Address: Assets/Data/SO/Levels Adventure/Level 9.asset
+    m_Address: Level 9
     m_ReadOnly: 0
     m_SerializedLabels:
     - adventure_level
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2e017a5671e3b8441863d7694b41ac99
-    m_Address: Assets/Data/SO/Levels Adventure/Level 13.asset
+    m_Address: Level 13
     m_ReadOnly: 0
     m_SerializedLabels:
     - adventure_level
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4407bd5fdebc7d2499c1b867927678ae
-    m_Address: Assets/Data/SO/Levels Adventure/Level 7.asset
+    m_Address: Level 7
     m_ReadOnly: 0
     m_SerializedLabels:
     - adventure_level
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5f0767dc2cb7a66448d528348a647c3a
-    m_Address: Assets/Data/SO/Levels Adventure/Level 10.asset
+    m_Address: Level 10
     m_ReadOnly: 0
     m_SerializedLabels:
     - adventure_level
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6cccd02d344bdec4d9b1ab70c4aa0e6f
-    m_Address: Assets/Data/SO/Levels Adventure/Level 8.asset
+    m_Address: Level 8
     m_ReadOnly: 0
     m_SerializedLabels:
     - adventure_level
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6cff7ae6661f19b4baa1bac845d64456
-    m_Address: Assets/Data/SO/Levels Adventure/Level 5.asset
+    m_Address: Level 5
     m_ReadOnly: 0
     m_SerializedLabels:
     - adventure_level
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6f180bad00e6db045ae2e958eb204cfa
-    m_Address: Assets/Data/SO/Levels Adventure/Level 4.asset
+    m_Address: Level 4
     m_ReadOnly: 0
     m_SerializedLabels:
     - adventure_level
@@ -65,25 +65,25 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8f921fcf35916fc459eae0e5fe0e5e9b
-    m_Address: Assets/Data/SO/Levels Adventure/Level 3.asset
+    m_Address: Level 3
     m_ReadOnly: 0
     m_SerializedLabels:
     - adventure_level
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 998388081668b3d47b7774ac9d9eec32
-    m_Address: Assets/Data/SO/Levels Adventure/Level 14.asset
+    m_Address: Level 14
     m_ReadOnly: 0
     m_SerializedLabels:
     - adventure_level
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a4e8124c060a32844b11bdcaa8f5de95
-    m_Address: Assets/Data/SO/Levels Adventure/Level 2.asset
+    m_Address: Level 2
     m_ReadOnly: 0
     m_SerializedLabels:
     - adventure_level
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ac8622d826b180b4db2a50d9af07fa03
-    m_Address: Assets/Data/SO/Levels Adventure/Level 12.asset
+    m_Address: Level 12
     m_ReadOnly: 0
     m_SerializedLabels:
     - adventure_level
@@ -94,25 +94,25 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cf004f7c6d70f694b862393e40c58427
-    m_Address: Assets/Data/SO/Levels Adventure/Level 6.asset
+    m_Address: Level 6
     m_ReadOnly: 0
     m_SerializedLabels:
     - adventure_level
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d8dd7d7735dea944f847bffe15756375
-    m_Address: Assets/Data/SO/Levels Adventure/Level 1.asset
+    m_Address: Level 1
     m_ReadOnly: 0
     m_SerializedLabels:
     - adventure_level
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e231a2470a6490f4ca9247b5117a4038
-    m_Address: Assets/Data/SO/Levels Adventure/Level 15.asset
+    m_Address: Level 15
     m_ReadOnly: 0
     m_SerializedLabels:
     - adventure_level
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f454efd592008de44b065737888b7481
-    m_Address: Assets/Data/SO/Levels Adventure/Level 11.asset
+    m_Address: Level 11
     m_ReadOnly: 0
     m_SerializedLabels:
     - adventure_level
